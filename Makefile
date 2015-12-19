@@ -2,76 +2,28 @@
 .SUFFIXES: .js .pegjs .css .html .msc .mscin .msgenny .svg .png .jpg
 RJS=node_modules/requirejs/bin/r.js
 GIT=git
-GIT_CURRENT_BRANCH=$(shell utl/get_current_git_branch.sh)
 GIT_DEPLOY_FROM_BRANCH=master
-CSSLINT=node node_modules/csslint/cli.js --format=compact --quiet --ignore=ids
-CJS2AMD=utl/commonjs2amd.sh
-PNG2FAVICO=utl/png2favico.sh
-RESIZE=utl/resize.sh
-IOSRESIZE=utl/iosresize.sh
 SEDVERSION=utl/sedversion.sh
 NPM=npm
 BOWER=node_modules/bower/bin/bower
-SASS=node_modules/node-sass/bin/node-sass --output-style compressed
 MAKEDEPEND=node_modules/.bin/js-makedepend --output-to src/jsdependencies.mk --exclude "node_modules"
 MINIFY=node_modules/.bin/uglifyjs
-MINIFYHTML=node_modules/.bin/html-minifier --config-file .html-minifier-conf
 
-ifeq ($(GIT_DEPLOY_FROM_BRANCH), $(GIT_CURRENT_BRANCH))
-	BUILDDIR=build
-else
-	BUILDDIR=build/branches/$(GIT_CURRENT_BRANCH)
-endif
+BUILDDIR=build
 
-GENERATED_STYLESHEETS=src/style/interp.css \
-	src/style/doc.css
-GENERATED_SOURCES=$(GENERATED_STYLESHEETS)
 REMOVABLEPRODDIRS=$(BUILDDIR)/script/lib \
 	$(BUILDDIR)/style \
 	$(BUILDDIR)/script \
 	$(BUILDDIR)/fonts
 PRODDIRS=$(BUILDDIR) \
 		 $(REMOVABLEPRODDIRS)
-FONTS=$(BUILDDIR)/fonts/controls.eot \
-	$(BUILDDIR)/fonts/controls.svg \
-	$(BUILDDIR)/fonts/controls.ttf \
-	$(BUILDDIR)/fonts/controls.woff
-FAVICONMASTER=src/images/xu.png
-FAVICONS=$(BUILDDIR)/favicon.ico \
-	$(BUILDDIR)/favicon-16.png \
-	$(BUILDDIR)/favicon-24.png \
-	$(BUILDDIR)/favicon-32.png \
-	$(BUILDDIR)/favicon-48.png \
-	$(BUILDDIR)/favicon-64.png \
-	$(BUILDDIR)/favicon-128.png \
-	$(BUILDDIR)/favicon-144.png \
-	$(BUILDDIR)/favicon-152.png \
-	$(BUILDDIR)/favicon-195.png \
-	$(BUILDDIR)/favicon-228.png \
-	$(BUILDDIR)/iosfavicon-57.png \
-	$(BUILDDIR)/iosfavicon-72.png \
-	$(BUILDDIR)/iosfavicon-114.png \
-	$(BUILDDIR)/iosfavicon-120.png \
-	$(BUILDDIR)/iosfavicon-144.png \
-	$(BUILDDIR)/iosfavicon-152.png
-CODEMIRROR_ROOT=node_modules/codemirror
 MSCGENJS_CORE_ROOT=node_modules/mscgenjs
-CANVG_LIBDIRS=src/script/lib/canvg
-CODEMIRROR_LIBDIRS=src/script/lib/codemirror/addon/dialog \
-	src/script/lib/codemirror/addon/display \
-	src/script/lib/codemirror/addon/edit \
-	src/script/lib/codemirror/addon/search \
-	src/script/lib/codemirror/addon/selection \
-	src/script/lib/codemirror/lib \
-	src/script/lib/codemirror/mode/mscgen \
-	src/script/lib/codemirror/mode/javascript \
-	src/script/lib/codemirror/theme
 MSCGENJS_LIBDIRS=src/script/lib/mscgenjs-core/parse \
 	src/script/lib/mscgenjs-core/render/graphics \
 	src/script/lib/mscgenjs-core/render/text \
 	src/script/lib/mscgenjs-core/lib/lodash
 
-LIBDIRS=$(CANVG_LIBDIRS) $(CODEMIRROR_LIBDIRS) $(MSCGENJS_LIBDIRS)
+LIBDIRS=$(MSCGENJS_LIBDIRS)
 
 .PHONY: help dev-build install deploy-gh-pages check stylecheck fullcheck mostlyclean clean noconsolestatements consolecheck lint cover prerequisites report test update-dependencies run-update-dependencies depend bower-package
 
@@ -118,27 +70,6 @@ help:
 
 
 # production rules
-$(BUILDDIR)/%.html: src/%.html tracking.id tracking.host siteverification.id
-	$(SEDVERSION) < $< | $(MINIFYHTML) > $@
-
-%.css: %.scss
-	$(SASS) $< $@
-
-$(BUILDDIR)/style/%.css: src/style/%.css
-	cp $< $@
-
-$(BUILDDIR)/fonts/%: src/fonts/%
-	cp $< $@
-
-$(BUILDDIR)/favicon.ico: $(FAVICONMASTER)
-	$(PNG2FAVICO) $< $@
-
-$(BUILDDIR)/favicon-%.png: $(FAVICONMASTER)
-	$(RESIZE) $< $@
-
-$(BUILDDIR)/iosfavicon-%.png: $(FAVICONMASTER)
-	$(IOSRESIZE) $< $@
-
 $(PRODDIRS):
 	mkdir -p $@
 
@@ -150,21 +81,6 @@ bower_components/canvg-gabelerner/%.js:
 
 src/script/lib/require.js: node_modules/requirejs/require.js
 	$(MINIFY) $< -m -c > $@
-
-src/script/lib/canvg/%.js: bower_components/canvg-gabelerner/%.js $(CANVG_LIBDIRS)
-	cp $< $@
-
-src/script/lib/codemirror/lib/_%.scss: $(CODEMIRROR_ROOT)/lib/%.css $(CODEMIRROR_LIBDIRS)
-	cp $< $@
-
-src/script/lib/codemirror/addon/dialog/_%.scss: $(CODEMIRROR_ROOT)/addon/dialog/%.css $(CODEMIRROR_LIBDIRS)
-	cp $< $@
-
-src/script/lib/codemirror/theme/_%.scss: $(CODEMIRROR_ROOT)/theme/%.css $(CODEMIRROR_LIBDIRS)
-	cp $< $@
-
-src/script/lib/codemirror/%.js: $(CODEMIRROR_ROOT)/%.js $(CODEMIRROR_LIBDIRS)
-	cp $< $@
 
 src/script/lib/mscgenjs-core/render/graphics/%.js: $(MSCGENJS_CORE_ROOT)/render/graphics/%.js $(MSCGENJS_LIBDIRS)
 	cp $< $@
@@ -183,52 +99,8 @@ include src/jsdependencies.mk
 include src/dependencies.mk
 
 # file targets prod
-$(BUILDDIR)/index.html: $(PRODDIRS) \
-	src/index.html \
-	$(BUILDDIR)/style/interp.css \
-	$(BUILDDIR)/script/lib/require.js \
-	$(BUILDDIR)/script/mscgen-interpreter.js \
-	$(BUILDDIR)/images/ \
-	$(BUILDDIR)/samples/ \
-	$(FAVICONS) \
-	$(FONTS)
 
-LIVE_DOC_DEPS=$(PRODDIRS) \
-	$(BUILDDIR)/style/doc.css \
-	$(BUILDDIR)/mscgen-inpage.js \
-	$(BUILDDIR)/images/ \
-	$(FAVICONS) \
-	$(FONTS)
-
-$(BUILDDIR)/embed.html: $(LIVE_DOC_DEPS) src/embed.html
-
-$(BUILDDIR)/tutorial.html: $(LIVE_DOC_DEPS) src/tutorial.html
-
-siteverification.id:
-	@echo yoursiteverifactionidhere > $@
-
-tracking.id:
-	@echo yourtrackingidhere > $@
-
-tracking.host:
-	@echo auto > $@
-
-$(BUILDDIR)/images/: src/images
-	cp -R $< $@
-
-$(BUILDDIR)/samples/: src/samples
-	cp -R $< $@
-
-$(BUILDDIR)/script/lib/require.js: src/script/lib/require.js
-	cp $< $@
-
-$(BUILDDIR)/script/mscgen-interpreter.js: $(INTERPRETER_JS_SOURCES)
-	$(RJS) -o baseUrl="./src/script" \
-			name="mscgen-interpreter" \
-			out=$@.tmp \
-			preserveLicenseComments=true
-	$(SEDVERSION) < $@.tmp > $@
-	rm $@.tmp
+LIVE_DOC_DEPS= $(BUILDDIR)/mscgen-inpage.js \
 
 $(BUILDDIR)/mscgen-inpage.js: $(EMBED_JS_SOURCES) node_modules/almond/almond.js
 	$(RJS) -o baseUrl=./src/script \
@@ -245,18 +117,14 @@ $(BUILDDIR)/script/mscgen-inpage.js: $(BUILDDIR)/mscgen-inpage.js
 prerequisites:
 	$(NPM) install
 
-dev-build: $(GENERATED_SOURCES_NODE) src/index.html src/embed.html src/tutorial.html
 
 noconsolestatements:
 	@echo "scanning for console statements (run 'make consolecheck' to see offending lines)"
-	grep -r console src/script/mscgen-*.js src/script/embedding src/script/interpreter src/script/utl | grep -c console | grep ^0$$
+	grep -r console src/script/mscgen-*.js src/script/embedding src/script/utl | grep -c console | grep ^0$$
 	@echo ... ok
 
 consolecheck:
-	grep -r console src/script/mscgen-*.js src/script/embedding src/script/interpreter src/script/utl
-
-csslint:
-	$(CSSLINT) src/style/*.css
+	grep -r console src/script/mscgen-*.js src/script/embedding src/script/utl
 
 lint:
 	$(NPM) run lint
@@ -267,14 +135,7 @@ stylecheck:
 cover: dev-build
 	$(NPM) run cover
 
-install: $(BUILDDIR)/index.html $(BUILDDIR)/embed.html $(BUILDDIR)/tutorial.html
-
-deploy-gh-pages: install
-	@echo Deploying build `utl/getver` to $(BUILDDIR)
-	$(GIT) -C $(BUILDDIR) add --all .
-	$(GIT) -C $(BUILDDIR) commit -m "build `utl/getver`"
-	$(GIT) -C $(BUILDDIR) push origin gh-pages
-	$(GIT) -C $(BUILDDIR) status
+install: $(BUILDDIR)/mscgen-inpage.js
 
 tag:
 	$(GIT) tag -a `utl/getver` -m "tag release `utl/getver`"
@@ -314,15 +175,10 @@ run-update-dependencies:
 depend:
 	$(MAKEDEPEND) --system amd,cjs src/script
 	$(MAKEDEPEND) --append --system amd --flat-define EMBED_JS_SOURCES src/script/mscgen-inpage.js
-	$(MAKEDEPEND) --append --system amd --flat-define INTERPRETER_JS_SOURCES src/script/mscgen-interpreter.js
 
 clean-the-build:
 	rm -rf $(REMOVABLEPRODDIRS) \
-		$(BUILDDIR)/images \
 		$(BUILDDIR)/samples \
-		$(BUILDDIR)/index.html \
-		$(BUILDDIR)/embed.html \
-		$(BUILDDIR)/tutorial.html \
 		$(BUILDDIR)/mscgen-inpage.js
 	rm -rf coverage
 
@@ -331,4 +187,3 @@ clean-generated-sources:
 
 clean: clean-the-build clean-generated-sources
 	rm -rf $(LIBDIRS)
-	rm -rf $(FAVICONS)

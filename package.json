@@ -1,11 +1,10 @@
 {
-  "name": "mscgen_js",
+  "name": "mscgenjs-inpage",
   "version": "1.2.5",
-  "description": "Turns text into sequence charts. A faithfull implementation of the mscgen sequence chart language in javascript.",
-  "main": "src/script/index.js",
+  "description": "",
+  "main": "",
   "dependencies": {
     "amdefine": "1.0.0",
-    "codemirror": "5.9.0",
     "requirejs": "2.1.22",
     "mscgenjs": "1.2.6"
   },
@@ -17,18 +16,11 @@
     "chai-xml": "0.3.1",
     "codeclimate-test-reporter": "0.1.1",
     "codecov.io": "0.1.6",
-    "csslint": "0.10.0",
-    "gulp": "3.9.0",
-    "gulp-load-plugins": "1.1.0",
-    "gulp-sass": "2.1.1",
-    "html-minifier": "1.0.0",
     "istanbul": "0.4.1",
     "js-makedepend": "0.1.10",
     "jscs": "2.7.0",
     "jshint": "2.8.0",
     "mocha": "2.3.4",
-    "node-localstorage": "0.6.0",
-    "node-sass": "3.4.2",
     "npm-check-updates": "2.5.4",
     "nsp": "2.1.0",
     "plato": "1.5.0",
@@ -47,7 +39,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sverweij/mscgen_js"
+    "url": "https://github.com/sverweij/mscgenjs-inpage"
   },
   "author": "Sander Verweij",
   "license": "GPL-3.0",
@@ -58,11 +50,8 @@
     "xu",
     "msgenny"
   ],
-  "engines": {
-    "node": ">=4.0"
-  },
   "bugs": {
-    "url": "https://github.com/sverweij/mscgen_js/issues"
+    "url": "https://github.com/sverweij/mscgenjs-inpage/issues"
   },
-  "homepage": "https://sverweij.github.io/mscgen_js"
+  "homepage": "https://sverweij.github.io/mscgenjs-inpage"
 }

@@ -1,71 +1,46 @@
-# mscgen_js' innards
-Here's some notes to ease the job of maintaining mscgen_js. It attempts to describe **how** it does
-what it does and it tries to **explain** some of the **choices**.
-
-The **main steps** mscgen_js takes to get from a textual description to
-a picture:
-- [_lexical analysis and parsing_](#lexical-analysis-and-parsing) to an abstract syntax tree.
-- [_rendering_](#rendering-graphics) that abstract syntax tree into a picture.
-- Besides these two steps it is useful to have some sort of
-  [_controler_](#the-controllers) program that handles interaction with the user.
-  We have four of them:
-  - for [_embedding_](embedding-controller.md) textual descriptions in html
-  - for the interactive [_interpreter_](ui/README.md)
-  - for the [_command line interface_](cli/README.md)
-  - for the [atom editor package](https://github.com/sverweij/atom-mscgen-preview)
-
-## Lexical analysis and parsing
-:page_with_curl: code in [parse/peg](parse/peg)
-
-We wrote the parsers for `mscgen`, `msgenny` and `xù` with
-PEG.js. This is a parser generator that smashes the tasks of lexical
-analysis and parsing together. In the [parser folder](parse/peg/README.md) we describe
-* [how to generate the parsers from pegjs](parse/peg/README.md#generating-the-parsers)
-* [the structure of and principles behind the abstract syntax trees](parse/peg/README.md#the-abstract-syntax-tree)
-
-
-## Rendering
-### Rendering graphics
-:page_with_curl: code in [render/graphics/](render/graphics)
-
-*mscgen_js* by default renders its graphics to _scalable vector graphics_ (SVG).
-In the [render folder](render/graphics/README.md) we
-- motivate this choice,
-- describe how our SVG is structured and
-- how the rendering programs fill it.
-
-### Rendering text
-:page_with_curl: code in [render/text/](render/text)
-
-To **translate** between the three sequence chart languages it supports and to
-**generate** and **manipulate** other languages.
-
-### Raster graphics?
-:page_with_curl: code in [ui/interpreter/raster-exporter.js](ui/interpreter/raster-exporter.js)
-
-You might have noticed the [interpreter](https://sverweij.github.io/mscgen_js)
-also renders to jpeg and png. It uses the canvg library and it is _really_ trivial.
-
-
-## The controllers
-
-### Embedding
+# embedding
 :page_with_curl: code in [mscgen-inpage.js](mscgen-inpage.js)
 
-The controller for embedding is actually very simple. Details on how it works
-and what design choices we made you can find [here](embedding-controller.md).
+The embedding controller uses the obvious approach:
+- Run through all elements in the DOM tree and filter out those that have the mscgen_js class
+  or are of the `mscgen` element type.
+- For each element thus found attempt to parse and render its content as mscgen (or one of
+  the three other supported languages).
+- If the parsing doesn't work out, display the text of the element with the
+  error the parser found highlighted.
 
-### Interactive interpreter
-:page_with_curl: code in [ui/interpreter](ui/interpreter)
+## defer: prevent execution before DOM tree has loaded
+When testing this on larger DOM trees (like the one of the
+[tutorial](https://sverweij.github.io/mscgen_js/tutorial.html)), we found that
+sometimes the code would start executing before the browser completed loading
+the DOM tree. The result of this was that the only part of the embedded
+mscgen would be rendered.
 
-The controller for the interpreter UI is less trivial.
+Libraries like jquery have tricks up their sleeves to prevent this from happening.
+However, we don't want to use more libraries than strictly necessary.
+Less code => less to download => faster load times.
 
-## Testing
-:page_with_curl: code in [test/](test)
+The solution we're using now is to use the `defer` attribute in the script
+element. With this attribute in place most modern browsers (firefox, chrome, safari)
+wait with loading and executing the script until the complete DOM tree is loaded
+```html
+<script src='https://sverweij.github.io/mscgen_js/mscgen-inpage.js' defer></script>
+```
 
-About 300 automated tests (and counting) make sure we can refactor most of
-the back end code (parsing and rendering) safely.
+## One javascript file: requirejs and almond
+As you can see mscgen_js keeps its functionality in separate amd modules
+and uses r.js to smash em together in one ball of javascript, which
+is loaded with require.js. The script tag would then look something like this:
+```html
+<script data-main='https://sverweij.github.io/mscgen_js/mscgen-inpage.js'
+        src='https://sverweij.github.io/mscgen_js/lib/require.js' defer>
+</script>
+```
 
-The ui controller tests are inherently harder to test automated. This
-is why we did testing with a pair of eyeballs until now. We plan to
-change that.
+For embedding this has two drawbacks:
+- The user will have to load two piece of javascript (slower).
+- It's verbose.
+
+
+We're using [almond](https://github.com/jrburke/almond) to pack everything in
+one tight ball of javascript so only that needs including.
