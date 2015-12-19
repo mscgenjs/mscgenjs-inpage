@@ -6,7 +6,7 @@ GIT_DEPLOY_FROM_BRANCH=master
 SEDVERSION=utl/sedversion.sh
 NPM=npm
 BOWER=node_modules/bower/bin/bower
-MAKEDEPEND=node_modules/.bin/js-makedepend --output-to src/jsdependencies.mk --exclude "node_modules"
+MAKEDEPEND=node_modules/.bin/js-makedepend --output-to jsdependencies.mk --exclude "node_modules"
 MINIFY=node_modules/.bin/uglifyjs
 
 BUILDDIR=build
@@ -95,8 +95,7 @@ src/script/lib/mscgenjs-core/lib/lodash/%.js: $(MSCGENJS_CORE_ROOT)/lib/lodash/%
 	cp $< $@
 
 # dependencies
-include src/jsdependencies.mk
-include src/dependencies.mk
+include jsdependencies.mk
 
 # file targets prod
 
