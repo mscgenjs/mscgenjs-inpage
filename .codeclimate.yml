@@ -2,5 +2,5 @@ languages:
   JavaScript: true
 exclude_paths:
   - utl/*
-  - src/script/lib/*
-  - src/script/test/*
+  - src/lib/*
+  - src/test/*

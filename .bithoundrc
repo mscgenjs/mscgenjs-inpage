@@ -42,10 +42,8 @@
     "**/vendor/**",
     "**/yahoo-*.js",
     "**/yui*.js",
-    "bower_components/**",
-    "gulpfile.js",
-    "src/script/lib/**",
-    "src/script/test/**"
+    "src/lib/**",
+    "src/test/**"
   ],
   "test": [
     "**/test/**",

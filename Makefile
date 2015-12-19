@@ -11,17 +11,12 @@ MINIFY=node_modules/.bin/uglifyjs
 
 BUILDDIR=build
 
-REMOVABLEPRODDIRS=$(BUILDDIR)/script/lib \
-	$(BUILDDIR)/style \
-	$(BUILDDIR)/script \
-	$(BUILDDIR)/fonts
-PRODDIRS=$(BUILDDIR) \
-		 $(REMOVABLEPRODDIRS)
+PRODDIRS=$(BUILDDIR)
 MSCGENJS_CORE_ROOT=node_modules/mscgenjs
-MSCGENJS_LIBDIRS=src/script/lib/mscgenjs-core/parse \
-	src/script/lib/mscgenjs-core/render/graphics \
-	src/script/lib/mscgenjs-core/render/text \
-	src/script/lib/mscgenjs-core/lib/lodash
+MSCGENJS_LIBDIRS=src/lib/mscgenjs-core/parse \
+	src/lib/mscgenjs-core/render/graphics \
+	src/lib/mscgenjs-core/render/text \
+	src/lib/mscgenjs-core/lib/lodash
 
 LIBDIRS=$(MSCGENJS_LIBDIRS)
 
@@ -79,19 +74,19 @@ $(LIBDIRS):
 bower_components/canvg-gabelerner/%.js:
 	$(BOWER) install
 
-src/script/lib/require.js: node_modules/requirejs/require.js
+src/lib/require.js: node_modules/requirejs/require.js
 	$(MINIFY) $< -m -c > $@
 
-src/script/lib/mscgenjs-core/render/graphics/%.js: $(MSCGENJS_CORE_ROOT)/render/graphics/%.js $(MSCGENJS_LIBDIRS)
+src/lib/mscgenjs-core/render/graphics/%.js: $(MSCGENJS_CORE_ROOT)/render/graphics/%.js $(MSCGENJS_LIBDIRS)
 	cp $< $@
 
-src/script/lib/mscgenjs-core/render/text/%.js: $(MSCGENJS_CORE_ROOT)/render/text/%.js $(MSCGENJS_LIBDIRS)
+src/lib/mscgenjs-core/render/text/%.js: $(MSCGENJS_CORE_ROOT)/render/text/%.js $(MSCGENJS_LIBDIRS)
 	cp $< $@
 
-src/script/lib/mscgenjs-core/parse/%.js: $(MSCGENJS_CORE_ROOT)/parse/%.js $(MSCGENJS_LIBDIRS)
+src/lib/mscgenjs-core/parse/%.js: $(MSCGENJS_CORE_ROOT)/parse/%.js $(MSCGENJS_LIBDIRS)
 	cp $< $@
 
-src/script/lib/mscgenjs-core/lib/lodash/%.js: $(MSCGENJS_CORE_ROOT)/lib/lodash/%.js $(MSCGENJS_LIBDIRS)
+src/lib/mscgenjs-core/lib/lodash/%.js: $(MSCGENJS_CORE_ROOT)/lib/lodash/%.js $(MSCGENJS_LIBDIRS)
 	cp $< $@
 
 # dependencies
@@ -102,7 +97,7 @@ include jsdependencies.mk
 LIVE_DOC_DEPS= $(BUILDDIR)/mscgen-inpage.js \
 
 $(BUILDDIR)/mscgen-inpage.js: $(EMBED_JS_SOURCES) node_modules/almond/almond.js
-	$(RJS) -o baseUrl=./src/script \
+	$(RJS) -o baseUrl=./src \
 			name=../../node_modules/almond/almond \
 			include=mscgen-inpage \
 			out=$@ \
@@ -119,11 +114,11 @@ prerequisites:
 
 noconsolestatements:
 	@echo "scanning for console statements (run 'make consolecheck' to see offending lines)"
-	grep -r console src/script/mscgen-*.js src/script/embedding src/script/utl | grep -c console | grep ^0$$
+	grep -r console src/mscgen-*.js src/embedding src/utl | grep -c console | grep ^0$$
 	@echo ... ok
 
 consolecheck:
-	grep -r console src/script/mscgen-*.js src/script/embedding src/script/utl
+	grep -r console src/mscgen-*.js src/embedding src/utl
 
 lint:
 	$(NPM) run lint
@@ -172,12 +167,11 @@ run-update-dependencies:
 	$(NPM) install
 
 depend:
-	$(MAKEDEPEND) --system amd,cjs src/script
-	$(MAKEDEPEND) --append --system amd --flat-define EMBED_JS_SOURCES src/script/mscgen-inpage.js
+	$(MAKEDEPEND) --system amd,cjs src
+	$(MAKEDEPEND) --append --system amd --flat-define EMBED_JS_SOURCES src/mscgen-inpage.js
 
 clean-the-build:
-	rm -rf $(REMOVABLEPRODDIRS) \
-		$(BUILDDIR)/samples \
+	rm -rf $(BUILDDIR)/samples \
 		$(BUILDDIR)/mscgen-inpage.js
 	rm -rf coverage
 

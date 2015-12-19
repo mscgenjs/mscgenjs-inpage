@@ -26,6 +26,6 @@
 	"validateParameterSeparator": ", ",
 	"validateQuoteMarks": false,
 	"excludeFiles": [
-		"src/script/lib/**"
+		"src/lib/**"
 	]
 }
