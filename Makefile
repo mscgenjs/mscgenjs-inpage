@@ -98,7 +98,7 @@ LIVE_DOC_DEPS= $(BUILDDIR)/mscgen-inpage.js \
 
 $(BUILDDIR)/mscgen-inpage.js: $(EMBED_JS_SOURCES) node_modules/almond/almond.js
 	$(RJS) -o baseUrl=./src \
-			name=../../node_modules/almond/almond \
+			name=../node_modules/almond/almond \
 			include=mscgen-inpage \
 			out=$@ \
 			wrap=true \
