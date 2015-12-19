@@ -1,44 +1,6 @@
-/* jshint unused: false */
 var assert = require("assert");
 var xport = require("../../utl/exporter");
 
-var gAST = {
-    "meta": {
-        "extendedOptions": false,
-        "extendedArcTypes": false,
-        "extendedFeatures": false
-    },
-    "entities": [
-    {
-        "name": "a",
-        "label": "💩"
-    },
-    {
-        "name": "b",
-        "label": "序"
-    },
-    {
-        "name": "c",
-        "label": "💩"
-    }
-  ],
-    "arcs": [
-      [
-      {
-          "kind": "=>",
-          "from": "a",
-          "to": "b",
-          "label": "things"
-      },
-      {
-          "kind": "=>",
-          "from": "c",
-          "to": "b"
-      }
-    ]
-  ]
-};
-var gSVG = '<svg>just a dummy thing</svg>';
 var gMsc = 'msc{a[label="💩"],b[label="序"],c [label="💩"]; a => b[label="things"], c => b;}';
 
 describe('ui/utl/exporter', function(){

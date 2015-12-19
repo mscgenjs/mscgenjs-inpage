@@ -23,9 +23,6 @@ define([], function() {
     }
 
     return {
-        toHTMLSnippetURI: function(pSource, pLanguage, pWithLinkToEditor){
-            return 'data:text/plain;charset=utf-8,'+encodeURIComponent(toHTMLSnippet(pSource, pLanguage, pWithLinkToEditor));
-        },
         toLocationString: function (pLocation, pSource, pLanguage) {
             var lSource = '# source too long for an URL';
             if (sourceIsURLable(pLocation, pSource, pLanguage)) {
