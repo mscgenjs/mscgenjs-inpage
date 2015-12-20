@@ -12,7 +12,6 @@
     "almond": "0.3.1",
     "bower": "1.7.1",
     "chai": "3.4.1",
-    "chai-xml": "0.3.1",
     "codeclimate-test-reporter": "0.1.1",
     "codecov.io": "0.1.6",
     "istanbul": "0.4.1",
