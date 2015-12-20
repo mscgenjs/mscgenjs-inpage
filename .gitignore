@@ -16,6 +16,5 @@ tracking.*
 siteverification.id
 tmp_*.md
 npm-debug.log
-build
 bower-package
 bower_components

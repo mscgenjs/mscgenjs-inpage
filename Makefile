@@ -9,7 +9,7 @@ BOWER=node_modules/bower/bin/bower
 MAKEDEPEND=node_modules/.bin/js-makedepend --output-to jsdependencies.mk --exclude "node_modules"
 MINIFY=node_modules/.bin/uglifyjs
 
-BUILDDIR=build
+BUILDDIR=dist
 PRODDIRS=$(BUILDDIR)
 MSCGENJS_CORE_ROOT=node_modules/mscgenjs
 MSCGENJS_LIBDIRS=src/lib/mscgenjs-core/parse \
