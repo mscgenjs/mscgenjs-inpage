@@ -6,16 +6,58 @@ require(["lib/mscgenjs-core/parse/xuparser",
          "utl/exporter",
          "embedding/config",
          "embedding/error-rendering",
-         "utl/domutl"],
-        function(mscparser, msgennyparser, mscrender, exp, conf, err, $) {
+         "utl/domutl",
+         "utl/tpl"],
+        function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
     "use strict";
+
+    var TPL_SPAN = "<span class='mscgen_js' {src} data-language='{lang}'>{msc}<span>";
+    var TPL_SPAN_SRC = "data-src='{src}' ";
+    var ERR_FILE_NOT_FOUND_TPL =
+        "ERROR: Could not find or open the URL '{url}' specified in the <code>data-src</code> attribute.";
+    var ERR_FILE_LOADING_DISABLED_TPL =
+        "ERROR: Won't load the chart specified in <code>data-src='{url}'</code>, " +
+        "because loading from separate files is switched off in the mscgen_js " +
+        "configuration. <br><br>See " +
+        "<a href='https://sverweij.github.io/mscgen_js/embed.html#loading-from-separate-files'>" +
+        "Loading charts from separate files</a> in the mscgen_js embedding " +
+        "guide how to enable it."
+    ;
 
     start();
 
     function start() {
+        processScriptElements();
+
         var lClassElements = document.getElementsByClassName("mscgen_js");
         renderElementArray(lClassElements, 0);
         renderElementArray(document.getElementsByTagName("mscgen"), lClassElements.length);
+    }
+
+    function processScriptElements() {
+        var lScripts = document.scripts;
+        var lMap = {
+            "text/x-mscgen"  : "mscgen",
+            "text/x-msgenny" : "msgenny",
+            "text/x-xu"      : "xu"
+        };
+
+        for (var i = 0; i < lScripts.length; i++){
+            if (!!(lMap[lScripts[i].type]) &&
+                !lScripts[i].hasAttribute("data-renderedby")){
+                lScripts[i].insertAdjacentHTML(
+                    "afterend",
+                    tpl.applyTemplate(
+                        TPL_SPAN, {
+                            src: lScripts[i].src ? tpl.applyTemplate(TPL_SPAN_SRC, {src: lScripts[i].src}): "",
+                            lang: lMap[lScripts[i].type]||conf.getConfig().defaultLanguage,
+                            msc: lScripts[i].textContent.replace(/</g, "&lt;")
+                        }
+                    )
+                );
+                lScripts[i].setAttribute("data-renderedby", "mscgen_js");
+            }
+        }
     }
 
     function renderElementArray(pMscGenElements, pStartIdAt){
@@ -31,13 +73,16 @@ require(["lib/mscgenjs-core/parse/xuparser",
     }
 
     function renderElementError(pElement, pString) {
-        pElement.innerHTML = "<div style='color: red'>" + pString + "</div>";
+        pElement.innerHTML =
+            tpl.applyTemplate(
+                "<div style='color: red'>{string}</div>",
+                {string:pString}
+            );
     }
 
     function renderElement (pElement, pIndex){
         setElementId(pElement, pIndex);
         pElement.setAttribute("data-renderedby", "mscgen_js");
-
         if (conf.getConfig().loadFromSrcAttribute && !!pElement.getAttribute("data-src")){
             $.ajax(
                 pElement.getAttribute("data-src"),
@@ -47,22 +92,20 @@ require(["lib/mscgenjs-core/parse/xuparser",
                 function onError() {
                     renderElementError(
                         pElement,
-                        "ERROR: Could not find or open the URL '" +
-                        pElement.getAttribute("data-src") +
-                        "' specified in the <code>data-src</code> attribute."
+                        tpl.applyTemplate(
+                            ERR_FILE_NOT_FOUND_TPL,
+                            {url: pElement.getAttribute("data-src")}
+                        )
                     );
                 }
             );
         } else if (!conf.getConfig().loadFromSrcAttribute && !!pElement.getAttribute("data-src")){
             renderElementError(
                 pElement,
-                "ERROR: Won't load the chart specified in <code>data-src='" +
-                pElement.getAttribute("data-src") + "'</code>, "+
-                "because loading from separate files is switched off in the " +
-                "mscgen_js configuration." +
-                "<br><br>See " +
-                "<a href='https://sverweij.github.io/mscgen_js/embed.html#loading-from-separate-files'>Loading charts from separate files</a>" +
-                " in the mscgen_js embedding guide how to enable it."
+                tpl.applyTemplate(
+                    ERR_FILE_LOADING_DISABLED_TPL,
+                    {url: pElement.getAttribute("data-src")}
+                )
             );
         } else {
             parseAndRender(pElement, pElement.textContent);

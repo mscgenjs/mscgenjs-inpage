@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Testing if we can run mscgen in a script tag</title>
+        <style media="screen">
+            pre {
+                overflow-x: scroll;
+            }
+        </style>
+        <script>
+        mscgen_js_config = {
+            loadFromSrcAttribute: true
+        }
+        </script>
+        <script src="../../lib/require.js" data-main="../../mscgen-inpage.js"charset="utf-8"></script>
+    </head>
+    <body>
+        <h2>Tests loading from &lt;script> tags</h2>
+        <h3>Rendering MscGen from in-page script</h3>
+        <script type="text/x-mscgen">
+        msc {
+            wordwraparcs=on, arcgradient=10;
+
+            a,b,c;
+
+            b =>> * [label="starting the conversation!"];
+
+            a => b [label="What are you wearing tonight?"];
+            b << a [label="a <script>"];
+        }
+        </script>
+        <h3>Rendering MsGeny from in-page script</h3>
+        <script type="text/x-msgenny">
+                wordwraparcs=on;
+                alice =>> bob: hi;
+                alice << bob: hi yourself;
+        </script>
+
+        <h3>Rendering Xù from an externally loaded script</h3>
+        <script type="text/x-xu" src="scripttag.xu"></script>
+
+        <h3>Rendering an illegal script shows an error</h3>
+        <script type="text/x-msgenny">
+            this;
+            is a script with an error;
+        </script>
+
+
+        </script>
+    </body>
+</html>
