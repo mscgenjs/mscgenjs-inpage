@@ -13,9 +13,9 @@ require(["lib/mscgenjs-core/parse/xuparser",
 
     var TPL_SPAN = "<span class='mscgen_js' {src} data-language='{lang}'>{msc}<span>";
     var TPL_SPAN_SRC = "data-src='{src}' ";
-    var ERR_FILE_NOT_FOUND_TPL =
+    var TPL_ERR_FILE_NOT_FOUND =
         "ERROR: Could not find or open the URL '{url}' specified in the <code>data-src</code> attribute.";
-    var ERR_FILE_LOADING_DISABLED_TPL =
+    var TPL_ERR_FILE_LOADING_DISABLED =
         "ERROR: Won't load the chart specified in <code>data-src='{url}'</code>, " +
         "because loading from separate files is switched off in the mscgen_js " +
         "configuration. <br><br>See " +
@@ -23,6 +23,11 @@ require(["lib/mscgenjs-core/parse/xuparser",
         "Loading charts from separate files</a> in the mscgen_js embedding " +
         "guide how to enable it."
     ;
+    var MIME2LANG = {
+        "text/x-mscgen"  : "mscgen",
+        "text/x-msgenny" : "msgenny",
+        "text/x-xu"      : "xu"
+    };
 
     start();
 
@@ -36,21 +41,16 @@ require(["lib/mscgenjs-core/parse/xuparser",
 
     function processScriptElements() {
         var lScripts = document.scripts;
-        var lMap = {
-            "text/x-mscgen"  : "mscgen",
-            "text/x-msgenny" : "msgenny",
-            "text/x-xu"      : "xu"
-        };
 
         for (var i = 0; i < lScripts.length; i++){
-            if (!!(lMap[lScripts[i].type]) &&
+            if (!!(MIME2LANG[lScripts[i].type]) &&
                 !lScripts[i].hasAttribute("data-renderedby")){
                 lScripts[i].insertAdjacentHTML(
                     "afterend",
                     tpl.applyTemplate(
                         TPL_SPAN, {
                             src: lScripts[i].src ? tpl.applyTemplate(TPL_SPAN_SRC, {src: lScripts[i].src}): "",
-                            lang: lMap[lScripts[i].type]||conf.getConfig().defaultLanguage,
+                            lang: MIME2LANG[lScripts[i].type]||conf.getConfig().defaultLanguage,
                             msc: lScripts[i].textContent.replace(/</g, "&lt;")
                         }
                     )
@@ -93,7 +93,7 @@ require(["lib/mscgenjs-core/parse/xuparser",
                     renderElementError(
                         pElement,
                         tpl.applyTemplate(
-                            ERR_FILE_NOT_FOUND_TPL,
+                            TPL_ERR_FILE_NOT_FOUND,
                             {url: pElement.getAttribute("data-src")}
                         )
                     );
@@ -103,7 +103,7 @@ require(["lib/mscgenjs-core/parse/xuparser",
             renderElementError(
                 pElement,
                 tpl.applyTemplate(
-                    ERR_FILE_LOADING_DISABLED_TPL,
+                    TPL_ERR_FILE_LOADING_DISABLED,
                     {url: pElement.getAttribute("data-src")}
                 )
             );
@@ -143,7 +143,9 @@ require(["lib/mscgenjs-core/parse/xuparser",
     }
 
     function getLanguage(pElement) {
-        /* the way to do it, but doesn't work in IE: lLanguage = pElement.dataset.language; */
+        /* the way to do it, but doesn't work in IE:
+           lLanguage = pElement.dataset.language;
+         */
         var lLanguage = pElement.getAttribute('data-language');
         if (!lLanguage) {
             lLanguage = conf.getConfig().defaultLanguage;
