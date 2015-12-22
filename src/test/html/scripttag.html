@@ -17,6 +17,7 @@
     </head>
     <body>
         <h2>Tests loading from &lt;script> tags</h2>
+
         <h3>Rendering MscGen from in-page script</h3>
         <script type="text/x-mscgen">
         msc {
@@ -30,6 +31,7 @@
             b << a [label="a <script>"];
         }
         </script>
+
         <h3>Rendering MsGeny from in-page script</h3>
         <script type="text/x-msgenny">
                 wordwraparcs=on;
@@ -46,7 +48,28 @@
             is a script with an error;
         </script>
 
+        <h3>Scripts with other mimetypes than mscgen, msgenny, xu get ignored</h3>
+        <p>
+            Should be no stuff between the two horizontal lines.
+        </p>
+        <hr>
+        <script type="text/x-dot">
+        graph {
+          rankdir=LR
+          splines=true
+          ordering=out
+          fontname="Helvetica"
+          fontsize="9"
+          node [style=filled, fillcolor=white fontname="Helvetica", fontsize="9" ]
+          edge [fontname="Helvetica", fontsize="9", arrowhead=vee, arrowtail=vee, dir=forward]
 
+          "alice" [label="alice"];
+          "bob" [label="bob"];
+
+          "alice" -- "bob" [label="(1) hi"]
+          "bob" -- "alice" [label="(2) hi yourself", style="dashed"]
+        }
         </script>
+        <hr>
     </body>
 </html>
