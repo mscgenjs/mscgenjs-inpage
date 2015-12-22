@@ -12,3 +12,12 @@ engines:
 exclude_paths:
   - src/lib/*
   - src/test/*
+  - dist/*
+  - wikum/*
+  - bower/*
+  - *.md
+  - *.mk
+  - *.xml
+  - *.json
+  - Makefile
+  - COPYING
