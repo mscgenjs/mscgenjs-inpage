@@ -1,5 +1,9 @@
-/* jshint browser:true */
-/* global define */
+/* jshint browser:true, node: true */
+/* istanbul ignore else */
+if ( typeof define !== 'function') {
+    var define = require('amdefine')(module);
+}
+
 define([], function(){
     "use strict";
 
@@ -20,7 +24,7 @@ define([], function(){
             try {
                 lHttpRequest.send();
             } catch (e) {
-                pErrorFunction();
+                pErrorFunction(e);
             }
         }
     };

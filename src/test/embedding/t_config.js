@@ -24,7 +24,6 @@ define(["../../embedding/config", "../../../node_modules/chai/chai"], function(c
             it('should return a changed configuration when a mscgen_js_config is present', function(){
                 var lGlobal = null;
 
-                /* istanbul ignore else */
                 if (typeof global !== "undefined"){
                     lGlobal = global;
                 } else {
