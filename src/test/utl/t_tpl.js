@@ -1,8 +1,6 @@
 var expect = require("chai").expect;
 var tpl = require("../../utl/tpl");
 
-var TPL_ONEVAR = "template with one variable {var}";
-
 var CASES = [
     {
         title: "leaves strings without variables alone",
