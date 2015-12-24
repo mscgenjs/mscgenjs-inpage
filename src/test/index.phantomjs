@@ -53,7 +53,8 @@ page.onCallback = function(pArgument){
         lExitCode = pArgument.failures;
         fs.write('./coverage.json', JSON.stringify(pArgument.coverage, null, " "));
     } else {
-        console.log(pArgument);
+        /* no coverage object found - for when run as a regular test */
+        lExitCode = 0;
     }
 
     phantom.exit(lExitCode);
@@ -64,7 +65,7 @@ page.onConsoleMessage = function(pMessage, pLineNum, pSourceId){
         var lMessage = JSONifyMochaReportJSON(pMessage);
         console.log(
             applyTemplate(
-                "{ok} passed: {passes}/{tests} failed: {failures}/{tests} pending: {pending}/{tests} duration: {duration}ms",
+                "{ok} {passes}/{tests} passing ({duration}ms) - {failures} failed, {pending} pending",
                 {
                     ok: reportIsSuccessful(lMessage)? "[ok]" : "[NOK]",
                     passes: lMessage.stdout.stats.passes,

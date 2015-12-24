@@ -153,6 +153,7 @@ static-analysis:
 
 test: dev-build
 	$(NPM) run test
+	phantomjs src/test/index.phantomjs
 
 nsp:
 	$(NPM) run nsp
