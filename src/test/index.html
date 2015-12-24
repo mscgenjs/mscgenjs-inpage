@@ -1,0 +1,44 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Mocha Tests</title>
+        <link href="../../node_modules/mocha/mocha.css" rel="stylesheet" />
+        <script src="../lib/require.js"></script>
+    </head>
+    <body>
+        <div id="mocha"></div>
+        <script src="../../node_modules/mocha/mocha.js"></script>
+
+        <script>
+            mocha.setup('bdd');
+            if (typeof window.callPhantom === 'function'){
+                mocha.reporter('json');
+            }
+        </script>
+        <script>
+            require([
+                "embedding/t_config",
+                "embedding/t_error-rendering",
+                "utl/t_domutl",
+                "utl/t_exporter",
+                "utl/t_tpl"
+            ], function(){
+                mocha.checkLeaks();
+                mocha.run(function(pFailures){
+                    if (typeof window.callPhantom === 'function'){
+                        if (typeof window.__coverage__ === 'object'){
+                            window.callPhantom(
+                                {
+                                    failures: pFailures,
+                                    coverage: window.__coverage__
+                                }
+                            );
+                        } else {
+                            window.callPhantom("no coverage object found");
+                        }
+                    }
+                });
+            });
+        </script>
+    </body>
+</html>

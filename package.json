@@ -25,8 +25,8 @@
     "uglify-js": "2.6.1"
   },
   "scripts": {
-    "test": "mocha -R dot --recursive src/test",
-    "cover": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive src/test",
+    "test": "mocha -R dot --recursive src/test --invert --grep \"\\(browser only\\)\"",
+    "cover": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive src/test --invert --grep \"\\(browser only\\)\"",
     "nsp": "nsp check",
     "plato": "plato -r -d platoreports -x \"parser|test|lib\" src/",
     "lint": "jshint src --verbose --show-non-errors",

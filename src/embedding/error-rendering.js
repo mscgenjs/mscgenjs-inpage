@@ -1,14 +1,18 @@
 /* jshint nonstandard:true */
 /* jshint node: true */
 
-/* istanbul ignore else */
+/* istanbul ignore next */
 if ( typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
 
-define([], function() {
+define(["../utl/tpl"], function(tpl) {
     "use strict";
 
+    var TPL_ERR_LINENO = "<pre><div style='color: red'># ERROR on line {line}, column {col} - {message}</div>";
+    var TPL_ERR = "<pre><div style='color: red'># ERROR {message}</div>";
+    var TPL_MARKED_LINE = "<mark>{line}\n</mark>";
+    var TPL_UNDERLINED_CHAR = "<span style='text-decoration:underline'>{char}</span>";
     /**
      * Given a Number, emits a String with that number in, left padded so the
      * string is pMaxWidth long. If the number doesn't fit within pMaxWidth
@@ -34,7 +38,9 @@ define([], function() {
     function underlineCol(pLine, pCol){
         return pLine.split("").reduce(function(pPrev, pChar, pIndex){
             if (pIndex === pCol) {
-                return pPrev + "<span style='text-decoration:underline'>" + deHTMLize(pChar) + "</span>";
+                return pPrev + tpl.applyTemplate(
+                    TPL_UNDERLINED_CHAR, {char: deHTMLize(pChar)}
+                );
             }
             return pPrev + deHTMLize(pChar);
         }, "");
@@ -56,12 +62,25 @@ define([], function() {
         deHTMLize: deHTMLize,
         renderError: function renderError(pSource, pErrorLocation, pMessage){
             var lErrorIntro = !!pErrorLocation ?
-                "<pre><div style='color: red'># ERROR on line " + pErrorLocation.start.line + ", column " + pErrorLocation.start.column + " - " + pMessage + "</div>" :
-                "<pre><div style='color: red'># ERROR " + pMessage + "</div>";
+                tpl.applyTemplate(
+                    TPL_ERR_LINENO, {
+                        message: pMessage,
+                        line: pErrorLocation.start.line,
+                        col: pErrorLocation.start.column
+                    }):
+                tpl.applyTemplate(
+                    TPL_ERR, {
+                        message: pMessage
+                    }
+                );
 
             return pSource.split('\n').reduce(function(pPrev, pLine, pIndex) {
                 if (!!pErrorLocation && pIndex === (pErrorLocation.start.line - 1)) {
-                    return pPrev + "<mark>" + formatLine(underlineCol(pLine, pErrorLocation.start.column - 1), pIndex + 1) + '\n' + "</mark>";
+                    return pPrev + tpl.applyTemplate (
+                        TPL_MARKED_LINE, {
+                            line:formatLine(underlineCol(pLine, pErrorLocation.start.column - 1), pIndex + 1)
+                        }
+                    );
                 }
                 return pPrev + deHTMLize(formatLine(pLine, pIndex + 1)) + '\n';
             }, lErrorIntro) + "</pre>";

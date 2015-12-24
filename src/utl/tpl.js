@@ -1,31 +1,27 @@
-/* jshint browser:true, node: true */
+/* jshint node: true */
+
 /* istanbul ignore next */
 if ( typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
 
-define([], function(){
+define([], function() {
     "use strict";
 
     return {
-        ajax : function (pURL, pSuccessFunction, pErrorFunction) {
-            var lHttpRequest = new XMLHttpRequest();
-            lHttpRequest.onreadystatechange = function onReadyStateChange(pEvent) {
-                if(pEvent.target.readyState === XMLHttpRequest.DONE) {
-                    if (200 === lHttpRequest.status) {
-                        pSuccessFunction(pEvent);
-                    } else {
-                        pErrorFunction(pEvent);
-                    }
-                }
-            };
-            lHttpRequest.open('GET', pURL);
-            lHttpRequest.responseType = "text";
-            try {
-                lHttpRequest.send();
-            } catch (e) {
-                pErrorFunction(e);
+        applyTemplate: function applyTemplate (pTemplate, pReplacementPairs){
+            var lRetval = pTemplate;
+
+            if (!!pReplacementPairs) {
+                Object.keys(pReplacementPairs).forEach(function(pKey){
+                    lRetval =
+                        lRetval.replace(
+                            new RegExp("\{"+pKey+"\}", "g"),
+                            pReplacementPairs[pKey]
+                        );
+                });
             }
+            return lRetval;
         }
     };
 });

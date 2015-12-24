@@ -8,6 +8,7 @@ NPM=npm
 BOWER=node_modules/bower/bin/bower
 MAKEDEPEND=node_modules/.bin/js-makedepend --output-to jsdependencies.mk --exclude "node_modules"
 MINIFY=node_modules/.bin/uglifyjs
+ISTANBUL=node_modules/.bin/istanbul
 
 BUILDDIR=dist
 PRODDIRS=$(BUILDDIR)
@@ -16,8 +17,9 @@ MSCGENJS_LIBDIRS=src/lib/mscgenjs-core/parse \
 	src/lib/mscgenjs-core/render/graphics \
 	src/lib/mscgenjs-core/render/text \
 	src/lib/mscgenjs-core/lib/lodash
-
 LIBDIRS=$(MSCGENJS_LIBDIRS)
+INSTRUMENTATION_DIR=istanbul-instrumented
+COVERAGE_REPORT_DIR=coverage
 
 .PHONY: help dev-build install deploy-gh-pages check stylecheck fullcheck mostlyclean clean noconsolestatements consolecheck lint cover prerequisites report test update-dependencies run-update-dependencies depend bower-package
 
@@ -50,8 +52,6 @@ help:
 	@echo "| More information and other targets: see wikum/build.md |"
 	@echo " --------------------------------------------------------"
 	@echo
-
-
 
 # production rules
 $(PRODDIRS):
@@ -115,8 +115,24 @@ lint:
 stylecheck:
 	$(NPM) run jscs
 
-cover: dev-build
+node-cover: dev-build
 	$(NPM) run cover
+
+web-cover: dev-build
+	rm -rf $(INSTRUMENTATION_DIR)
+	$(ISTANBUL) instrument src/utl -o $(INSTRUMENTATION_DIR)/utl
+	$(ISTANBUL) instrument src/embedding -o $(INSTRUMENTATION_DIR)/embedding
+	$(ISTANBUL) instrument src/mscgen-inpage.js -o $(INSTRUMENTATION_DIR)/mscgen-inpage.js
+	cp -r src/test $(INSTRUMENTATION_DIR)/test
+	cp -r src/lib $(INSTRUMENTATION_DIR)/lib
+	phantomjs $(INSTRUMENTATION_DIR)/test/index.phantomjs
+
+cover-report:
+	mkdir -p $(INSTRUMENTATION_DIR)/test/node-coverage
+	cp -Rf coverage/coverage.json $(INSTRUMENTATION_DIR)/test/node-coverage/.
+	$(ISTANBUL) report --root $(INSTRUMENTATION_DIR)/test/ lcov
+
+cover: node-cover web-cover cover-report
 
 install: $(BUILDDIR)/mscgen-inpage.js
 
@@ -137,6 +153,7 @@ static-analysis:
 
 test: dev-build
 	$(NPM) run test
+	phantomjs src/test/index.phantomjs
 
 nsp:
 	$(NPM) run nsp
@@ -162,7 +179,8 @@ depend:
 clean-the-build:
 	rm -rf $(BUILDDIR)/samples \
 		$(BUILDDIR)/mscgen-inpage.js
-	rm -rf coverage
+	rm -rf $(INSTRUMENTATION_DIR)
+	rm -rf $(COVERAGE_REPORT_DIR)
 
 clean-generated-sources:
 	rm -rf $(GENERATED_SOURCES)

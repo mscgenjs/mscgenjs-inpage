@@ -2,7 +2,7 @@
 /* jshint browser: true */ // for btoa. Alternative: https://github.com/node-browser-compat/btoa/blob/master/index.js
 /* jshint node: true */
 
-/* istanbul ignore else */
+/* istanbul ignore next */
 if ( typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
