@@ -9,7 +9,12 @@
         <div id="mocha"></div>
         <script src="../../node_modules/mocha/mocha.js"></script>
 
-        <script>mocha.setup('bdd')</script>
+        <script>
+            mocha.setup('bdd');
+            if (typeof window.callPhantom === 'function'){
+                mocha.reporter('json');
+            }
+        </script>
         <script>
             require([
                 "embedding/t_config",
@@ -19,8 +24,23 @@
                 "utl/t_tpl"
             ], function(){
                 // mocha.checkLeaks();
-                mocha.run();
+                mocha.run(function(pFailures){
+                    if (typeof window.callPhantom === 'function'){
+                        if (typeof window.__coverage__ === 'object'){
+                            window.callPhantom(
+                                {
+                                    failures: pFailures,
+                                    coverage: window.__coverage__
+                                }
+                            );
+                        } else {
+                            window.callPhantom("no coverage object found");
+                        }
+                    }
+                });
             });
+        </script>
+        <script defer>
         </script>
     </body>
 </html>

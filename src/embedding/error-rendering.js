@@ -1,7 +1,7 @@
 /* jshint nonstandard:true */
 /* jshint node: true */
 
-/* istanbul ignore else */
+/* istanbul ignore next */
 if ( typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
