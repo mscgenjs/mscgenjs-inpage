@@ -7,6 +7,14 @@ define(["../../embedding/config", "../../../node_modules/chai/chai"], function(c
     "use strict";
     var expect = chai.expect;
 
+    function getGlobal(){
+        if (typeof global !== "undefined"){
+            return global;
+        } else {
+            return window;
+        }
+    }
+
     describe('embedding/embed-config', function() {
         describe('#getConfig - merges with the global mscgen_js_config', function() {
 
@@ -22,13 +30,8 @@ define(["../../embedding/config", "../../../node_modules/chai/chai"], function(c
             });
 
             it('should return a changed configuration when a mscgen_js_config is present', function(){
-                var lGlobal = null;
+                var lGlobal = getGlobal();
 
-                if (typeof global !== "undefined"){
-                    lGlobal = global;
-                } else {
-                    lGlobal = window;
-                }
                 lGlobal.mscgen_js_config = {
                     clickable: true,
                     clickURL: "http://localhost/"
@@ -41,6 +44,7 @@ define(["../../embedding/config", "../../../node_modules/chai/chai"], function(c
                     clickURL : "http://localhost/",
                     loadFromSrcAttribute: false
                 });
+                delete lGlobal.mscgen_js_config;
             });
         });
     });
