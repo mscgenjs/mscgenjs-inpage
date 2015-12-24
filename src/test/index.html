@@ -23,7 +23,7 @@
                 "utl/t_exporter",
                 "utl/t_tpl"
             ], function(){
-                // mocha.checkLeaks();
+                mocha.checkLeaks();
                 mocha.run(function(pFailures){
                     if (typeof window.callPhantom === 'function'){
                         if (typeof window.__coverage__ === 'object'){
@@ -39,8 +39,6 @@
                     }
                 });
             });
-        </script>
-        <script defer>
         </script>
     </body>
 </html>
