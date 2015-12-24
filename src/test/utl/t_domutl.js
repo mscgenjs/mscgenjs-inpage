@@ -22,7 +22,7 @@ define(["../../utl/domutl", "../../../node_modules/chai/chai"], function($, chai
                     expect(pEvent.target.response).to.contain(
                         'expect(pEvent.target.response).to.contain'
                     );
-                }, function notok(pArg){
+                }, function notok(){
                     expect('run').to.equal('not run');
                 });
             });
