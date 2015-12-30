@@ -1,68 +1,17 @@
 # mscgen_js bower package
-This is an initial version of the mscgen_js bower package.
-- for now only contains `mscgen-inpage.js` (which auto-translates any msgen/ xu/ msgenny in html pages - see usage below)
-- later more will follow
-
-please refer to the main mscgen_js repo [https://github.com/sverweij/mscgen_js](https://github.com/sverweij/mscgen_js)
-
-## Usage
-1) Reference the mscgen-inpage script in your page head:
-```html
-<script src="mscgen-inpage.js" defer></script>
-```
-2) Put your mscgen script in the page, with a tag around it that has mscgen_js as one of its class attributes. We use pre as element type below, but mscgen_js will behave the same for div, span or any other type of element you'd like to use.
-```html
-<pre class="mscgen_js">
-msc {
-    a [label="consumer"], b [label="shopfront"], c;
-
-    a =>> b [label="buy (commestible)"];
-    b =>> c [label="lookup_price(commestible)"];
-    c >> b [label="price"];
-    b =>> a [label=""];
-    a =>> b [label="money"];
-    ...;
-}
-</pre>
-```
-3) You're done. The script replaces all elements in the page with the class mscgen_js by a rendered sequence chart. Result for the above mscgen: 
-![readme.png](readme.png)
-
-## more
-- The [mscgen_js embedding page ](https://sverweij.github.io/mscgen_js/embed.html) describes more options:
-  - auto-linking to an interpreter
-  - support for other sequence chart languages
-  - the `<mscgen>` tag
-  - error handling
-  - using mscgen_js in Atlassian Confluence
-- http://www.mcternan.me.uk/mscgen
-- The [mscgen_js tutorial ](https://sverweij.github.io/mscgen_js/tutorial.html) describes the features of the sequence charts languages `msgenny` and the more advanced `mscgen` and `xù`
-- mscgen_js [github repo](https://github.com/sverweij/mscgen_js)
-- On line [interpreter](https://sverweij.github.io/mscgen_js) for live editing sequence charts in mscgen (or the other dialects).
-
-
-## mscgen_js and the mscgen standard
-mscgen_js was made to go both ways:
-
-- Accept all valid [mscgen][1] programs and render them correctly.
-- Have all valid mscgen programs accepted by mscgen_js accepted and rendered
-  correctly by mscgen.
-
-Moreover [ms genny][5], the simplified subset, translates to mscgen with the
-flip of a switch.
-
-If you find proof to the contrary on any of this [tell us][6].
-
-
-## Building mscgen_js yourself
-
-See [build.md][7]. If you want to understand how mscgen_js' innards work:
-we try to explain that [in the script folder][33].
+This was an initial version of an package for the script to embed MscGen in
+HTML - released on bower.io only.
+- Support (updates & fixes) for this bower package will be dropped 2015-06-01.
+- Use the npm package [mscgenjs-inpage](https://www.npmjs.com/package/mscgenjs-inpage)
+  instead.
+- If you need to use it after 2015-06-01 and/ or have a serious use case for
+  bower over npm - drop me a line:
+  - leave a note in the issues or
+  - use the mailing address mentioned with the npm package (checked ~ weekly)
 
 ## License information
 This software is free software [licensed under GPLv3][3]. This means (a.o.) you _can_ use
 it as part of other free software, but _not_ as part of non free software.
-
 
 ### Commercial use of embedding mscgen using `mscgen-inpage.js`
 In addition to the GNU public license, for the use of the minified version of the embedding code
@@ -98,11 +47,6 @@ shape of the code at [Code Climate ](https://codeclimate.com/github/sverweij/msc
 - [Mike McTernan][1] for creating the wonderful mscgen standard, the accompanying c implementation and for
   releasing both to the public domain (the last one under a [GPLv2][18] license to be precise).
 - [David Majda][8] for cooking and maintaining the fantastic and lightning fast [PEG.js][9] parser generator.
-- [Marijn Haverbeke][10] for the snazzy [CodeMirror][11] editor component.
-- Gabe Lerner for the [canvg][17] library, which makes converting vector graphics to rasters _almost_
-  like a walk in the park.
-- [Elijah Insua][24] for [jsdom][34], which makes it possible to render vector graphics in node.js/ io.js.
-- [Audrey M. Roy](http://www.audreymroy.com/) for the excelent ["painfully obsessive cheat sheet to favicon sizes/types."](https://github.com/audreyr/favicon-cheat-sheet).
 
 [1]: http://www.mcternan.me.uk/mscgen
 [2]: https://sverweij.github.io/mscgen_js
