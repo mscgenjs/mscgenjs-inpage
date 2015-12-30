@@ -21,12 +21,12 @@ LIBDIRS=$(MSCGENJS_LIBDIRS)
 INSTRUMENTATION_DIR=istanbul-instrumented
 COVERAGE_REPORT_DIR=coverage
 
-.PHONY: help dev-build install deploy-gh-pages check stylecheck fullcheck mostlyclean clean noconsolestatements consolecheck lint cover prerequisites report test update-dependencies run-update-dependencies depend bower-package
+.PHONY: help  install deploy-gh-pages check stylecheck fullcheck mostlyclean clean noconsolestatements consolecheck lint cover prerequisites report test update-dependencies run-update-dependencies depend bower-package
 
 help:
 	@echo " --------------------------------------------------------"
 	@echo "| Just downloaded the mscgen_js sources?                 |"
-	@echo "|  First run 'make prerequisites'                        |"
+	@echo "|  First run 'make prerequisites' or 'npm install'       |"
 	@echo " --------------------------------------------------------"
 	@echo
 	@echo "Most important build targets:"
@@ -35,22 +35,19 @@ help:
 	@echo " -> this is probably the target you want when"
 	@echo "    hosting mscgen_js"
 	@echo
-	@echo " creates the production version (minified js)"
+	@echo " creates the production version (minified js) in the "
+	@echo " dist folder"
 	@echo
 	@echo "check"
 	@echo " runs the linter and executes all unit tests"
 	@echo
 	@echo "clean"
-	@echo " removes everything created by either install or dev-build"
+	@echo " removes everything created by install"
 	@echo
 	@echo "update-dependencies"
 	@echo " updates all (node) module dependencies in package.json"
 	@echo " installs them, rebuilds all generated sources and runs"
 	@echo " all tests."
-	@echo
-	@echo " --------------------------------------------------------"
-	@echo "| More information and other targets: see wikum/build.md |"
-	@echo " --------------------------------------------------------"
 	@echo
 
 # production rules
@@ -115,10 +112,10 @@ lint:
 stylecheck:
 	$(NPM) run jscs
 
-node-cover: dev-build
+node-cover:
 	$(NPM) run cover
 
-web-cover: dev-build
+web-cover:
 	rm -rf $(INSTRUMENTATION_DIR)
 	$(ISTANBUL) instrument src/utl -o $(INSTRUMENTATION_DIR)/utl
 	$(ISTANBUL) instrument src/embedding -o $(INSTRUMENTATION_DIR)/embedding
@@ -141,17 +138,17 @@ tag:
 	$(GIT) push --tags
 
 # a rudimentary bower package with only the (minified) embedding code
-# to be expanded with src, lib & deps
+# to be expanded with src, lib & deps. Deprecated over the npm one
 bower-package: $(BUILDDIR)/mscgen-inpage.js
 	mkdir -p bower-package
-	cp src/bower/* bower-package/.
-	cp src/bower/.gitignore bower-package/.
+	cp bower/* bower-package/.
+	cp bower/.gitignore bower-package/.
 	cp $(BUILDDIR)/mscgen-inpage.js bower-package/mscgen-inpage.js
 
 static-analysis:
 	$(NPM) run plato
 
-test: dev-build
+test:
 	$(NPM) run test
 	phantomjs src/test/index.phantomjs
 
@@ -165,7 +162,7 @@ check: noconsolestatements lint stylecheck test
 
 fullcheck: check outdated nsp
 
-update-dependencies: run-update-dependencies clean-generated-sources dev-build test nsp
+update-dependencies: run-update-dependencies clean-generated-sources  test nsp
 	$(GIT) diff package.json
 
 run-update-dependencies:
@@ -177,8 +174,7 @@ depend:
 	$(MAKEDEPEND) --append --system amd --flat-define EMBED_JS_SOURCES src/mscgen-inpage.js
 
 clean-the-build:
-	rm -rf $(BUILDDIR)/samples \
-		$(BUILDDIR)/mscgen-inpage.js
+	rm -rf $(BUILDDIR)/mscgen-inpage.js
 	rm -rf $(INSTRUMENTATION_DIR)
 	rm -rf $(COVERAGE_REPORT_DIR)
 
