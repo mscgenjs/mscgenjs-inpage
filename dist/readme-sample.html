@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>mscgenjs-inpage README sample</title>
+        <script src="mscgen-inpage.js" defer></script>
+    </head>
+    <body>
+        <p>
+            The sample from the <a href="https://github.com/sverweij/mscgenjs-inpage">mscgenjs-inpage README</a>.
+        </p>
+        <pre class="mscgen_js">
+        # OpenId Connect protocol
+        # https://openid.net/specs/openid-connect-core-1_0.html#rfc.section.1.3
+        msc {
+          wordwraparcs="true";
+
+          eu [label="end-user"],
+          rp [label="relying party"],
+          op [label="OpenID provider"];
+
+          eu =>> rp [label="log me in"];
+          rp =>> op [label="authentication request"];
+          op =>> eu [label="authentication and authorization request"];
+          eu >> op [label="authenticate and authorize"];
+          op >> rp [label="authentication response"];
+          rp =>> op [label="UserInfo request"];
+          op >> rp [label="UserInfo response"];
+          rp >> eu [label="Hi. You're logged in with {UserInfo.name}"];
+        }
+        </pre>
+    </body>
+</html>
