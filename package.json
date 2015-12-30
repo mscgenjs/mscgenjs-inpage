@@ -1,15 +1,12 @@
 {
   "name": "mscgenjs-inpage",
   "version": "1.2.5",
-  "description": "",
+  "description": "Embed and render MscGen in HTML",
   "main": "",
-  "dependencies": {
-    "amdefine": "1.0.0",
-    "requirejs": "2.1.22",
-    "mscgenjs": "1.2.6"
-  },
+  "dependencies": {},
   "devDependencies": {
     "almond": "0.3.1",
+    "amdefine": "1.0.0",
     "bower": "1.7.1",
     "chai": "3.4.1",
     "codeclimate-test-reporter": "0.1.1",
@@ -19,9 +16,11 @@
     "jscs": "2.7.0",
     "jshint": "2.8.0",
     "mocha": "2.3.4",
-    "npm-check-updates": "2.5.4",
-    "nsp": "2.1.0",
+    "mscgenjs": "1.2.6",
+    "npm-check-updates": "2.5.6",
+    "nsp": "2.2.0",
     "plato": "1.5.0",
+    "requirejs": "2.1.22",
     "uglify-js": "2.6.1"
   },
   "scripts": {
@@ -32,7 +31,7 @@
     "lint": "jshint src --verbose --show-non-errors",
     "codeclimate-cover-submit": "node node_modules/codeclimate-test-reporter/bin/codeclimate.js < coverage/lcov.info",
     "codecov-submit": "node node_modules/codecov.io/bin/codecov.io.js < coverage/lcov.info",
-    "npm-check-updates": "ncu --upgrade",
+    "npm-check-updates": "ncu '/^(?!jshint).*$/' --upgrade",
     "jscs": "jscs src"
   },
   "repository": {
@@ -43,6 +42,7 @@
   "license": "GPL-3.0",
   "keywords": [
     "mscgen",
+    "embed",
     "sequence chart",
     "sequence diagram",
     "xu",
