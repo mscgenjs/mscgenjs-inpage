@@ -4,7 +4,7 @@ _embed & render MscGen in HTML_
 ## Usage
 1) Reference the mscgen-inpage **script** in your **page head**:
 ```html
-<script src="mscgen-inpage.js" defer></script>
+<script src="dist/mscgen-inpage.js" defer></script>
 ```
 2) Put your mscgen script in the page, surrounded by a tag with **`mscgen_js`**
 as one of its **`class`** attributes.
@@ -22,7 +22,7 @@ as one of its **`class`** attributes.
       eu =>> rp [label="log me in"];
       rp =>> op [label="authentication request"];
       op =>> eu [label="authentication and authorization request"];
-      eu >> op [label="authenticate & authorize"];
+      eu >> op [label="authenticate and authorize"];
       op >> rp [label="authentication response"];
       rp =>> op [label="UserInfo request"];
       op >> rp [label="UserInfo response"];
@@ -35,24 +35,25 @@ as one of its **`class`** attributes.
 mscgen_js by a rendered sequence chart. Result for the above msc:    
 ![readme.png](wikum/readme.png)
 
+> We've used `pre` in the sample above, but mscgen_js will work with any
+  element type. You can even use `<script>` and wikimedia-style `<mscgen>`
+  tags - see the [mscgen_js embedding guide](https://sverweij.github.io/mscgen_js/embed.html)
+  if you want to do this.
 
 ## More
-- We've used `pre` in the sample above, but mscgen_js will work with any
-  element type. You can even use `<script>` and wikimedia-style `<mscgen>`
-  tags - see the
-  [mscgen_js embedding guide](https://sverweij.github.io/mscgen_js/embed.html)
-  for details and more options.
-- This script supports all languages the
-  [mscgen_js](https://github.com/sverweij/mscgenjs-core) package supports:
-  - MscGen
-  - Xù (MscGen with support for things like `alt` and `loop`)
-  - MsGenny (simplified Xù)
+- The [mscgen_js embedding guide](https://sverweij.github.io/mscgen_js/embed.html)
+  covers more options, e.g.:
+  - How to read MscGen from external files.
+  - How to embed MscGen in Atlassian Confluence.
+  - Using `<script>` or `<mscgen>` for rendering.
+  - Making the charts clickable, so they open in the on line interpreter.
+  - Using other sequence chart languages (like Xù and MsGenny)
 - If you want to write MscGen: it's a doddle in the
   [on line interpreter](https://sverweij.github.io/mscgen_js) or the
   [atom package](https://atom.io/packages/mscgen-preview).
 - This (npm) package will replace the provisional [bower
   package](https://github.com/mscgenjs/mscgen_js-inpage-package) released
-  earlier.
+  in 2015.
 
 
 ## Licensing: GPL-3.0 with a relaxation
