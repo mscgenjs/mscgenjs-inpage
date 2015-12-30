@@ -1,12 +1,6 @@
 # mscgenjs-inpage
 _embed & render MscGen in HTML_
 
-
-> Splits of the mscgen-inpage.js package from
-[mscgen_js](https://github.com/sverweij/mscgen_js) so it can be distributed
-separately (e.g. as an npm and/ or bower module). Will replace
-[mscgenjs/mscgen_js-inpage-package](https://github.com/mscgenjs/mscgen_js-inpage-package)
-
 ## Usage
 1) Reference the mscgen-inpage **script** in your **page head**:
 ```html
@@ -36,14 +30,32 @@ as one of its **`class`** attributes.
     }
     </pre>
 ```
-We've used `pre` here, but mscgen_js will work with any element type.
 
 3) **You're done**. The script replaces all elements in the page with the class
-mscgen_js by a rendered sequence chart. Result for the above msc:
+mscgen_js by a rendered sequence chart. Result for the above msc:    
 ![readme.png](wikum/readme.png)
 
-## Licensing: GPL-3.0 with a relaxation
 
+## More
+- We've used `pre` in the sample above, but mscgen_js will work with any
+  element type. You can even use `<script>` and wikimedia-style `<mscgen>`
+  tags - see the
+  [mscgen_js embedding guide](https://sverweij.github.io/mscgen_js/embed.html)
+  for details and more options.
+- This script supports all languages the
+  [mscgen_js](https://github.com/sverweij/mscgenjs-core) package supports:
+  - MscGen
+  - Xù (MscGen with support for things like `alt` and `loop`)
+  - MsGenny (simplified Xù)
+- If you want to write MscGen: it's a doddle in the
+  [on line interpreter](https://sverweij.github.io/mscgen_js) or the
+  [atom package](https://atom.io/packages/mscgen-preview).
+- This (npm) package will replace the provisional [bower
+  package](https://github.com/mscgenjs/mscgen_js-inpage-package) released
+  earlier.
+
+
+## Licensing: GPL-3.0 with a relaxation
 [mscgen_js](https://github.com/sverweij/mscgen_js) is licensed under the GNU
 General Public License version 3 ("the GPL").
 
