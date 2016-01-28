@@ -137,6 +137,9 @@ tag:
 	$(GIT) tag -a `utl/getver` -m "tag release `utl/getver`"
 	$(GIT) push --tags
 
+push-mirrors:
+	$(GIT) push bitbucket-mirror
+
 # a rudimentary bower package with only the (minified) embedding code
 # to be expanded with src, lib & deps. Deprecated over the npm one
 bower-package: $(BUILDDIR)/mscgen-inpage.js
