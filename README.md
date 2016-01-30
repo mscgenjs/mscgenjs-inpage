@@ -2,11 +2,11 @@
 _embed & render MscGen in HTML_
 
 ## Usage
-1) Reference the mscgen-inpage **script** in your **page head**:
+(1) Reference the mscgen-inpage **script** in your **page head**:
 ```html
 <script src="dist/mscgen-inpage.js" defer></script>
 ```
-2) Put your mscgen script in the page, surrounded by a tag with **`mscgen_js`**
+(2) Put your mscgen script in the page, surrounded by a tag with **`mscgen_js`**
 as one of its **`class`** attributes.
 ```html
     <pre class="mscgen_js">
@@ -31,7 +31,7 @@ as one of its **`class`** attributes.
     </pre>
 ```
 
-3) **You're done**. The script replaces all elements in the page with the class
+(3) **You're done**. The script replaces all elements in the page with the class
 mscgen_js by a rendered sequence chart. Result for the above msc:    
 ![readme.png](wikum/readme.png)
 
