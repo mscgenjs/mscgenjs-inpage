@@ -57,9 +57,6 @@ $(PRODDIRS):
 $(LIBDIRS):
 	mkdir -p $@
 
-bower_components/canvg-gabelerner/%.js:
-	$(BOWER) install
-
 src/lib/require.js: node_modules/requirejs/require.js
 	$(MINIFY) $< -m -c > $@
 
@@ -115,7 +112,7 @@ stylecheck:
 node-cover:
 	$(NPM) run cover
 
-web-cover:
+web-cover: src/lib/require.js
 	rm -rf $(INSTRUMENTATION_DIR)
 	$(ISTANBUL) instrument src/utl -o $(INSTRUMENTATION_DIR)/utl
 	$(ISTANBUL) instrument src/embedding -o $(INSTRUMENTATION_DIR)/embedding
@@ -161,7 +158,7 @@ bower-package: $(BUILDDIR)/mscgen-inpage.js
 static-analysis:
 	$(NPM) run plato
 
-test:
+test: src/lib/require.js
 	$(NPM) run test
 	phantomjs src/test/index.phantomjs
 
