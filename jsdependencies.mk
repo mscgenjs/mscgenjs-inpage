@@ -69,6 +69,9 @@ src/test/embedding/t_config.js: \
 src/test/embedding/t_error-rendering.js: \
 	src/embedding/error-rendering.js
 
+src/test/utl/t_domutl.js: \
+	src/utl/domutl.js
+
 src/test/utl/t_exporter.js: \
 	src/utl/exporter.js
 
