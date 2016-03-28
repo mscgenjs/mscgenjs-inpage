@@ -1,10 +1,10 @@
 # mscgen_js bower package
 This was an initial version of an package for the script to embed MscGen in
 HTML - released on bower.io only.
-- Support (updates & fixes) for this bower package will be dropped 2015-06-01.
+- Support (updates & fixes) for this bower package will be dropped 2016-06-01.
 - Use the npm package [mscgenjs-inpage](https://www.npmjs.com/package/mscgenjs-inpage)
   instead.
-- If you need to use it after 2015-06-01 and/ or have a serious use case for
+- If you need to use it after 2016-06-01 and/ or have a serious use case for
   bower over npm - drop me a line:
   - leave a note in the issues or
   - use the mailing address mentioned with the npm package (checked ~ weekly)
