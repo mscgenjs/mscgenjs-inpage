@@ -38,6 +38,7 @@ src/lib/mscgenjs-core/render/graphics/renderlabels.js: \
 
 src/lib/mscgenjs-core/render/graphics/renderskeleton.js: \
 	src/lib/mscgenjs-core/render/graphics/constants.js \
+	src/lib/mscgenjs-core/render/graphics/csstemplates.js \
 	src/lib/mscgenjs-core/render/graphics/svgelementfactory.js
 
 src/lib/mscgenjs-core/render/graphics/svgelementfactory.js: \
@@ -95,6 +96,7 @@ EMBED_JS_SOURCES=src/mscgen-inpage.js \
 	src/lib/mscgenjs-core/parse/msgennyparser.js \
 	src/lib/mscgenjs-core/parse/xuparser.js \
 	src/lib/mscgenjs-core/render/graphics/constants.js \
+	src/lib/mscgenjs-core/render/graphics/csstemplates.js \
 	src/lib/mscgenjs-core/render/graphics/entities.js \
 	src/lib/mscgenjs-core/render/graphics/geometry.js \
 	src/lib/mscgenjs-core/render/graphics/idmanager.js \
