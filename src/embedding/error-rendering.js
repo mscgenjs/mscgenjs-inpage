@@ -1,8 +1,5 @@
-/* jshint nonstandard:true */
-/* jshint node: true */
-
 /* istanbul ignore next */
-if ( typeof define !== 'function') {
+if (typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
 
@@ -61,14 +58,14 @@ define(["../utl/tpl"], function(tpl) {
         formatNumber: formatNumber,
         deHTMLize: deHTMLize,
         renderError: function renderError(pSource, pErrorLocation, pMessage){
-            var lErrorIntro = !!pErrorLocation ?
-                tpl.applyTemplate(
+            var lErrorIntro = Boolean(pErrorLocation)
+                ? tpl.applyTemplate(
                     TPL_ERR_LINENO, {
                         message: pMessage,
                         line: pErrorLocation.start.line,
                         col: pErrorLocation.start.column
-                    }):
-                tpl.applyTemplate(
+                    })
+                : tpl.applyTemplate(
                     TPL_ERR, {
                         message: pMessage
                     }
@@ -76,7 +73,7 @@ define(["../utl/tpl"], function(tpl) {
 
             return pSource.split('\n').reduce(function(pPrev, pLine, pIndex) {
                 if (!!pErrorLocation && pIndex === (pErrorLocation.start.line - 1)) {
-                    return pPrev + tpl.applyTemplate (
+                    return pPrev + tpl.applyTemplate(
                         TPL_MARKED_LINE, {
                             line:formatLine(underlineCol(pLine, pErrorLocation.start.column - 1), pIndex + 1)
                         }

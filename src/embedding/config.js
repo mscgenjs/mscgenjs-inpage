@@ -1,9 +1,5 @@
-/* jshint nonstandard:true */
-/* jshint node: true */
-/* global mscgen_js_config */
-
 /* istanbul ignore next */
-if ( typeof define !== 'function') {
+if (typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
 
@@ -26,8 +22,8 @@ define([], function() {
 
     return {
         getConfig: function(){
-            if ('undefined' !== typeof(mscgen_js_config) && mscgen_js_config &&
-                'object' === typeof(mscgen_js_config)){
+            if ('undefined' !== typeof (mscgen_js_config) && mscgen_js_config &&
+                'object' === typeof (mscgen_js_config)){
                 mergeConfig(gConfig, mscgen_js_config);
             }
             return gConfig;

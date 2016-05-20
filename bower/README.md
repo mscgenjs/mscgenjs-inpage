@@ -38,7 +38,7 @@ MIT style):
 - Parsers are generated with [pegjs][12].
 
 
-It uses [mocha][21], [istanbul][28], [jshint][22], [plato][23] and
+It uses [mocha][21], [istanbul][28], [eslint][22], [plato][23] and
 [nsp][35] to maintain some modicum of verifiable code quality.
 You can see the build history in [Travis](https://travis-ci.org/sverweij/mscgen_js) and an indication of the
 shape of the code at [Code Climate ](https://codeclimate.com/github/sverweij/mscgen_js).
@@ -67,7 +67,7 @@ shape of the code at [Code Climate ](https://codeclimate.com/github/sverweij/msc
 [19]: https://github.com/sverweij/mscgen_js/blob/master/wikum/licenses/license.requirejs.md
 [20]: https://github.com/sverweij/mscgen_js/blob/master/wikum/licenses/license.amdefine.md
 [21]: https://github.com/sverweij/mscgen_js/blob/master/wikum/licenses/license.mocha.md
-[22]: https://github.com/sverweij/mscgen_js/blob/master/wikum/licenses/license.jshint.md
+[22]: https://github.com/sverweij/mscgen_js/blob/master/wikum/licenses/license.eslint.md
 [23]: https://github.com/sverweij/mscgen_js/blob/master/wikum/licenses/license.plato.md
 [24]: http://tmpvar.com/
 [25]: https://github.com/sverweij/mscgen_js/blob/master/wikum/licenses/license.jsdom.md

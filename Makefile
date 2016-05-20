@@ -21,7 +21,7 @@ LIBDIRS=$(MSCGENJS_LIBDIRS)
 INSTRUMENTATION_DIR=istanbul-instrumented
 COVERAGE_REPORT_DIR=coverage
 
-.PHONY: help  install deploy-gh-pages check stylecheck fullcheck mostlyclean clean noconsolestatements consolecheck lint cover prerequisites report test update-dependencies run-update-dependencies depend bower-package
+.PHONY: help  install deploy-gh-pages check fullcheck mostlyclean clean noconsolestatements consolecheck lint cover prerequisites report test update-dependencies run-update-dependencies depend bower-package
 
 help:
 	@echo " --------------------------------------------------------"
@@ -105,9 +105,6 @@ consolecheck:
 
 lint:
 	$(NPM) run lint
-
-stylecheck:
-	$(NPM) run jscs
 
 node-cover:
 	$(NPM) run cover

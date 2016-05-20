@@ -11,10 +11,9 @@
     "chai": "3.5.0",
     "codeclimate-test-reporter": "0.3.1",
     "codecov.io": "0.1.6",
+    "eslint": "2.10.2",
     "istanbul": "0.4.3",
     "js-makedepend": "0.3.0",
-    "jscs": "3.0.3",
-    "jshint": "2.9.2",
     "mocha": "2.4.5",
     "mscgenjs": "1.3.7",
     "npm-check-updates": "2.6.5",
@@ -28,11 +27,10 @@
     "cover": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive src/test --invert --grep \"\\(browser only\\)\"",
     "nsp": "nsp check",
     "plato": "plato -r -d platoreports -x \"parser|test|lib\" src/",
-    "lint": "jshint src --verbose --show-non-errors",
+    "lint": "eslint src",
     "codeclimate-cover-submit": "node node_modules/codeclimate-test-reporter/bin/codeclimate.js < coverage/lcov.info",
     "codecov-submit": "node node_modules/codecov.io/bin/codecov.io.js < coverage/lcov.info",
-    "npm-check-updates": "ncu --upgrade",
-    "jscs": "jscs src"
+    "npm-check-updates": "ncu --upgrade"
   },
   "repository": {
     "type": "git",
