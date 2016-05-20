@@ -165,7 +165,7 @@ nsp:
 outdated:
 	$(NPM) outdated
 
-check: noconsolestatements lint stylecheck test
+check: noconsolestatements lint test
 
 fullcheck: check outdated nsp
 
