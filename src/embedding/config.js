@@ -1,3 +1,4 @@
+/* global mscgen_js_config */
 /* istanbul ignore next */
 if (typeof define !== 'function') {
     var define = require('amdefine')(module);
