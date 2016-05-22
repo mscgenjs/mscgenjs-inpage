@@ -1,4 +1,5 @@
-if ( typeof define !== 'function') {
+/* eslint max-nested-callbacks:[1,5] */
+if (typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
 

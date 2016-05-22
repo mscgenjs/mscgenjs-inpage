@@ -1,12 +1,14 @@
 /* istanbul ignore next */
-if ( typeof define !== 'function') {
+if (typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
 
 define([], function() {
     "use strict";
-
-    var MAX_LOCATION_LENGTH = 4094;// max length of an URL on github (4122) - "https://sverweij.github.io/".length (27) - 1
+    /* max length of an URL on github (4122)
+     * "https://sverweij.github.io/".length (27) - 1
+     */
+    var MAX_LOCATION_LENGTH = 4094;
 
     function source2LocationString(pLocation, pSource, pLanguage){
         return pLocation.pathname +

@@ -1,5 +1,5 @@
 /* istanbul ignore next */
-if ( typeof define !== 'function') {
+if (typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
 
@@ -10,7 +10,7 @@ define([], function(){
         ajax : function (pURL, pSuccessFunction, pErrorFunction) {
             var lHttpRequest = new XMLHttpRequest();
             lHttpRequest.onreadystatechange = function onReadyStateChange(pEvent) {
-                if(pEvent.target.readyState === XMLHttpRequest.DONE) {
+                if (pEvent.target.readyState === XMLHttpRequest.DONE) {
                     if (200 === lHttpRequest.status) {
                         pSuccessFunction(pEvent);
                     } else {

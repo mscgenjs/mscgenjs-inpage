@@ -1,5 +1,5 @@
 /* istanbul ignore next */
-if ( typeof define !== 'function') {
+if (typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
 
@@ -14,7 +14,7 @@ define([], function() {
                 Object.keys(pReplacementPairs).forEach(function(pKey){
                     lRetval =
                         lRetval.replace(
-                            new RegExp("\{"+pKey+"\}", "g"),
+                            new RegExp("{" + pKey + "}", "g"),
                             pReplacementPairs[pKey]
                         );
                 });
