@@ -1,23 +1,23 @@
-languages:
-  JavaScript: true
 engines:
   eslint:
     enabled: true
-  csslint:
-    enabled: false
   fixme:
     enabled: false
   duplication:
     enabled: false
+ratings:
+  paths:
+  - "**.js"
+  - "**.jsx"
 exclude_paths:
-  - src/lib/*
-  - src/test/*
-  - dist/*
-  - wikum/*
-  - bower/*
-  - *.md
-  - *.mk
-  - *.xml
-  - *.json
-  - Makefile
-  - COPYING
+- src/lib/*
+- src/test/*
+- dist/*
+- wikum/*
+- bower/*
+- *.md
+- *.mk
+- *.xml
+- *.json
+- Makefile
+- COPYING
