@@ -15,9 +15,5 @@ exclude_paths:
 - dist/*
 - wikum/*
 - bower/*
-- *.md
-- *.mk
-- *.xml
-- *.json
 - Makefile
 - COPYING
