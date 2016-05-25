@@ -1,6 +1,13 @@
 # mscgenjs-inpage
 _embed & render MscGen in HTML_
 
+[![bitHound Overall Score](https://www.bithound.io/github/sverweij/mscgenjs-inpage/badges/score.svg)](https://www.bithound.io/github/sverweij/mscgenjs-inpage)
+[![Test Coverage](https://codeclimate.com/github/sverweij/mscgenjs-inpage/badges/coverage.svg)](https://codeclimate.com/github/sverweij/mscgenjs-inpage/coverage)
+[![bitHound Dependencies](https://www.bithound.io/github/sverweij/mscgenjs-inpage/badges/dependencies.svg)](https://www.bithound.io/github/sverweij/mscgenjs-inpage/master/dependencies/npm)
+[![bitHound Dev Dependencies](https://www.bithound.io/github/sverweij/mscgenjs-inpage/badges/devDependencies.svg)](https://www.bithound.io/github/sverweij/mscgenjs-inpage/master/dependencies/npm)
+[![npm stable version](https://img.shields.io/npm/v/mscgenjs-inpage.svg)](https://npmjs.com/package/mscgenjs-inpage)
+
+
 ## Usage
 (1) Reference the mscgen-inpage **script** in your **page head**:
 ```html
