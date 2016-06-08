@@ -20,7 +20,7 @@ LIBDIRS=$(MSCGENJS_LIBDIRS)
 INSTRUMENTATION_DIR=istanbul-instrumented
 COVERAGE_REPORT_DIR=coverage
 
-.PHONY: help  install deploy-gh-pages check fullcheck mostlyclean clean noconsolestatements consolecheck lint cover prerequisites report test update-dependencies run-update-dependencies depend 
+.PHONY: help  install deploy-gh-pages check fullcheck mostlyclean clean lint cover prerequisites report test update-dependencies run-update-dependencies depend 
 
 help:
 	@echo " --------------------------------------------------------"
@@ -93,15 +93,6 @@ $(BUILDDIR)/script/mscgen-inpage.js: $(BUILDDIR)/mscgen-inpage.js
 prerequisites:
 	$(NPM) install
 
-
-noconsolestatements:
-	@echo "scanning for console statements (run 'make consolecheck' to see offending lines)"
-	grep -r console src/mscgen-*.js src/embedding src/utl | grep -c console | grep ^0$$
-	@echo ... ok
-
-consolecheck:
-	grep -r console src/mscgen-*.js src/embedding src/utl
-
 lint:
 	$(NPM) run lint
 
@@ -156,7 +147,7 @@ nsp:
 outdated:
 	$(NPM) outdated
 
-check: noconsolestatements lint test
+check: lint test
 
 fullcheck: check outdated nsp
 
