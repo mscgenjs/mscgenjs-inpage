@@ -5,7 +5,6 @@ GIT=git
 GIT_DEPLOY_FROM_BRANCH=master
 SEDVERSION=utl/sedversion.sh
 NPM=npm
-BOWER=node_modules/bower/bin/bower
 MAKEDEPEND=node_modules/.bin/js-makedepend --output-to jsdependencies.mk --exclude "node_modules"
 MINIFY=node_modules/.bin/uglifyjs
 ISTANBUL=node_modules/.bin/istanbul
@@ -21,7 +20,7 @@ LIBDIRS=$(MSCGENJS_LIBDIRS)
 INSTRUMENTATION_DIR=istanbul-instrumented
 COVERAGE_REPORT_DIR=coverage
 
-.PHONY: help  install deploy-gh-pages check fullcheck mostlyclean clean noconsolestatements consolecheck lint cover prerequisites report test update-dependencies run-update-dependencies depend bower-package
+.PHONY: help  install deploy-gh-pages check fullcheck mostlyclean clean noconsolestatements consolecheck lint cover prerequisites report test update-dependencies run-update-dependencies depend 
 
 help:
 	@echo " --------------------------------------------------------"
@@ -143,14 +142,6 @@ mirrors: .git/refs/remotes/bitbucket-mirror \
 push-mirrors: mirrors
 	$(GIT) push bitbucket-mirror
 	$(GIT) push gitlab-mirror
-
-# a rudimentary bower package with only the (minified) embedding code
-# to be expanded with src, lib & deps. Deprecated over the npm one
-bower-package: $(BUILDDIR)/mscgen-inpage.js
-	mkdir -p bower-package
-	cp bower/* bower-package/.
-	cp bower/.gitignore bower-package/.
-	cp $(BUILDDIR)/mscgen-inpage.js bower-package/mscgen-inpage.js
 
 static-analysis:
 	$(NPM) run plato

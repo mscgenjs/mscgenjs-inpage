@@ -16,6 +16,4 @@ tracking.*
 siteverification.id
 tmp_*.md
 npm-debug.log
-bower-package
-bower_components
 istanbul-instrumented

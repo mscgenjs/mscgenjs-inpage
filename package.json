@@ -7,7 +7,6 @@
   "devDependencies": {
     "almond": "0.3.2",
     "amdefine": "1.0.0",
-    "bower": "1.7.9",
     "chai": "3.5.0",
     "codeclimate-test-reporter": "0.3.2",
     "eslint": "2.11.1",

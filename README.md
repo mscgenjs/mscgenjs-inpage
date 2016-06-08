@@ -58,7 +58,7 @@ mscgen_js by a rendered sequence chart. Result for the above msc:
 - If you want to write MscGen: it's a doddle in the
   [on line interpreter](https://sverweij.github.io/mscgen_js) or the
   [atom package](https://atom.io/packages/mscgen-preview).
-- This (npm) package will replace the provisional [bower
+- This (npm) package has completely replace the provisional [bower
   package](https://github.com/mscgenjs/mscgen_js-inpage-package) released
   in 2015.
 

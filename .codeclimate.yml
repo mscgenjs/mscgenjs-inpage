@@ -14,6 +14,5 @@ exclude_paths:
 - src/test/*
 - dist/*
 - wikum/*
-- bower/*
 - Makefile
 - COPYING
