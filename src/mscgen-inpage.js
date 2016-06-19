@@ -7,83 +7,83 @@ require(["lib/mscgenjs-core/parse/xuparser",
          "embedding/error-rendering",
          "utl/domutl",
          "utl/tpl"],
-        function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
-            "use strict";
+function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
+    "use strict";
 
-            var TPL_SPAN = "<span class='mscgen_js' {src} data-language='{lang}'>{msc}<span>";
-            var TPL_SPAN_SRC = "data-src='{src}' ";
-            var TPL_ERR_FILE_NOT_FOUND =
-        "ERROR: Could not find or open the URL '{url}' specified in the <code>data-src</code> attribute.";
-            var TPL_ERR_FILE_LOADING_DISABLED =
-        "ERROR: Won't load the chart specified in <code>data-src='{url}'</code>, " +
-        "because loading from separate files is switched off in the mscgen_js " +
-        "configuration. <br><br>See " +
-        "<a href='https://sverweij.github.io/mscgen_js/embed.html#loading-from-separate-files'>" +
-        "Loading charts from separate files</a> in the mscgen_js embedding " +
-        "guide how to enable it."
-    ;
-            var MIME2LANG = {
-                "text/x-mscgen"  : "mscgen",
-                "text/x-msgenny" : "msgenny",
-                "text/x-xu"      : "xu"
-            };
+    var TPL_SPAN = "<span class='mscgen_js' {src} data-language='{lang}' {mirrorEntities}>{msc}<span>";
+    var TPL_SPAN_SRC = "data-src='{src}' ";
+    var TPL_ERR_FILE_NOT_FOUND =
+"ERROR: Could not find or open the URL '{url}' specified in the <code>data-src</code> attribute.";
+    var TPL_ERR_FILE_LOADING_DISABLED =
+"ERROR: Won't load the chart specified in <code>data-src='{url}'</code>, " +
+"because loading from separate files is switched off in the mscgen_js " +
+"configuration. <br><br>See " +
+"<a href='https://sverweij.github.io/mscgen_js/embed.html#loading-from-separate-files'>" +
+"Loading charts from separate files</a> in the mscgen_js embedding " +
+"guide how to enable it."
+;
+    var MIME2LANG = {
+        "text/x-mscgen"  : "mscgen",
+        "text/x-msgenny" : "msgenny",
+        "text/x-xu"      : "xu"
+    };
 
-            start();
+    start();
 
-            function start() {
-                processScriptElements();
+    function start() {
+        processScriptElements();
 
-                var lClassElements = document.getElementsByClassName("mscgen_js");
-                renderElementArray(lClassElements, 0);
-                renderElementArray(document.getElementsByTagName("mscgen"), lClassElements.length);
-            }
+        var lClassElements = document.getElementsByClassName("mscgen_js");
+        renderElementArray(lClassElements, 0);
+        renderElementArray(document.getElementsByTagName("mscgen"), lClassElements.length);
+    }
 
-            function processScriptElements() {
-                var lScripts = document.scripts;
+    function processScriptElements() {
+        var lScripts = document.scripts;
 
-                for (var i = 0; i < lScripts.length; i++){
-                    if (!!(MIME2LANG[lScripts[i].type]) &&
-                !lScripts[i].hasAttribute("data-renderedby")){
-                        lScripts[i].insertAdjacentHTML(
+        for (var i = 0; i < lScripts.length; i++){
+            if (!!(MIME2LANG[lScripts[i].type]) && !lScripts[i].hasAttribute("data-renderedby")){
+                lScripts[i].insertAdjacentHTML(
                     "afterend",
                     tpl.applyTemplate(
                         TPL_SPAN, {
                             src: lScripts[i].src ? tpl.applyTemplate(TPL_SPAN_SRC, {src: lScripts[i].src}) : "",
                             lang: MIME2LANG[lScripts[i].type] || conf.getConfig().defaultLanguage,
-                            msc: lScripts[i].textContent.replace(/</g, "&lt;")
+                            msc: lScripts[i].textContent.replace(/</g, "&lt;"),
+                            mirrorEntities: getMirrorEntities(lScripts[i]) ? "data-mirror-entities='true'" : ""
                         }
                     )
                 );
-                        lScripts[i].setAttribute("data-renderedby", "mscgen_js");
-                    }
-                }
+                lScripts[i].setAttribute("data-renderedby", "mscgen_js");
             }
+        }
+    }
 
-            function renderElementArray(pMscGenElements, pStartIdAt){
-                for (var i = 0; i < pMscGenElements.length; i++) {
-                    processElement(pMscGenElements[i], pStartIdAt + i);
-                }
-            }
+    function renderElementArray(pMscGenElements, pStartIdAt){
+        for (var i = 0; i < pMscGenElements.length; i++) {
+            processElement(pMscGenElements[i], pStartIdAt + i);
+        }
+    }
 
-            function processElement(pElement, pIndex) {
-                if (!pElement.hasAttribute('data-renderedby')) {
-                    renderElement(pElement, pIndex);
-                }
-            }
+    function processElement(pElement, pIndex) {
+        if (!pElement.hasAttribute('data-renderedby')) {
+            renderElement(pElement, pIndex);
+        }
+    }
 
-            function renderElementError(pElement, pString) {
-                pElement.innerHTML =
+    function renderElementError(pElement, pString) {
+        pElement.innerHTML =
             tpl.applyTemplate(
                 "<div style='color: red'>{string}</div>",
                 {string:pString}
             );
-            }
+    }
 
-            function renderElement (pElement, pIndex){
-                setElementId(pElement, pIndex);
-                pElement.setAttribute("data-renderedby", "mscgen_js");
-                if (conf.getConfig().loadFromSrcAttribute && !!pElement.getAttribute("data-src")){
-                    $.ajax(
+    function renderElement (pElement, pIndex){
+        setElementId(pElement, pIndex);
+        pElement.setAttribute("data-renderedby", "mscgen_js");
+        if (conf.getConfig().loadFromSrcAttribute && !!pElement.getAttribute("data-src")){
+            $.ajax(
                 pElement.getAttribute("data-src"),
                 function onSuccess(pEvent) {
                     parseAndRender(pElement, pEvent.target.response);
@@ -98,92 +98,109 @@ require(["lib/mscgenjs-core/parse/xuparser",
                     );
                 }
             );
-                } else if (!conf.getConfig().loadFromSrcAttribute && !!pElement.getAttribute("data-src")){
-                    renderElementError(
+        } else if (!conf.getConfig().loadFromSrcAttribute && !!pElement.getAttribute("data-src")){
+            renderElementError(
                 pElement,
                 tpl.applyTemplate(
                     TPL_ERR_FILE_LOADING_DISABLED,
                     {url: pElement.getAttribute("data-src")}
                 )
             );
-                } else {
-                    parseAndRender(pElement, pElement.textContent);
-                }
-            }
+        } else {
+            parseAndRender(pElement, pElement.textContent);
+        }
+    }
 
-            function parseAndRender(pElement, pSource){
-                var lLanguage = getLanguage(pElement);
-                var lAST      = getAST(pSource, lLanguage);
+    function parseAndRender(pElement, pSource){
+        var lLanguage = getLanguage(pElement);
+        var lAST      = getAST(pSource, lLanguage);
 
-                if (lAST.entities) {
-                    render(lAST, pElement.id, pSource, lLanguage);
-                } else {
-                    pElement.innerHTML = err.renderError(pSource, lAST.location, lAST.message);
-                }
-            }
+        if (lAST.entities) {
+            render(lAST, pElement.id, pSource, lLanguage, getMirrorEntities(pElement));
+        } else {
+            pElement.innerHTML = err.renderError(pSource, lAST.location, lAST.message);
+        }
+    }
 
-            function renderLink(pSource, pLanguage, pId){
-                var lLocation = {
-                    pathname: "index.html"
-                };
+    function renderLink(pSource, pLanguage, pId){
+        var lLocation = {
+            pathname: "index.html"
+        };
 
-                var lLink = document.createElement("a");
-                lLink.setAttribute(
-                    "href",
-                    conf.getConfig().clickURL + exp.toLocationString(lLocation, pSource, pLanguage)
-                );
-                lLink.setAttribute("id", pId + "link");
-                lLink.setAttribute("style", "text-decoration: none;");
-                lLink.setAttribute("title", "click to edit in the mscgen_js interpreter");
-                return lLink;
-            }
+        var lLink = document.createElement("a");
+        lLink.setAttribute(
+            "href",
+            conf.getConfig().clickURL + exp.toLocationString(lLocation, pSource, pLanguage)
+        );
+        lLink.setAttribute("id", pId + "link");
+        lLink.setAttribute("style", "text-decoration: none;");
+        lLink.setAttribute("title", "click to edit in the mscgen_js interpreter");
+        return lLink;
+    }
 
-            function setElementId(pElement, pIndex) {
-                if (!pElement.id) {
-                    pElement.id = conf.getConfig().parentElementPrefix + pIndex.toString();
-                }
-            }
+    function setElementId(pElement, pIndex) {
+        if (!pElement.id) {
+            pElement.id = conf.getConfig().parentElementPrefix + pIndex.toString();
+        }
+    }
 
-            function getLanguage(pElement) {
+    function getLanguage(pElement) {
         /* the way to do it, but doesn't work in IE:
            lLanguage = pElement.dataset.language;
          */
-                var lLanguage = pElement.getAttribute('data-language');
-                if (!lLanguage) {
-                    lLanguage = conf.getConfig().defaultLanguage;
-                }
-                return lLanguage;
+        var lLanguage = pElement.getAttribute('data-language');
+        if (!lLanguage) {
+            lLanguage = conf.getConfig().defaultLanguage;
+        }
+        return lLanguage;
+    }
+
+    function getMirrorEntities(pElement) {
+        var lMirrorEntities = pElement.getAttribute('data-mirror-entities');
+
+        if (lMirrorEntities && lMirrorEntities === "true") {
+            return true;
+        }
+        return false;
+    }
+
+    function getAST(pText, pLanguage) {
+        var lAST = {};
+        try {
+            if ("msgenny" === pLanguage) {
+                lAST = msgennyparser.parse(pText);
+            } else if ("json" === pLanguage) {
+                lAST = JSON.parse(pText);
+            } else {
+                lAST = mscparser.parse(pText);
             }
+        } catch (e) {
+            return e;
+        }
+        return lAST;
+    }
 
-            function getAST(pText, pLanguage) {
-                var lAST = {};
-                try {
-                    if ("msgenny" === pLanguage) {
-                        lAST = msgennyparser.parse(pText);
-                    } else if ("json" === pLanguage) {
-                        lAST = JSON.parse(pText);
-                    } else {
-                        lAST = mscparser.parse(pText);
-                    }
-                } catch (e) {
-                    return e;
-                }
-                return lAST;
+    function render(pAST, pElementId, pSource, pLanguage, pMirrorEntities) {
+        var lElement = document.getElementById(pElementId);
+        lElement.innerHTML = "";
+
+        if (true === conf.getConfig().clickable){
+            lElement.appendChild(renderLink(pSource, pLanguage, pElementId));
+            pElementId += "link";
+        }
+        mscrender.clean(pElementId, window);
+        mscrender.renderASTNew(
+            pAST,
+            window,
+            pElementId,
+            {
+                source                 : pSource,
+                mirrorEntitiesOnBottom : pMirrorEntities
             }
+        );
+    }
 
-            function render(pAST, pElementId, pSource, pLanguage) {
-                var lElement = document.getElementById(pElementId);
-                lElement.innerHTML = "";
-
-                if (true === conf.getConfig().clickable){
-                    lElement.appendChild(renderLink(pSource, pLanguage, pElementId));
-                    pElementId += "link";
-                }
-                mscrender.clean(pElementId, window);
-                mscrender.renderAST(pAST, pSource, pElementId, window);
-            }
-
-        });
+});
 /*
  This file is part of mscgen_js.
 
