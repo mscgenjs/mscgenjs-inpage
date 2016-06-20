@@ -10,7 +10,7 @@
     "chai": "3.5.0",
     "codeclimate-test-reporter": "0.3.3",
     "eslint": "2.13.0",
-    "istanbul": "0.4.3",
+    "istanbul": "0.4.4",
     "js-makedepend": "0.4.0",
     "mocha": "2.5.3",
     "mscgenjs": "1.4.1",
@@ -18,7 +18,7 @@
     "nsp": "2.4.0",
     "plato": "1.5.0",
     "requirejs": "2.2.0",
-    "uglify-js": "2.6.2"
+    "uglify-js": "2.6.3"
   },
   "scripts": {
     "test": "mocha -R dot --recursive src/test --invert --grep \"\\(browser only\\)\"",
