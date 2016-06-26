@@ -10,7 +10,8 @@ require(["lib/mscgenjs-core/parse/xuparser",
 function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
     "use strict";
 
-    var TPL_SPAN = "<span class='mscgen_js' {src} data-language='{lang}' {mirrorEntities}>{msc}<span>";
+    var TPL_SPAN = "<span class='mscgen_js' {src} data-language='{lang}' " +
+                   "data-named-style='{namedStyle}' {mirrorEntities}>{msc}<span>";
     var TPL_SPAN_SRC = "data-src='{src}' ";
     var TPL_ERR_FILE_NOT_FOUND =
 "ERROR: Could not find or open the URL '{url}' specified in the <code>data-src</code> attribute.";
@@ -50,7 +51,8 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
                             src: lScripts[i].src ? tpl.applyTemplate(TPL_SPAN_SRC, {src: lScripts[i].src}) : "",
                             lang: MIME2LANG[lScripts[i].type] || conf.getConfig().defaultLanguage,
                             msc: lScripts[i].textContent.replace(/</g, "&lt;"),
-                            mirrorEntities: getMirrorEntities(lScripts[i]) ? "data-mirror-entities='true'" : ""
+                            mirrorEntities: getMirrorEntities(lScripts[i]) ? "data-mirror-entities='true'" : "",
+                            namedStyle: getNamedStyle(lScripts[i])
                         }
                     )
                 );
@@ -116,7 +118,14 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
         var lAST      = getAST(pSource, lLanguage);
 
         if (lAST.entities) {
-            render(lAST, pElement.id, pSource, lLanguage, getMirrorEntities(pElement));
+            render(
+                lAST,
+                pElement.id,
+                pSource,
+                lLanguage,
+                getMirrorEntities(pElement),
+                getNamedStyle(pElement)
+            );
         } else {
             pElement.innerHTML = err.renderError(pSource, lAST.location, lAST.message);
         }
@@ -164,6 +173,10 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
         return false;
     }
 
+    function getNamedStyle(pElement) {
+        return pElement.getAttribute('data-named-style');
+    }
+
     function getAST(pText, pLanguage) {
         var lAST = {};
         try {
@@ -180,7 +193,7 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
         return lAST;
     }
 
-    function render(pAST, pElementId, pSource, pLanguage, pMirrorEntities) {
+    function render(pAST, pElementId, pSource, pLanguage, pMirrorEntities, pNamedStyle) {
         var lElement = document.getElementById(pElementId);
         lElement.innerHTML = "";
 
@@ -195,6 +208,7 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
             pElementId,
             {
                 source                 : pSource,
+                additionalTemplate     : pNamedStyle,
                 mirrorEntitiesOnBottom : pMirrorEntities
             }
         );
