@@ -17,11 +17,11 @@
         </script>
         <script>
             require([
-                "embedding/t_config",
-                "embedding/t_error-rendering",
-                "utl/t_domutl",
-                "utl/t_exporter",
-                "utl/t_tpl"
+                "embedding/config.spec",
+                "embedding/error-rendering.spec",
+                "utl/domutl.spec",
+                "utl/exporter.spec",
+                "utl/tpl.spec"
             ], function(){
                 mocha.checkLeaks();
                 mocha.run(function(pFailures){

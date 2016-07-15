@@ -72,19 +72,19 @@ src/mscgen-inpage.js: \
 	src/utl/exporter.js \
 	src/utl/tpl.js
 
-src/test/embedding/t_config.js: \
+src/test/embedding/config.spec.js: \
 	src/embedding/config.js
 
-src/test/embedding/t_error-rendering.js: \
+src/test/embedding/error-rendering.spec.js: \
 	src/embedding/error-rendering.js
 
-src/test/utl/t_domutl.js: \
+src/test/utl/domutl.spec.js: \
 	src/utl/domutl.js
 
-src/test/utl/t_exporter.js: \
+src/test/utl/exporter.spec.js: \
 	src/utl/exporter.js
 
-src/test/utl/t_tpl.js: \
+src/test/utl/tpl.spec.js: \
 	src/utl/tpl.js
 
 # cjs dependencies
