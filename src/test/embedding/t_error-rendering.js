@@ -13,7 +13,7 @@ define(["../../embedding/error-rendering", "../../../node_modules/chai/chai"], f
                 expect(
                     err.renderError("Just a source\nwith two lines", undefined, "just a message")
                 ).to.equal(
-                    "<pre><div style='color: red'># ERROR just a message</div>  1 Just a source\n  2 with two lines\n</pre>"
+                    "<pre><div style='color: #d00'># ERROR just a message</div>  1 Just a source\n  2 with two lines\n</pre>"
                 );
             });
 
@@ -25,7 +25,7 @@ define(["../../embedding/error-rendering", "../../../node_modules/chai/chai"], f
                     }
                 };
                 expect(err.renderError("Just a source\nwith two lines", lErrorLocation, "just a message")).to.equal(
-                    "<pre><div style='color: red'># ERROR on line 2, column 6 - just a message</div>  1 Just a source\n<mark>  2 with <span style='text-decoration:underline'>t</span>wo lines\n</mark></pre>"
+                    "<pre><div style='color: #d00'># ERROR on line 2, column 6 - just a message</div>  1 Just a source\n<mark>  2 with <span style='text-decoration:underline'>t</span>wo lines\n</mark></pre>"
                 );
             });
         });
