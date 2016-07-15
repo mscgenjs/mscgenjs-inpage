@@ -6,8 +6,8 @@ if (typeof define !== 'function') {
 define(["../utl/tpl"], function(tpl) {
     "use strict";
 
-    var TPL_ERR_LINENO = "<pre><div style='color: red'># ERROR on line {line}, column {col} - {message}</div>";
-    var TPL_ERR = "<pre><div style='color: red'># ERROR {message}</div>";
+    var TPL_ERR_LINENO = "<pre><div style='color: #d00'># ERROR on line {line}, column {col} - {message}</div>";
+    var TPL_ERR = "<pre><div style='color: #d00'># ERROR {message}</div>";
     var TPL_MARKED_LINE = "<mark>{line}\n</mark>";
     var TPL_UNDERLINED_CHAR = "<span style='text-decoration:underline'>{char}</span>";
     /**

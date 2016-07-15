@@ -76,7 +76,7 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
     function renderElementError(pElement, pString) {
         pElement.innerHTML =
             tpl.applyTemplate(
-                "<div style='color: red'>{string}</div>",
+                "<div style='color: #d00'>{string}</div>",
                 {string:pString}
             );
     }
