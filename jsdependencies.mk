@@ -36,6 +36,7 @@ src/lib/mscgenjs-core/render/graphics/markermanager.js: \
 	src/lib/mscgenjs-core/render/text/arcmappings.js
 
 src/lib/mscgenjs-core/render/graphics/renderast.js: \
+	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js \
 	src/lib/mscgenjs-core/render/graphics/constants.js \
 	src/lib/mscgenjs-core/render/graphics/entities.js \
 	src/lib/mscgenjs-core/render/graphics/idmanager.js \
@@ -47,7 +48,6 @@ src/lib/mscgenjs-core/render/graphics/renderast.js: \
 	src/lib/mscgenjs-core/render/graphics/svgelementfactory.js \
 	src/lib/mscgenjs-core/render/graphics/svglowlevelfactory.js \
 	src/lib/mscgenjs-core/render/graphics/svgutensils.js \
-	src/lib/mscgenjs-core/render/graphics/swap.js \
 	src/lib/mscgenjs-core/render/text/arcmappings.js \
 	src/lib/mscgenjs-core/render/text/flatten.js
 
@@ -109,7 +109,6 @@ EMBED_JS_SOURCES=src/mscgen-inpage.js \
 	src/lib/mscgenjs-core/render/graphics/svgelementfactory.js \
 	src/lib/mscgenjs-core/render/graphics/svglowlevelfactory.js \
 	src/lib/mscgenjs-core/render/graphics/svgutensils.js \
-	src/lib/mscgenjs-core/render/graphics/swap.js \
 	src/lib/mscgenjs-core/render/text/arcmappings.js \
 	src/lib/mscgenjs-core/render/text/asttransform.js \
 	src/lib/mscgenjs-core/render/text/flatten.js \
