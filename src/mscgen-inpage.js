@@ -1,12 +1,12 @@
 /* eslint max-params: 0 */
-require(["lib/mscgenjs-core/parse/xuparser",
-         "lib/mscgenjs-core/parse/msgennyparser",
-         "lib/mscgenjs-core/render/graphics/renderast",
-         "utl/exporter",
-         "embedding/config",
-         "embedding/error-rendering",
-         "utl/domutl",
-         "utl/tpl"],
+require(["./lib/mscgenjs-core/parse/xuparser",
+         "./lib/mscgenjs-core/parse/msgennyparser",
+         "./lib/mscgenjs-core/render/graphics/renderast",
+         "./utl/exporter",
+         "./embedding/config",
+         "./embedding/error-rendering",
+         "./utl/domutl",
+         "./utl/tpl"],
 function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
     "use strict";
 
