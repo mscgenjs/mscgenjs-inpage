@@ -5,7 +5,6 @@
   "main": "",
   "dependencies": {},
   "devDependencies": {
-    "almond": "0.3.2",
     "amdefine": "1.0.0",
     "chai": "3.5.0",
     "codeclimate-test-reporter": "0.3.3",
@@ -18,7 +17,8 @@
     "nsp": "2.6.1",
     "plato": "1.7.0",
     "requirejs": "2.2.0",
-    "uglify-js": "2.7.0"
+    "uglify-js": "2.7.0",
+    "webpack": "1.13.1"
   },
   "scripts": {
     "test": "mocha -R dot --recursive src/test --invert --grep \"\\(browser only\\)\"",

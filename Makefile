@@ -6,7 +6,7 @@ GIT_DEPLOY_FROM_BRANCH=master
 SEDVERSION=utl/sedversion.sh
 NPM=npm
 MAKEDEPEND=node_modules/.bin/js-makedepend --output-to jsdependencies.mk --exclude "node_modules"
-MINIFY=node_modules/.bin/uglifyjs
+WEBPACK=node_modules/.bin/webpack
 ISTANBUL=node_modules/.bin/istanbul
 
 BUILDDIR=dist
@@ -20,7 +20,7 @@ LIBDIRS=$(MSCGENJS_LIBDIRS)
 INSTRUMENTATION_DIR=istanbul-instrumented
 COVERAGE_REPORT_DIR=coverage
 
-.PHONY: help  install deploy-gh-pages check fullcheck mostlyclean clean lint cover prerequisites report test update-dependencies run-update-dependencies depend 
+.PHONY: help  install deploy-gh-pages check fullcheck mostlyclean clean lint cover prerequisites report test update-dependencies run-update-dependencies depend
 
 help:
 	@echo " --------------------------------------------------------"
@@ -78,13 +78,8 @@ include jsdependencies.mk
 
 LIVE_DOC_DEPS= $(BUILDDIR)/mscgen-inpage.js \
 
-$(BUILDDIR)/mscgen-inpage.js: $(EMBED_JS_SOURCES) node_modules/almond/almond.js
-	$(RJS) -o baseUrl=./src \
-			name=../node_modules/almond/almond \
-			include=mscgen-inpage \
-			out=$@ \
-			wrap=true \
-			preserveLicenseComments=true
+$(BUILDDIR)/mscgen-inpage.js: $(EMBED_JS_SOURCES)
+	$(WEBPACK) --optimize-minimize --optimize-dedupe --optimize-max-chunks 1 src/mscgen-inpage.js $@
 
 $(BUILDDIR)/script/mscgen-inpage.js: $(BUILDDIR)/mscgen-inpage.js
 	cp $< $@
