@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Visual smoke test page for mmscgenjs-inpage</title>
+    <meta content='text/html;charset=utf-8' http-equiv='Content-Type'>
+    <script>
+      var mscgen_js_config = {
+        clickable: true,
+        clickURL: "http://localhost:8666/",
+        loadFromSrcAttribute: true
+      }
+    </script>
+    <script src="mscgen-inpage.js" defer></script>
+    <!-- <script data-main="src/mscgen-inpage.js?{{commit}}" src="src/lib/require.js?{{commit}}" defer></script> -->
+  </head>
+  <body>
+    <h1>mscgenjs-inpage: The big visual test</h1>
+    <h2>Inline in a <code>script</code> element</h2>
+    <h3>Without mirrored entities on the bottom</h3>
+    <script type="text/x-msgenny">
+wordwraparcs=on;
+
+Alice =>> Bob: "Hi Bob";
+Bob >> Alice: "Hello Alice";
+    </script>
+
+    <script type="text/x-mscgen">
+xu {
+    wordwraparcs=on;
+
+    Alice, Bob, Michael;
+
+    Alice =>> Bob [label="We're inside an MscGen script"];
+    Bob =>> Michael [label="Whoo hoo; did you hear that?"];
+    Michael >> Bob [label="Awesomesauce"];
+    Bob => * [label="Here's a secret"];
+    Alice -> Bob [label="Don't do that", textbgcolor=red, textcolor=white];
+}
+    </script>
+
+    <script type="text/x-xu">
+xu {
+    wordwraparcs=on;
+
+    Alice, Bob;
+
+    Alice =>> Bob [label="We're inside an xù script"];
+    Bob alt Alice [label="Bob feels OK", linecolor=grey] {
+        Bob >> Alice [label="That feels nice", textcolor="green", linecolor=green];
+        --- [label="Bob has stomach cramps"];
+        Bob >> Alice [label="do you have a pain killer?", textcolor="red", linecolor="red"];
+    };
+
+}
+    </script>
+
+    <h3><em>With</em> mirrored entities on the bottom</h3>
+    <script data-mirror-entities="true" type="text/x-msgenny">
+wordwraparcs=on;
+
+Alice =>> Bob: "Did you know we're supposed to be repeated on the bottom?";
+Bob >> Alice: "No, I did not";
+    </script>
+
+    <script data-mirror-entities="true" type="text/x-mscgen">
+xu {
+    wordwraparcs=on;
+
+    Alice, Bob, Michael;
+
+    Alice =>> Bob [label="We're inside an MscGen script"];
+    Bob =>> Michael [label="Whoo hoo; did you hear that?"];
+    Michael >> Bob [label="What is that stuff on the bottom?"];
+    Bob => * [label="Here's a secret"];
+    Alice -> Bob [label="Don't do that", textbgcolor=red, textcolor=white];
+}
+    </script>
+
+    <script data-mirror-entities="true" type="text/x-xu">
+xu {
+    wordwraparcs=on;
+
+    Alice, Bob;
+
+    Alice =>> Bob [label="We're inside an xù script"];
+    Bob alt Alice [label="Bob feels OK", linecolor=grey] {
+        Bob >> Alice [label="That feels nice", textcolor="green", linecolor=green];
+        --- [label="Bob has stomach cramps"];
+        Bob >> Alice [label="do you have a pain killer?", textcolor="red", linecolor="red"];
+    };
+
+}
+    </script>
+
+    <h3>With named styles, in regular (pegasse) and script tags (the rest)</h3>
+    <script type="text/x-msgenny">
+    hscale=0.8,wordwraparcs=on, watermark="no named style";
+
+    Alice =>> Bob : "We're inside an msgenny script";
+    Bob alt Alice : "Bob feels OK" {
+        Bob >> Alice : "That also feels nice";
+        --- : "Bob has stomach cramps. Again.";
+        Bob >> Alice : "do you have a pain killer?",
+        notes abox notes: Go see the doctor;
+    },
+    notes note notes : "Should the outcome depend on Bob's mood?";
+    </script>
+    <script data-named-style="lazy" type="text/x-msgenny">
+    hscale=0.8,wordwraparcs=on, watermark="lazy";
+
+    Alice =>> Bob : "We're inside an msgenny script";
+    Bob alt Alice : "Bob feels OK" {
+        Bob >> Alice : "That also feels nice";
+        --- : "Bob has stomach cramps. Again.";
+        Bob >> Alice : "do you have a pain killer?",
+        notes abox notes: Go see the doctor;
+    },
+    notes note notes : "Should the outcome depend on Bob's mood?";
+    </script>
+    <script data-named-style="classic" type="text/x-msgenny">
+    hscale=0.8,wordwraparcs=on, watermark="classic";
+
+    Alice =>> Bob : "We're inside an msgenny script";
+    Bob alt Alice : "Bob feels OK" {
+        Bob >> Alice : "That also feels nice";
+        --- : "Bob has stomach cramps. Again.";
+        Bob >> Alice : "do you have a pain killer?",
+        notes abox notes: Go see the doctor;
+    },
+    notes note notes : "Should the outcome depend on Bob's mood?";
+    </script>
+    <span class="mscgen_js" data-named-style="pegasse" data-language="msgenny">
+        hscale=0.8,wordwraparcs=on, watermark="pegasse";
+
+        Alice =>> Bob : "We're inside an msgenny script";
+        Bob alt Alice : "Bob feels OK" {
+            Bob >> Alice : "That also feels nice";
+            --- : "Bob has stomach cramps. Again.";
+            Bob >> Alice : "do you have a pain killer?",
+            notes abox notes: Go see the doctor;
+        },
+        notes note notes : "Should the outcome depend on Bob's mood?";
+    </span>
+
+    <script data-named-style="cygne" type="text/x-msgenny">
+    hscale=0.8, wordwraparcs=on, watermark="cygne";
+
+    Alice =>> Bob : "We're inside an msgenny script";
+    Bob alt Alice : "Bob feels OK" {
+        Bob >> Alice : "That also feels nice";
+        --- : "Bob has stomach cramps. Again.";
+        Bob >> Alice : "do you have a pain killer?",
+        notes abox notes: Go see the doctor;
+    },
+    notes note notes : "Should the outcome depend on Bob's mood?";
+    </script>
+    <script data-named-style="fountainpen" type="text/x-msgenny">
+    hscale=0.8,wordwraparcs=on, watermark="fountainpen";
+
+    Alice =>> Bob : "We're inside an msgenny script";
+    Bob alt Alice : "Bob feels OK" {
+        Bob >> Alice : "That also feels nice";
+        --- : "Bob has stomach cramps. Again.";
+        Bob >> Alice : "do you have a pain killer?",
+        notes abox notes: Go see the doctor;
+    },
+    notes note notes : "Should the outcome depend on Bob's mood?";
+    </script>
+    <script data-named-style="inverted" type="text/x-msgenny">
+    hscale=0.8,wordwraparcs=on, watermark="inverted";
+
+    Alice =>> Bob : "We're inside an msgenny script";
+    Bob alt Alice : "Bob feels OK" {
+        Bob >> Alice : "That also feels nice";
+        --- : "Bob has stomach cramps. Again.";
+        Bob >> Alice : "do you have a pain killer?",
+        notes abox notes: Go see the doctor;
+    },
+    notes note notes : "Should the outcome depend on Bob's mood?";
+    </script>
+    <h4>Demonstrating <em>grayscaled</em></h4>
+    <script type="text/x-xu">
+    xu {
+      wordwraparcs=true,
+      watermark="unstyled";
+
+      Yvette [linecolor="#008800", textbgcolor="#CCFFCC", arclinecolor="#008800"],
+      Zacharias [linecolor="#FF0000", textbgcolor="#FFCCCC", arclinecolor="#FF0000"];
+
+      Yvette => Zacharias [label="doing the color mambo here", textbgcolor="yellow", textcolor="green"];
+      Zacharias =>> Zacharias [label="bizzzzy", linecolor="orange", textbgcolor=red, textcolor=cyan];
+      Zacharias >> Yvette[label="lets get into a box together", textcolor=white, textbgcolor=blue];
+      Yvette rbox Zacharias[label="Now that's a cosy little box for two entities", textbgcolor=lightgreen];
+    }
+    </script>
+    <script data-named-style="grayscaled" type="text/x-xu">
+    xu {
+      wordwraparcs=true,
+      watermark="grayscaled";
+
+      Yvette [linecolor="#008800", textbgcolor="#CCFFCC", arclinecolor="#008800"],
+      Zacharias [linecolor="#FF0000", textbgcolor="#FFCCCC", arclinecolor="#FF0000"];
+
+      Yvette => Zacharias [label="doing the color mambo here", textbgcolor="yellow", textcolor="green"];
+      Zacharias =>> Zacharias [label="bizzzzy", linecolor="orange", textbgcolor=red, textcolor=cyan];
+      Zacharias >> Yvette[label="lets get into a box together", textcolor=white, textbgcolor=blue];
+      Yvette rbox Zacharias[label="Now that's a cosy little box for two entities", textbgcolor=lightgreen];
+    }
+    </script>
+    <h3>Generating some errors</h3>
+    <script type="text/x-mscgen">
+a => b: "This is not MscGen, my friend";
+    </script>
+
+    <script type="text/x-msgenny">
+msc {
+    a,b;
+    a => b [label="Likewise, this is not MsGenny"];
+}
+    </script>
+
+    <script type="text/x-xu">
+msc {
+    a,b;
+    a => b [label="This is xù, but it is scratched, because..."];
+    b >> a [label="...between this and the next attribute there is no ','" textbgcolor="cyan"];
+}
+    </script>
+
+    <h2>Externaly loaded in a <code>script</code> element from the <code>src</code> attribute</h2>
+    <h3>From an existing script</h3>
+    <script type="text/x-xu" src="sample-smoke-test-all-scripttag.xu"></script>
+
+    <h3>From a non-existing script</h3>
+    <script type="text/x-xu" src="thiscriptdoesnotexist.xu"></script>
+
+
+    <h3>Scripts with other mimetypes than mscgen, msgenny, xu get ignored</h3>
+    <p>
+        There should be no stuff between the two horizontal lines.
+    </p>
+    <hr>
+    <script type="text/x-dot">
+    graph {
+      rankdir=LR
+      splines=true
+      ordering=out
+      fontname="Helvetica"
+      fontsize="9"
+      node [style=filled, fillcolor=white fontname="Helvetica", fontsize="9" ]
+      edge [fontname="Helvetica", fontsize="9", arrowhead=vee, arrowtail=vee, dir=forward]
+
+      "alice" [label="alice"];
+      "bob" [label="bob"];
+
+      "alice" -- "bob" [label="(1) hi"]
+      "bob" -- "alice" [label="(2) hi yourself", style="dashed"]
+    }
+    </script>
+
+    <h2>Other methods of loading</h2>
+    <h3>In a <code>pre</code> element</h3>
+    <pre class='code mscgen mscgen_js' data-language='msgenny'>
+        wordwraparcs=1,
+        hscale=2,
+        watermark="&lt;pre> element";
+
+        Jan: "Jan Klasen";
+
+        Jan =>> Katrijn: "Het lijkt wel of we in een poppenkast zitten";
+        Katrijn >> Jan: "Maar het is een &lt;pre> element";
+    </pre>
+
+    <h3>In a wikimedia style <code>mscgen</code> tag</h3>
+    <mscgen>
+msc {
+    wordwraparcs=on;
+
+    Alice, Robert, Loic [label="Loïc"];
+
+    Alice =>> Robert [label="Où sommes nous au jour d'hui ?"];
+    Robert =>> Alice [label="Nous sommes dans un element de &lt;mscgen>"];
+    Alice => Robert [label="Comme chez Wikipedia?"],
+    Loic note Loic [label="I would like to go sailing"];
+    Robert >> Alice [label="Si"];
+
+}
+    </mscgen>
+
+    <h2>Humongous chart, externally loaded from a <code>pre</code> element</h2>
+    <pre class="mscgen_js" data-named-style="lazy"  data-mirror-entities="true" data-src="sample-smoke-test-all-arcs.xu" data-language"xu"></pre>
+
+  </body>
+</html>
