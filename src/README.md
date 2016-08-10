@@ -27,20 +27,11 @@ wait with loading and executing the script until the complete DOM tree is loaded
 <script src='https://sverweij.github.io/mscgen_js/mscgen-inpage.js' defer></script>
 ```
 
-## One javascript file: requirejs and almond
-As you can see mscgen_js keeps its functionality in separate amd modules
-and uses r.js to smash em together in one ball of javascript, which
-is loaded with require.js. The script tag would then look something like this:
-```html
-<script data-main='https://sverweij.github.io/mscgen_js/mscgen-inpage.js'
-        src='https://sverweij.github.io/mscgen_js/lib/require.js' defer>
-</script>
-```
+## One javascript file: webpack
+As you can see mscgen_js keeps its functionality in separate amd modules. It
+uses webpack to smash em together in one ball of javascript.
 
-For embedding this has two drawbacks:
-- The user will have to load two piece of javascript (slower).
-- It's verbose.
-
-
-We're using [almond](https://github.com/jrburke/almond) to pack everything in
-one tight ball of javascript so only that needs including.
+(Before version 1.5.1 we were using requirejs' r.js and
+[almond](https://github.com/jrburke/almond) with the same end. That solution
+is excelent, but we found webpack generates slightly smaller packages
+(~4k or 3% without zipping, ~2k or 6% gzipped)).
