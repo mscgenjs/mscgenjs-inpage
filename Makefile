@@ -6,6 +6,7 @@ GIT_DEPLOY_FROM_BRANCH=master
 SEDVERSION=utl/sedversion.sh
 NPM=npm
 MAKEDEPEND=node_modules/.bin/js-makedepend --output-to jsdependencies.mk --exclude "node_modules"
+MINIFY=node_modules/.bin/uglifyjs
 WEBPACK=node_modules/.bin/webpack
 ISTANBUL=node_modules/.bin/istanbul
 
