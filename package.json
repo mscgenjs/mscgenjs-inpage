@@ -17,7 +17,6 @@
     "nsp": "2.6.1",
     "plato": "1.7.0",
     "requirejs": "2.2.0",
-    "uglify-js": "2.7.0",
     "webpack": "1.13.1"
   },
   "scripts": {

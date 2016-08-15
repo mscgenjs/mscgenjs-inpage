@@ -6,7 +6,6 @@ GIT_DEPLOY_FROM_BRANCH=master
 SEDVERSION=utl/sedversion.sh
 NPM=npm
 MAKEDEPEND=node_modules/.bin/js-makedepend --output-to jsdependencies.mk --exclude "node_modules"
-MINIFY=node_modules/.bin/uglifyjs
 WEBPACK=node_modules/.bin/webpack
 ISTANBUL=node_modules/.bin/istanbul
 
@@ -58,7 +57,7 @@ $(LIBDIRS):
 	mkdir -p $@
 
 src/lib/require.js: node_modules/requirejs/require.js
-	$(MINIFY) $< -m -c > $@
+	cp $< $@
 
 src/lib/mscgenjs-core/render/graphics/%.js: $(MSCGENJS_CORE_ROOT)/render/graphics/%.js $(MSCGENJS_LIBDIRS)
 	cp $< $@
