@@ -8,16 +8,16 @@
     "amdefine": "1.0.0",
     "chai": "3.5.0",
     "codeclimate-test-reporter": "0.3.3",
-    "eslint": "3.2.2",
-    "istanbul": "0.4.4",
-    "js-makedepend": "1.0.1",
+    "eslint": "3.3.1",
+    "istanbul": "0.4.5",
+    "js-makedepend": "1.0.2",
     "mocha": "3.0.2",
     "mscgenjs": "1.5.0",
     "npm-check-updates": "2.8.0",
     "nsp": "2.6.1",
     "plato": "1.7.0",
     "requirejs": "2.2.0",
-    "webpack": "1.13.1"
+    "webpack": "1.13.2"
   },
   "scripts": {
     "test": "mocha -R dot --recursive src/test --invert --grep \"\\(browser only\\)\"",
