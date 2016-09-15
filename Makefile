@@ -110,24 +110,11 @@ cover-report:
 
 cover: node-cover web-cover cover-report
 
-.git/refs/remotes/bitbkucket-mirror:
-	    $(GIT) remote add bitbucket-mirror git@bitbucket.org:sverweij/mscgenjs-inpage.git
-
-.git/refs/remotes/gitlab-mirror:
-	    $(GIT) remote add gitlab-mirror https://gitlab.com/sverweij/mscgenjs-inpage.git
-
 install: $(BUILDDIR)/mscgen-inpage.js
 
 tag:
 	$(GIT) tag -a `utl/getver` -m "tag release `utl/getver`"
 	$(GIT) push --tags
-
-mirrors: .git/refs/remotes/bitbucket-mirror \
-	    .git/refs/remotes/gitlab-mirror
-
-push-mirrors: mirrors
-	$(GIT) push bitbucket-mirror
-	$(GIT) push gitlab-mirror
 
 static-analysis:
 	$(NPM) run plato
