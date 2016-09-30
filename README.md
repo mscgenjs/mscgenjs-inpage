@@ -2,7 +2,7 @@
 _embed & render MscGen in HTML_
 
 [![bitHound Overall Score](https://www.bithound.io/github/mscgenjs/mscgenjs-inpage/badges/score.svg)](https://www.bithound.io/github/mscgenjs/mscgenjs-inpage)
-[![Test Coverage](https://codeclimate.com/github/mscgenjs/mscgenjs-inpage/badges/coverage.svg)](https://codeclimate.com/github/mscgenjs/mscgenjs-inpage/coverage)
+[![Test Coverage](https://gitlab.com/sverweij/mscgenjs-inpage/badges/master/coverage.svg)](https://gitlab.com/sverweij/mscgenjs-inpage/builds)
 [![bitHound Dependencies](https://www.bithound.io/github/mscgenjs/mscgenjs-inpage/badges/dependencies.svg)](https://www.bithound.io/github/mscgenjs/mscgenjs-inpage/master/dependencies/npm)
 [![bitHound Dev Dependencies](https://www.bithound.io/github/mscgenjs/mscgenjs-inpage/badges/devDependencies.svg)](https://www.bithound.io/github/mscgenjs/mscgenjs-inpage/master/dependencies/npm)
 [![npm stable version](https://img.shields.io/npm/v/mscgenjs-inpage.svg)](https://npmjs.com/package/mscgenjs-inpage)
