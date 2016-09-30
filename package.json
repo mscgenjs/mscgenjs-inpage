@@ -7,7 +7,6 @@
   "devDependencies": {
     "amdefine": "1.0.0",
     "chai": "3.5.0",
-    "codeclimate-test-reporter": "0.3.3",
     "eslint": "3.6.0",
     "istanbul": "0.4.5",
     "js-makedepend": "1.0.4",
@@ -25,7 +24,6 @@
     "nsp": "nsp check",
     "plato": "plato -r -d platoreports -x \"parser|test|lib\" src/",
     "lint": "eslint src",
-    "codeclimate-cover-submit": "node node_modules/codeclimate-test-reporter/bin/codeclimate.js < coverage/lcov.info",
     "npm-check-updates": "ncu --upgrade"
   },
   "repository": {
