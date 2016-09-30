@@ -30,7 +30,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/sverweij/mscgenjs-inpage"
+    "url": "https://github.com/mscgenjs/mscgenjs-inpage"
   },
   "author": "Sander Verweij",
   "license": "GPL-3.0",
@@ -43,7 +43,7 @@
     "msgenny"
   ],
   "bugs": {
-    "url": "https://github.com/sverweij/mscgenjs-inpage/issues"
+    "url": "https://github.com/mscgenjs/mscgenjs-inpage/issues"
   },
-  "homepage": "https://github.com/sverweij/mscgenjs-inpage"
+  "homepage": "https://github.com/mscgenjs/mscgenjs-inpage"
 }
