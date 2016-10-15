@@ -1,6 +1,6 @@
 {
   "name": "mscgenjs-inpage",
-  "version": "1.5.2",
+  "version": "1.5.3",
   "description": "Embed and render MscGen in HTML",
   "main": "",
   "dependencies": {},
