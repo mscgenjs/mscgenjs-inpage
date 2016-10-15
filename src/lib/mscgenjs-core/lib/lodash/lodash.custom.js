@@ -13,16 +13,20 @@
   var undefined;
 
   /** Used as the semantic version number. */
-  var VERSION = '4.15.0';
+  var VERSION = '4.16.4';
 
   /** Used as the size to enable large array optimizations. */
   var LARGE_ARRAY_SIZE = 200;
 
-  /** Used as the `TypeError` message for "Functions" methods. */
+  /** Error message constants. */
   var FUNC_ERROR_TEXT = 'Expected a function';
 
   /** Used to stand-in for `undefined` hash values. */
   var HASH_UNDEFINED = '__lodash_hash_undefined__';
+
+  /** Used to detect hot functions by number of calls within a span of milliseconds. */
+  var HOT_COUNT = 500,
+      HOT_SPAN = 16;
 
   /** Used as references for various `Number` constants. */
   var MAX_SAFE_INTEGER = 9007199254740991;
@@ -39,6 +43,7 @@
       numberTag = '[object Number]',
       objectTag = '[object Object]',
       promiseTag = '[object Promise]',
+      proxyTag = '[object Proxy]',
       regexpTag = '[object RegExp]',
       setTag = '[object Set]',
       stringTag = '[object String]',
@@ -71,6 +76,22 @@
 
   /** Used to detect unsigned integer values. */
   var reIsUint = /^(?:0|[1-9]\d*)$/;
+
+  /** Used to identify `toStringTag` values of typed arrays. */
+  var typedArrayTags = {};
+  typedArrayTags[float32Tag] = typedArrayTags[float64Tag] =
+  typedArrayTags[int8Tag] = typedArrayTags[int16Tag] =
+  typedArrayTags[int32Tag] = typedArrayTags[uint8Tag] =
+  typedArrayTags[uint8ClampedTag] = typedArrayTags[uint16Tag] =
+  typedArrayTags[uint32Tag] = true;
+  typedArrayTags[argsTag] = typedArrayTags[arrayTag] =
+  typedArrayTags[arrayBufferTag] = typedArrayTags[boolTag] =
+  typedArrayTags[dataViewTag] = typedArrayTags[dateTag] =
+  typedArrayTags[errorTag] = typedArrayTags[funcTag] =
+  typedArrayTags[mapTag] = typedArrayTags[numberTag] =
+  typedArrayTags[objectTag] = typedArrayTags[regexpTag] =
+  typedArrayTags[setTag] = typedArrayTags[stringTag] =
+  typedArrayTags[weakMapTag] = false;
 
   /** Used to identify `toStringTag` values supported by `_.clone`. */
   var cloneableTags = {};
@@ -105,6 +126,19 @@
 
   /** Detect the popular CommonJS extension `module.exports`. */
   var moduleExports = freeModule && freeModule.exports === freeExports;
+
+  /** Detect free variable `process` from Node.js. */
+  var freeProcess = moduleExports && freeGlobal.process;
+
+  /** Used to access faster Node.js helpers. */
+  var nodeUtil = (function() {
+    try {
+      return freeProcess && freeProcess.binding('util');
+    } catch (e) {}
+  }());
+
+  /* Node.js helper references. */
+  var nodeIsTypedArray = nodeUtil && nodeUtil.isTypedArray;
 
   /*--------------------------------------------------------------------------*/
 
@@ -241,6 +275,19 @@
   }
 
   /**
+   * The base implementation of `_.unary` without support for storing metadata.
+   *
+   * @private
+   * @param {Function} func The function to cap arguments for.
+   * @returns {Function} Returns the new capped function.
+   */
+  function baseUnary(func) {
+    return function(value) {
+      return func(value);
+    };
+  }
+
+  /**
    * Gets the value at `key` of `object`.
    *
    * @private
@@ -250,25 +297,6 @@
    */
   function getValue(object, key) {
     return object == null ? undefined : object[key];
-  }
-
-  /**
-   * Checks if `value` is a host object in IE < 9.
-   *
-   * @private
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is a host object, else `false`.
-   */
-  function isHostObject(value) {
-    // Many host objects are `Object` objects that can coerce to strings
-    // despite having improperly defined `toString` methods.
-    var result = false;
-    if (value != null && typeof value.toString != 'function') {
-      try {
-        result = !!(value + '');
-      } catch (e) {}
-    }
-    return result;
   }
 
   /**
@@ -358,17 +386,27 @@
   var Buffer = moduleExports ? root.Buffer : undefined,
       Symbol = root.Symbol,
       Uint8Array = root.Uint8Array,
+      allocUnsafe = Buffer ? Buffer.allocUnsafe : undefined,
       getPrototype = overArg(Object.getPrototypeOf, Object),
       objectCreate = Object.create,
       propertyIsEnumerable = objectProto.propertyIsEnumerable,
       splice = arrayProto.splice,
       spreadableSymbol = Symbol ? Symbol.isConcatSpreadable : undefined;
 
+  var defineProperty = (function() {
+    try {
+      var func = getNative(Object, 'defineProperty');
+      func({}, '', {});
+      return func;
+    } catch (e) {}
+  }());
+
   /* Built-in method references for those with the same name as other `lodash` methods. */
   var nativeGetSymbols = Object.getOwnPropertySymbols,
       nativeIsBuffer = Buffer ? Buffer.isBuffer : undefined,
       nativeKeys = overArg(Object.keys, Object),
-      nativeMax = Math.max;
+      nativeMax = Math.max,
+      nativeNow = Date.now;
 
   /* Built-in method references that are verified to be native. */
   var DataView = getNative(root, 'DataView'),
@@ -515,6 +553,30 @@
     // No operation performed.
   }
 
+  /**
+   * The base implementation of `_.create` without support for assigning
+   * properties to the created object.
+   *
+   * @private
+   * @param {Object} proto The object to inherit from.
+   * @returns {Object} Returns the new object.
+   */
+  var baseCreate = (function() {
+    function object() {}
+    return function(proto) {
+      if (!isObject(proto)) {
+        return {};
+      }
+      if (objectCreate) {
+        return objectCreate(proto);
+      }
+      object.prototype = proto;
+      var result = new object;
+      object.prototype = undefined;
+      return result;
+    };
+  }());
+
   /*------------------------------------------------------------------------*/
 
   /**
@@ -544,6 +606,7 @@
    */
   function hashClear() {
     this.__data__ = nativeCreate ? nativeCreate(null) : {};
+    this.size = 0;
   }
 
   /**
@@ -557,7 +620,9 @@
    * @returns {boolean} Returns `true` if the entry was removed, else `false`.
    */
   function hashDelete(key) {
-    return this.has(key) && delete this.__data__[key];
+    var result = this.has(key) && delete this.__data__[key];
+    this.size -= result ? 1 : 0;
+    return result;
   }
 
   /**
@@ -604,6 +669,7 @@
    */
   function hashSet(key, value) {
     var data = this.__data__;
+    this.size += this.has(key) ? 0 : 1;
     data[key] = (nativeCreate && value === undefined) ? HASH_UNDEFINED : value;
     return this;
   }
@@ -644,6 +710,7 @@
    */
   function listCacheClear() {
     this.__data__ = [];
+    this.size = 0;
   }
 
   /**
@@ -668,6 +735,7 @@
     } else {
       splice.call(data, index, 1);
     }
+    --this.size;
     return true;
   }
 
@@ -715,6 +783,7 @@
         index = assocIndexOf(data, key);
 
     if (index < 0) {
+      ++this.size;
       data.push([key, value]);
     } else {
       data[index][1] = value;
@@ -757,6 +826,7 @@
    * @memberOf MapCache
    */
   function mapCacheClear() {
+    this.size = 0;
     this.__data__ = {
       'hash': new Hash,
       'map': new (Map || ListCache),
@@ -774,7 +844,9 @@
    * @returns {boolean} Returns `true` if the entry was removed, else `false`.
    */
   function mapCacheDelete(key) {
-    return getMapData(this, key)['delete'](key);
+    var result = getMapData(this, key)['delete'](key);
+    this.size -= result ? 1 : 0;
+    return result;
   }
 
   /**
@@ -814,7 +886,11 @@
    * @returns {Object} Returns the map cache instance.
    */
   function mapCacheSet(key, value) {
-    getMapData(this, key).set(key, value);
+    var data = getMapData(this, key),
+        size = data.size;
+
+    data.set(key, value);
+    this.size += data.size == size ? 0 : 1;
     return this;
   }
 
@@ -835,7 +911,8 @@
    * @param {Array} [entries] The key-value pairs to cache.
    */
   function Stack(entries) {
-    this.__data__ = new ListCache(entries);
+    var data = this.__data__ = new ListCache(entries);
+    this.size = data.size;
   }
 
   /**
@@ -847,6 +924,7 @@
    */
   function stackClear() {
     this.__data__ = new ListCache;
+    this.size = 0;
   }
 
   /**
@@ -859,7 +937,11 @@
    * @returns {boolean} Returns `true` if the entry was removed, else `false`.
    */
   function stackDelete(key) {
-    return this.__data__['delete'](key);
+    var data = this.__data__,
+        result = data['delete'](key);
+
+    this.size = data.size;
+    return result;
   }
 
   /**
@@ -899,16 +981,18 @@
    * @returns {Object} Returns the stack cache instance.
    */
   function stackSet(key, value) {
-    var cache = this.__data__;
-    if (cache instanceof ListCache) {
-      var pairs = cache.__data__;
+    var data = this.__data__;
+    if (data instanceof ListCache) {
+      var pairs = data.__data__;
       if (!Map || (pairs.length < LARGE_ARRAY_SIZE - 1)) {
         pairs.push([key, value]);
+        this.size = ++data.size;
         return this;
       }
-      cache = this.__data__ = new MapCache(pairs);
+      data = this.__data__ = new MapCache(pairs);
     }
-    cache.set(key, value);
+    data.set(key, value);
+    this.size = data.size;
     return this;
   }
 
@@ -930,18 +1014,26 @@
    * @returns {Array} Returns the array of property names.
    */
   function arrayLikeKeys(value, inherited) {
-    // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
-    // Safari 9 makes `arguments.length` enumerable in strict mode.
-    var result = (isArray(value) || isArguments(value))
-      ? baseTimes(value.length, String)
-      : [];
-
-    var length = result.length,
-        skipIndexes = !!length;
+    var isArr = isArray(value),
+        isArg = !isArr && isArguments(value),
+        isBuff = !isArr && !isArg && isBuffer(value),
+        isType = !isArr && !isArg && !isBuff && isTypedArray(value),
+        skipIndexes = isArr || isArg || isBuff || isType,
+        result = skipIndexes ? baseTimes(value.length, String) : [],
+        length = result.length;
 
     for (var key in value) {
       if ((inherited || hasOwnProperty.call(value, key)) &&
-          !(skipIndexes && (key == 'length' || isIndex(key, length)))) {
+          !(skipIndexes && (
+             // Safari 9 has enumerable `arguments.length` in strict mode.
+             key == 'length' ||
+             // Node.js 0.10 has enumerable non-index properties on buffers.
+             (isBuff && (key == 'offset' || key == 'parent')) ||
+             // PhantomJS 2 has enumerable non-index properties on typed arrays.
+             (isType && (key == 'buffer' || key == 'byteLength' || key == 'byteOffset')) ||
+             // Skip index properties.
+             isIndex(key, length)
+          ))) {
         result.push(key);
       }
     }
@@ -980,7 +1072,7 @@
     var objValue = object[key];
     if (!(hasOwnProperty.call(object, key) && eq(objValue, value)) ||
         (value === undefined && !(key in object))) {
-      object[key] = value;
+      baseAssignValue(object, key, value);
     }
   }
 
@@ -1013,6 +1105,28 @@
    */
   function baseAssign(object, source) {
     return object && copyObject(source, keys(source), object);
+  }
+
+  /**
+   * The base implementation of `assignValue` and `assignMergeValue` without
+   * value checks.
+   *
+   * @private
+   * @param {Object} object The object to modify.
+   * @param {string} key The key of the property to assign.
+   * @param {*} value The value to assign.
+   */
+  function baseAssignValue(object, key, value) {
+    if (key == '__proto__' && defineProperty) {
+      defineProperty(object, key, {
+        'configurable': true,
+        'enumerable': true,
+        'value': value,
+        'writable': true
+      });
+    } else {
+      object[key] = value;
+    }
   }
 
   /**
@@ -1054,9 +1168,6 @@
         return cloneBuffer(value, isDeep);
       }
       if (tag == objectTag || tag == argsTag || (isFunc && !object)) {
-        if (isHostObject(value)) {
-          return object ? value : {};
-        }
         result = initCloneObject(isFunc ? {} : value);
         if (!isDeep) {
           return copySymbols(value, baseAssign(result, value));
@@ -1076,9 +1187,7 @@
     }
     stack.set(value, result);
 
-    if (!isArr) {
-      var props = isFull ? getAllKeys(value) : keys(value);
-    }
+    var props = isArr ? undefined : (isFull ? getAllKeys : keys)(value);
     arrayEach(props || value, function(subValue, key) {
       if (props) {
         key = subValue;
@@ -1088,18 +1197,6 @@
       assignValue(result, key, baseClone(subValue, isDeep, isFull, customizer, key, value, stack));
     });
     return result;
-  }
-
-  /**
-   * The base implementation of `_.create` without support for assigning
-   * properties to the created object.
-   *
-   * @private
-   * @param {Object} prototype The object to inherit from.
-   * @returns {Object} Returns the new object.
-   */
-  function baseCreate(proto) {
-    return isObject(proto) ? objectCreate(proto) : {};
   }
 
   /**
@@ -1164,6 +1261,17 @@
   }
 
   /**
+   * The base implementation of `_.isArguments`.
+   *
+   * @private
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is an `arguments` object,
+   */
+  function baseIsArguments(value) {
+    return isObjectLike(value) && objectToString.call(value) == argsTag;
+  }
+
+  /**
    * The base implementation of `_.isNative` without bad shim checks.
    *
    * @private
@@ -1175,8 +1283,20 @@
     if (!isObject(value) || isMasked(value)) {
       return false;
     }
-    var pattern = (isFunction(value) || isHostObject(value)) ? reIsNative : reIsHostCtor;
+    var pattern = isFunction(value) ? reIsNative : reIsHostCtor;
     return pattern.test(toSource(value));
+  }
+
+  /**
+   * The base implementation of `_.isTypedArray` without Node.js optimizations.
+   *
+   * @private
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is a typed array, else `false`.
+   */
+  function baseIsTypedArray(value) {
+    return isObjectLike(value) &&
+      isLength(value.length) && !!typedArrayTags[objectToString.call(value)];
   }
 
   /**
@@ -1230,25 +1350,25 @@
    * @returns {Function} Returns the new function.
    */
   function baseRest(func, start) {
-    start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
-    return function() {
-      var args = arguments,
-          index = -1,
-          length = nativeMax(args.length - start, 0),
-          array = Array(length);
-
-      while (++index < length) {
-        array[index] = args[start + index];
-      }
-      index = -1;
-      var otherArgs = Array(start + 1);
-      while (++index < start) {
-        otherArgs[index] = args[index];
-      }
-      otherArgs[start] = array;
-      return apply(func, this, otherArgs);
-    };
+    return setToString(overRest(func, start, identity), func + '');
   }
+
+  /**
+   * The base implementation of `setToString` without support for hot loop shorting.
+   *
+   * @private
+   * @param {Function} func The function to modify.
+   * @param {Function} string The `toString` result.
+   * @returns {Function} Returns `func`.
+   */
+  var baseSetToString = !defineProperty ? identity : function(func, string) {
+    return defineProperty(func, 'toString', {
+      'configurable': true,
+      'enumerable': false,
+      'value': constant(string),
+      'writable': true
+    });
+  };
 
   /**
    * Creates a clone of  `buffer`.
@@ -1262,7 +1382,9 @@
     if (isDeep) {
       return buffer.slice();
     }
-    var result = new buffer.constructor(buffer.length);
+    var length = buffer.length,
+        result = allocUnsafe ? allocUnsafe(length) : new buffer.constructor(length);
+
     buffer.copy(result);
     return result;
   }
@@ -1388,6 +1510,7 @@
    * @returns {Object} Returns `object`.
    */
   function copyObject(source, props, object, customizer) {
+    var isNew = !object;
     object || (object = {});
 
     var index = -1,
@@ -1400,7 +1523,14 @@
         ? customizer(object[key], source[key], key, object, source)
         : undefined;
 
-      assignValue(object, key, newValue === undefined ? source[key] : newValue);
+      if (newValue === undefined) {
+        newValue = source[key];
+      }
+      if (isNew) {
+        baseAssignValue(object, key, newValue);
+      } else {
+        assignValue(object, key, newValue);
+      }
     }
     return object;
   }
@@ -1507,8 +1637,7 @@
    */
   var getTag = baseGetTag;
 
-  // Fallback for data views, maps, sets, and weak maps in IE 11,
-  // for data views in Edge < 14, and promises in Node.js.
+  // Fallback for data views, maps, sets, and weak maps in IE 11 and promises in Node.js < 6.
   if ((DataView && getTag(new DataView(new ArrayBuffer(1))) != dataViewTag) ||
       (Map && getTag(new Map) != mapTag) ||
       (Promise && getTag(Promise.resolve()) != promiseTag) ||
@@ -1723,6 +1852,75 @@
   }
 
   /**
+   * A specialized version of `baseRest` which transforms the rest array.
+   *
+   * @private
+   * @param {Function} func The function to apply a rest parameter to.
+   * @param {number} [start=func.length-1] The start position of the rest parameter.
+   * @param {Function} transform The rest array transform.
+   * @returns {Function} Returns the new function.
+   */
+  function overRest(func, start, transform) {
+    start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
+    return function() {
+      var args = arguments,
+          index = -1,
+          length = nativeMax(args.length - start, 0),
+          array = Array(length);
+
+      while (++index < length) {
+        array[index] = args[start + index];
+      }
+      index = -1;
+      var otherArgs = Array(start + 1);
+      while (++index < start) {
+        otherArgs[index] = args[index];
+      }
+      otherArgs[start] = transform(array);
+      return apply(func, this, otherArgs);
+    };
+  }
+
+  /**
+   * Sets the `toString` method of `func` to return `string`.
+   *
+   * @private
+   * @param {Function} func The function to modify.
+   * @param {Function} string The `toString` result.
+   * @returns {Function} Returns `func`.
+   */
+  var setToString = shortOut(baseSetToString);
+
+  /**
+   * Creates a function that'll short out and invoke `identity` instead
+   * of `func` when it's called `HOT_COUNT` or more times in `HOT_SPAN`
+   * milliseconds.
+   *
+   * @private
+   * @param {Function} func The function to restrict.
+   * @returns {Function} Returns the new shortable function.
+   */
+  function shortOut(func) {
+    var count = 0,
+        lastCalled = 0;
+
+    return function() {
+      var stamp = nativeNow(),
+          remaining = HOT_SPAN - (stamp - lastCalled);
+
+      lastCalled = stamp;
+      if (remaining > 0) {
+        if (++count >= HOT_COUNT) {
+          return arguments[0];
+        }
+      } else {
+        count = 0;
+      }
+      return func.apply(undefined, arguments);
+    };
+  }
+
+  /**
    * Converts `func` to its source code.
    *
    * @private
@@ -1821,14 +2019,14 @@
         return cache.get(key);
       }
       var result = func.apply(this, args);
-      memoized.cache = cache.set(key, result);
+      memoized.cache = cache.set(key, result) || cache;
       return result;
     };
     memoized.cache = new (memoize.Cache || MapCache);
     return memoized;
   }
 
-  // Assign cache to `_.memoize`.
+  // Expose `MapCache`.
   memoize.Cache = MapCache;
 
   /*------------------------------------------------------------------------*/
@@ -1909,11 +2107,10 @@
    * _.isArguments([1, 2, 3]);
    * // => false
    */
-  function isArguments(value) {
-    // Safari 8.1 makes `arguments.callee` enumerable in strict mode.
-    return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
-      (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
-  }
+  var isArguments = baseIsArguments(function() { return arguments; }()) ? baseIsArguments : function(value) {
+    return isObjectLike(value) && hasOwnProperty.call(value, 'callee') &&
+      !propertyIsEnumerable.call(value, 'callee');
+  };
 
   /**
    * Checks if `value` is classified as an `Array` object.
@@ -1970,35 +2167,6 @@
   }
 
   /**
-   * This method is like `_.isArrayLike` except that it also checks if `value`
-   * is an object.
-   *
-   * @static
-   * @memberOf _
-   * @since 4.0.0
-   * @category Lang
-   * @param {*} value The value to check.
-   * @returns {boolean} Returns `true` if `value` is an array-like object,
-   *  else `false`.
-   * @example
-   *
-   * _.isArrayLikeObject([1, 2, 3]);
-   * // => true
-   *
-   * _.isArrayLikeObject(document.body.children);
-   * // => true
-   *
-   * _.isArrayLikeObject('abc');
-   * // => false
-   *
-   * _.isArrayLikeObject(_.noop);
-   * // => false
-   */
-  function isArrayLikeObject(value) {
-    return isObjectLike(value) && isArrayLike(value);
-  }
-
-  /**
    * Checks if `value` is a buffer.
    *
    * @static
@@ -2036,9 +2204,9 @@
    */
   function isFunction(value) {
     // The use of `Object#toString` avoids issues with the `typeof` operator
-    // in Safari 8-9 which returns 'object' for typed array and other constructors.
+    // in Safari 9 which returns 'object' for typed array and other constructors.
     var tag = isObject(value) ? objectToString.call(value) : '';
-    return tag == funcTag || tag == genTag;
+    return tag == funcTag || tag == genTag || tag == proxyTag;
   }
 
   /**
@@ -2099,7 +2267,7 @@
    */
   function isObject(value) {
     var type = typeof value;
-    return !!value && (type == 'object' || type == 'function');
+    return value != null && (type == 'object' || type == 'function');
   }
 
   /**
@@ -2127,8 +2295,27 @@
    * // => false
    */
   function isObjectLike(value) {
-    return !!value && typeof value == 'object';
+    return value != null && typeof value == 'object';
   }
+
+  /**
+   * Checks if `value` is classified as a typed array.
+   *
+   * @static
+   * @memberOf _
+   * @since 3.0.0
+   * @category Lang
+   * @param {*} value The value to check.
+   * @returns {boolean} Returns `true` if `value` is a typed array, else `false`.
+   * @example
+   *
+   * _.isTypedArray(new Uint8Array);
+   * // => true
+   *
+   * _.isTypedArray([]);
+   * // => false
+   */
+  var isTypedArray = nodeIsTypedArray ? baseUnary(nodeIsTypedArray) : baseIsTypedArray;
 
   /*------------------------------------------------------------------------*/
 
@@ -2253,6 +2440,51 @@
   /*------------------------------------------------------------------------*/
 
   /**
+   * Creates a function that returns `value`.
+   *
+   * @static
+   * @memberOf _
+   * @since 2.4.0
+   * @category Util
+   * @param {*} value The value to return from the new function.
+   * @returns {Function} Returns the new constant function.
+   * @example
+   *
+   * var objects = _.times(2, _.constant({ 'a': 1 }));
+   *
+   * console.log(objects);
+   * // => [{ 'a': 1 }, { 'a': 1 }]
+   *
+   * console.log(objects[0] === objects[1]);
+   * // => true
+   */
+  function constant(value) {
+    return function() {
+      return value;
+    };
+  }
+
+  /**
+   * This method returns the first argument it receives.
+   *
+   * @static
+   * @since 0.1.0
+   * @memberOf _
+   * @category Util
+   * @param {*} value Any value.
+   * @returns {*} Returns `value`.
+   * @example
+   *
+   * var object = { 'a': 1 };
+   *
+   * console.log(_.identity(object) === object);
+   * // => true
+   */
+  function identity(value) {
+    return value;
+  }
+
+  /**
    * This method returns a new empty array.
    *
    * @static
@@ -2295,6 +2527,7 @@
 
   // Add methods that return wrapped values in chain sequences.
   lodash.assignInWith = assignInWith;
+  lodash.constant = constant;
   lodash.defaults = defaults;
   lodash.flatten = flatten;
   lodash.keys = keys;
@@ -2309,15 +2542,16 @@
   // Add methods that return unwrapped values in chain sequences.
   lodash.cloneDeep = cloneDeep;
   lodash.eq = eq;
+  lodash.identity = identity;
   lodash.isArguments = isArguments;
   lodash.isArray = isArray;
   lodash.isArrayLike = isArrayLike;
-  lodash.isArrayLikeObject = isArrayLikeObject;
   lodash.isBuffer = isBuffer;
   lodash.isFunction = isFunction;
   lodash.isLength = isLength;
   lodash.isObject = isObject;
   lodash.isObjectLike = isObjectLike;
+  lodash.isTypedArray = isTypedArray;
   lodash.stubArray = stubArray;
   lodash.stubFalse = stubFalse;
 
