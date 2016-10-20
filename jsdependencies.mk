@@ -17,9 +17,13 @@ src/lib/mscgenjs-core/render/graphics/renderlabels.js: \
 	src/lib/mscgenjs-core/render/text/textutensils.js
 
 src/lib/mscgenjs-core/render/graphics/svgelementfactory.js: \
+	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js \
 	src/lib/mscgenjs-core/render/graphics/constants.js \
 	src/lib/mscgenjs-core/render/graphics/geometry.js \
-	src/lib/mscgenjs-core/render/graphics/svglowlevelfactory.js
+	src/lib/mscgenjs-core/render/graphics/straight.js \
+	src/lib/mscgenjs-core/render/graphics/svglowlevelfactory.js \
+	src/lib/mscgenjs-core/render/graphics/svgprimitives.js \
+	src/lib/mscgenjs-core/render/graphics/wobbly.js
 
 src/lib/mscgenjs-core/render/graphics/svglowlevelfactory.js: \
 	src/lib/mscgenjs-core/render/graphics/constants.js
@@ -88,6 +92,15 @@ src/test/utl/tpl.spec.js: \
 	src/utl/tpl.js
 
 # cjs dependencies
+src/lib/mscgenjs-core/render/graphics/svgelementfactory.js: \
+	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js \
+	src/lib/mscgenjs-core/render/graphics/constants.js \
+	src/lib/mscgenjs-core/render/graphics/geometry.js \
+	src/lib/mscgenjs-core/render/graphics/straight.js \
+	src/lib/mscgenjs-core/render/graphics/svglowlevelfactory.js \
+	src/lib/mscgenjs-core/render/graphics/svgprimitives.js \
+	src/lib/mscgenjs-core/render/graphics/wobbly.js
+
 # amd dependencies
 EMBED_JS_SOURCES=src/mscgen-inpage.js \
 	src/embedding/config.js \
@@ -106,9 +119,12 @@ EMBED_JS_SOURCES=src/mscgen-inpage.js \
 	src/lib/mscgenjs-core/render/graphics/renderskeleton.js \
 	src/lib/mscgenjs-core/render/graphics/renderutensils.js \
 	src/lib/mscgenjs-core/render/graphics/rowmemory.js \
+	src/lib/mscgenjs-core/render/graphics/straight.js \
 	src/lib/mscgenjs-core/render/graphics/svgelementfactory.js \
 	src/lib/mscgenjs-core/render/graphics/svglowlevelfactory.js \
+	src/lib/mscgenjs-core/render/graphics/svgprimitives.js \
 	src/lib/mscgenjs-core/render/graphics/svgutensils.js \
+	src/lib/mscgenjs-core/render/graphics/wobbly.js \
 	src/lib/mscgenjs-core/render/text/arcmappings.js \
 	src/lib/mscgenjs-core/render/text/asttransform.js \
 	src/lib/mscgenjs-core/render/text/flatten.js \
