@@ -174,7 +174,7 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
     }
 
     function getNamedStyle(pElement) {
-        return pElement.getAttribute('data-named-style');
+        return pElement.getAttribute('data-named-style') || 'basic';
     }
 
     function getAST(pText, pLanguage) {

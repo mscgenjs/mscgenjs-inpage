@@ -5,18 +5,18 @@
   "main": "",
   "dependencies": {},
   "devDependencies": {
-    "amdefine": "1.0.0",
+    "amdefine": "1.0.1",
     "chai": "3.5.0",
-    "eslint": "3.8.1",
+    "eslint": "3.10.0",
     "istanbul": "0.4.5",
     "js-makedepend": "1.0.5",
     "mocha": "3.1.2",
-    "mscgenjs": "1.6.0",
-    "npm-check-updates": "2.8.5",
+    "mscgenjs": "1.6.1",
+    "npm-check-updates": "2.8.6",
     "nsp": "2.6.2",
     "plato": "1.7.0",
     "requirejs": "2.3.2",
-    "webpack": "1.13.2"
+    "webpack": "1.13.3"
   },
   "scripts": {
     "test": "mocha -R dot --recursive src/test --invert --grep \"\\(browser only\\)\"",
