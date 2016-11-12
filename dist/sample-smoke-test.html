@@ -290,5 +290,19 @@ msc {
     <h2>Humongous chart, externally loaded from a <code>pre</code> element</h2>
     <pre class="mscgen_js" data-named-style="lazy"  data-mirror-entities="true" data-src="sample-smoke-test-all-arcs.xu" data-language"xu"></pre>
 
+
+    <h2>Check if styles don't leak</h2>
+    <p>
+        should not be wobbly (style: 'lazy')
+    </p>
+    <script src="./leak-test.mscgen" data-named-style="lazy" type="text/x-mscgen"></script>
+    <p>
+        should be wobbly (style: 'fountainpen')
+    </p>
+    <script src="./leak-test.mscgen" data-named-style="fountainpen" type="text/x-mscgen"></script>
+    <p>
+        should not be wobbly (style: none at all, so should default to 'basic')
+    </p>
+    <script src="./leak-test.mscgen" type="text/x-mscgen"></script>
   </body>
 </html>

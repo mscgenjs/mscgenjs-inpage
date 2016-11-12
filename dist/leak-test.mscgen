@@ -1,0 +1,10 @@
+msc {
+	wordwraparcs=true;
+	donald [label="Donald"],
+	daisy [label="Daisy"],
+	louie [label="Louie"];	
+
+	donald => daisy [label="could you look after the kids?"];
+	daisy >> donald [label="sure, honey"];
+	donald => louie [label="you sleep with aunt Daisy tonight"];
+}
