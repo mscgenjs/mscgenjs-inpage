@@ -74,6 +74,23 @@ src/lib/mscgenjs-core/lib/lodash/%.js: $(MSCGENJS_CORE_ROOT)/lib/lodash/%.js $(M
 # dependencies
 include jsdependencies.mk
 
+.npmignore: .gitignore
+	cp $< $@
+	echo "src/test/**" >> $@
+	echo "utl/**" >> $@
+	echo "wikum/**" >> $@
+	echo ".bithoundrc" >> $@
+	echo ".codeclimate.yml" >> $@
+	echo ".eslintignore" >> $@
+	echo ".eslintrc" >> $@
+	echo ".eslintrc.json" >> $@
+	echo ".gitlab-ci.yml" >> $@
+	echo ".istanbul.yml" >> $@
+	echo ".travis.yml" >> $@
+	echo "Makefile" >> $@
+	echo "jsdependencies.mk" >> $@
+	echo "sitemap.xml" >> $@
+
 # file targets prod
 
 LIVE_DOC_DEPS= $(BUILDDIR)/mscgen-inpage.js \
@@ -110,7 +127,7 @@ cover-report:
 
 cover: node-cover web-cover cover-report
 
-install: $(BUILDDIR)/mscgen-inpage.js
+install: $(BUILDDIR)/mscgen-inpage.js .npmignore
 
 tag:
 	$(GIT) tag -a `utl/getver` -m "tag release `utl/getver`"
