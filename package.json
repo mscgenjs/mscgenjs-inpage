@@ -7,16 +7,16 @@
   "devDependencies": {
     "amdefine": "1.0.1",
     "chai": "3.5.0",
-    "eslint": "3.11.1",
+    "eslint": "3.12.2",
     "istanbul": "0.4.5",
-    "js-makedepend": "2.0.0",
+    "js-makedepend": "2.0.1",
     "mocha": "3.2.0",
-    "mscgenjs": "1.6.2",
-    "npm-check-updates": "2.8.7",
+    "mscgenjs": "1.6.3",
+    "npm-check-updates": "2.8.8",
     "nsp": "2.6.2",
     "plato": "1.7.0",
     "requirejs": "2.3.2",
-    "webpack": "1.13.3"
+    "webpack": "1.14.0"
   },
   "scripts": {
     "test": "mocha -R dot --recursive src/test --invert --grep \"\\(browser only\\)\"",
