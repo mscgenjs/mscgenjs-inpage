@@ -207,6 +207,26 @@ xu {
       Yvette rbox Zacharias[label="Now that's a cosy little box for two entities", textbgcolor=lightgreen];
     }
     </script>
+
+    <h3>Vertical label alignment on regular arcs</h3>
+    <script data-regular-arc-text-vertical-alignment="above" type="text/x-msgenny">
+      wordwraparcs=true,
+      watermark="above";
+
+      a => b: "This is a piece of text that will probably wrap";
+    </script>
+    <script data-regular-arc-text-vertical-alignment="middle" type="text/x-msgenny">
+      wordwraparcs=true,
+      watermark="middle";
+
+      a => b: "This is a piece of text that will probably wrap";
+    </script>
+    <script data-regular-arc-text-vertical-alignment="below" type="text/x-msgenny">
+      wordwraparcs=true,
+      watermark="below";
+
+      a => b: "This is a piece of text that will probably wrap";
+    </script>
     <h3>Generating some errors</h3>
     <script type="text/x-mscgen">
 a => b: "This is not MscGen, my friend";

@@ -12,7 +12,9 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
     "use strict";
 
     var TPL_SPAN = "<span class='mscgen_js' {src} data-language='{lang}' " +
-                   "data-named-style='{namedStyle}' {mirrorEntities}>{msc}<span>";
+                   "data-named-style='{namedStyle}' " +
+                   "data-regular-arc-text-vertical-alignment='{regularArcTextVerticalAlignment}' " +
+                   "{mirrorEntities}>{msc}<span>";
     var TPL_SPAN_SRC = "data-src='{src}' ";
     var TPL_ERR_FILE_NOT_FOUND =
 "ERROR: Could not find or open the URL '{url}' specified in the <code>data-src</code> attribute.";
@@ -53,7 +55,8 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
                             lang: MIME2LANG[lScripts[i].type] || conf.getConfig().defaultLanguage,
                             msc: lScripts[i].textContent.replace(/</g, "&lt;"),
                             mirrorEntities: getMirrorEntities(lScripts[i]) ? "data-mirror-entities='true'" : "",
-                            namedStyle: getNamedStyle(lScripts[i])
+                            namedStyle: getNamedStyle(lScripts[i]),
+                            regularArcTextVerticalAlignment: getVerticalAlignment(lScripts[i])
                         }
                     )
                 );
@@ -125,7 +128,8 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
                 pSource,
                 lLanguage,
                 getMirrorEntities(pElement),
-                getNamedStyle(pElement)
+                getNamedStyle(pElement),
+                getVerticalAlignment(pElement)
             );
         } else {
             pElement.innerHTML = err.renderError(pSource, lAST.location, lAST.message);
@@ -178,6 +182,10 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
         return pElement.getAttribute('data-named-style') || 'basic';
     }
 
+    function getVerticalAlignment(pElement) {
+        return pElement.getAttribute('data-regular-arc-text-vertical-alignment') || 'middle';
+    }
+
     function getAST(pText, pLanguage) {
         var lAST = {};
         try {
@@ -194,7 +202,15 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
         return lAST;
     }
 
-    function render(pAST, pElementId, pSource, pLanguage, pMirrorEntities, pNamedStyle) {
+    function render(
+        pAST,
+        pElementId,
+        pSource,
+        pLanguage,
+        pMirrorEntities,
+        pNamedStyle,
+        pRegularArcTextVerticalAlignment
+    ) {
         var lElement = document.getElementById(pElementId);
         lElement.innerHTML = "";
 
@@ -210,7 +226,8 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
             {
                 source                 : pSource,
                 additionalTemplate     : pNamedStyle,
-                mirrorEntitiesOnBottom : pMirrorEntities
+                mirrorEntitiesOnBottom : pMirrorEntities,
+                regularArcTextVerticalAlignment: pRegularArcTextVerticalAlignment
             }
         );
     }
