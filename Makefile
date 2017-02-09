@@ -96,7 +96,7 @@ include jsdependencies.mk
 LIVE_DOC_DEPS= $(BUILDDIR)/mscgen-inpage.js \
 
 $(BUILDDIR)/mscgen-inpage.js: $(EMBED_JS_SOURCES)
-	$(WEBPACK) --optimize-minimize --optimize-dedupe --optimize-max-chunks 1 src/mscgen-inpage.js $@
+	$(WEBPACK) --optimize-minimize --optimize-max-chunks 1 src/mscgen-inpage.js $@
 
 $(BUILDDIR)/script/mscgen-inpage.js: $(BUILDDIR)/mscgen-inpage.js
 	cp $< $@
