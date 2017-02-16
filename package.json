@@ -11,7 +11,7 @@
     "istanbul": "0.4.5",
     "js-makedepend": "2.2.1",
     "mocha": "3.2.0",
-    "mscgenjs": "1.8.0",
+    "mscgenjs": "1.9.0",
     "npm-check-updates": "2.10.2",
     "nsp": "2.6.2",
     "plato": "1.7.0",

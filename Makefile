@@ -13,8 +13,12 @@ BUILDDIR=dist
 PRODDIRS=$(BUILDDIR)
 MSCGENJS_CORE_ROOT=node_modules/mscgenjs
 MSCGENJS_LIBDIRS=src/lib/mscgenjs-core/parse \
+	src/lib/mscgenjs-core/render/astmassage \
 	src/lib/mscgenjs-core/render/graphics \
+	src/lib/mscgenjs-core/render/graphics/styling \
+	src/lib/mscgenjs-core/render/graphics/svgelementfactory \
 	src/lib/mscgenjs-core/render/text \
+	src/lib/mscgenjs-core/render/textutensils \
 	src/lib/mscgenjs-core/lib/lodash
 LIBDIRS=$(MSCGENJS_LIBDIRS)
 INSTRUMENTATION_DIR=istanbul-instrumented
@@ -59,13 +63,7 @@ $(LIBDIRS):
 src/lib/require.js: node_modules/requirejs/require.js
 	cp $< $@
 
-src/lib/mscgenjs-core/render/graphics/%.js: $(MSCGENJS_CORE_ROOT)/render/graphics/%.js $(MSCGENJS_LIBDIRS)
-	cp $< $@
-
-src/lib/mscgenjs-core/render/text/%.js: $(MSCGENJS_CORE_ROOT)/render/text/%.js $(MSCGENJS_LIBDIRS)
-	cp $< $@
-
-src/lib/mscgenjs-core/parse/%.js: $(MSCGENJS_CORE_ROOT)/parse/%.js $(MSCGENJS_LIBDIRS)
+src/lib/mscgenjs-core/%.js: $(MSCGENJS_CORE_ROOT)/%.js $(MSCGENJS_LIBDIRS)
 	cp $< $@
 
 src/lib/mscgenjs-core/lib/lodash/%.js: $(MSCGENJS_CORE_ROOT)/lib/lodash/%.js $(MSCGENJS_LIBDIRS)

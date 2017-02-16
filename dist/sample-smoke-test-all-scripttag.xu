@@ -7,7 +7,7 @@ xu {
     b [label="Receiver"];
 
     # arcs
-    a =>> b [label="Message"];
-    b >> a [label="Response"];
+    a =>> b [label="Message (hover to see tooltip)", title="This is the secret tooltip in the message, will show up on hover"];
+    b >> a [label="Response (has a tooltip too)", title="That's the response, but here's some money in an enveloppe. I'll push it below the table."];
 
 }
