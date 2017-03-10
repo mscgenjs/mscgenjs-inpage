@@ -7,15 +7,15 @@
   "devDependencies": {
     "amdefine": "1.0.1",
     "chai": "3.5.0",
-    "eslint": "3.15.0",
+    "eslint": "3.17.1",
     "istanbul": "0.4.5",
-    "js-makedepend": "2.2.1",
+    "js-makedepend": "2.2.2",
     "mocha": "3.2.0",
-    "mscgenjs": "1.9.0",
-    "npm-check-updates": "2.10.2",
-    "nsp": "2.6.2",
+    "mscgenjs": "1.9.1",
+    "npm-check-updates": "2.10.3",
+    "nsp": "2.6.3",
     "plato": "1.7.0",
-    "requirejs": "2.3.2",
+    "requirejs": "2.3.3",
     "webpack": "2.2.1"
   },
   "scripts": {
