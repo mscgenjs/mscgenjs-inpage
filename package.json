@@ -11,12 +11,12 @@
     "istanbul": "0.4.5",
     "js-makedepend": "2.2.2",
     "mocha": "3.2.0",
-    "mscgenjs": "1.9.2",
+    "mscgenjs": "1.9.10",
     "npm-check-updates": "2.10.4",
     "nsp": "2.6.3",
     "plato": "1.7.0",
     "requirejs": "2.3.3",
-    "webpack": "2.3.1"
+    "webpack": "2.3.2"
   },
   "scripts": {
     "test": "mocha -R dot --recursive src/test --invert --grep \"\\(browser only\\)\"",
