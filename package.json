@@ -5,6 +5,7 @@
   "main": "",
   "dependencies": {},
   "devDependencies": {
+    "almond": "0.3.3",
     "amdefine": "1.0.1",
     "chai": "3.5.0",
     "eslint": "3.18.0",
@@ -15,8 +16,7 @@
     "npm-check-updates": "2.10.4",
     "nsp": "2.6.3",
     "plato": "1.7.0",
-    "requirejs": "2.3.3",
-    "webpack": "2.3.2"
+    "requirejs": "2.3.3"
   },
   "scripts": {
     "test": "mocha -R dot --recursive src/test --invert --grep \"\\(browser only\\)\"",

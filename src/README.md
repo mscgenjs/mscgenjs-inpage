@@ -27,11 +27,12 @@ wait with loading and executing the script until the complete DOM tree is loaded
 <script src='https://sverweij.github.io/mscgen_js/mscgen-inpage.js' defer></script>
 ```
 
-## One javascript file: webpack
+## One javascript file: r.js and almond
 As you can see mscgen_js keeps its functionality in separate amd modules. It
-uses webpack to smash em together in one ball of javascript.
+uses r.js and almond [almond](https://github.com/jrburke/almond) to smash
+em together in one ball of javascript.
 
-(Before version 1.5.1 we were using requirejs' r.js and
-[almond](https://github.com/jrburke/almond) with the same end. That solution
-is excelent, but we found webpack generates slightly smaller packages
-(~4k or 3% without zipping, ~2k or 6% gzipped)).
+(Between version 1.5.1 and 1.9.11 we were using webpack with the same goal.
+That solution generated slightly smaller packages, but we found webpack
+- with exactly the same input - generated javascript that could not be
+parsed by internet explorer 11.)

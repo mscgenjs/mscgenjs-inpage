@@ -6,7 +6,6 @@ GIT_DEPLOY_FROM_BRANCH=master
 SEDVERSION=utl/sedversion.sh
 NPM=npm
 MAKEDEPEND=node_modules/.bin/js-makedepend --output-to jsdependencies.mk --exclude "node_modules"
-WEBPACK=node_modules/.bin/webpack
 ISTANBUL=node_modules/.bin/istanbul
 
 BUILDDIR=dist
@@ -93,8 +92,16 @@ include jsdependencies.mk
 
 LIVE_DOC_DEPS= $(BUILDDIR)/mscgen-inpage.js \
 
-$(BUILDDIR)/mscgen-inpage.js: $(EMBED_JS_SOURCES)
-	$(WEBPACK) --optimize-minimize --optimize-max-chunks 1 src/mscgen-inpage.js $@
+# $(BUILDDIR)/mscgen-inpage.js: $(EMBED_JS_SOURCES)
+# 	$(WEBPACK) --optimize-minimize --optimize-max-chunks 1 src/mscgen-inpage.js $@
+
+$(BUILDDIR)/mscgen-inpage.js: $(EMBED_JS_SOURCES) node_modules/almond/almond.js
+	$(RJS) -o baseUrl=./src \
+			name=../node_modules/almond/almond \
+			include=mscgen-inpage \
+			out=$@ \
+			wrap=true \
+			preserveLicenseComments=true
 
 $(BUILDDIR)/script/mscgen-inpage.js: $(BUILDDIR)/mscgen-inpage.js
 	cp $< $@
