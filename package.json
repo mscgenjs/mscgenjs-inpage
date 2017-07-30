@@ -7,24 +7,25 @@
   "devDependencies": {
     "almond": "0.3.3",
     "amdefine": "1.0.1",
-    "chai": "3.5.0",
-    "eslint": "3.19.0",
+    "chai": "4.1.0",
+    "eslint": "4.3.0",
     "istanbul": "0.4.5",
-    "js-makedepend": "2.2.3",
-    "mocha": "3.4.1",
-    "mscgenjs": "1.12.1",
-    "npm-check-updates": "2.11.1",
-    "nsp": "2.6.3",
+    "js-makedepend": "2.2.5",
+    "mocha": "3.4.2",
+    "mscgenjs": "1.12.2",
+    "npm-check-updates": "2.12.1",
+    "nsp": "2.7.0",
     "plato": "1.7.0",
-    "requirejs": "2.3.3"
+    "requirejs": "2.3.4"
   },
   "scripts": {
-    "test": "mocha -R dot --recursive src/test --invert --grep \"\\(browser only\\)\"",
-    "cover": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive src/test --invert --grep \"\\(browser only\\)\"",
+    "lint": "eslint src",
+    "lint:fix": "eslint --fix src",
+    "npm-check-updates": "ncu --upgrade",
     "nsp": "nsp check",
     "plato": "plato -r -d platoreports -x \"parser|test|lib\" src/",
-    "lint": "eslint src",
-    "npm-check-updates": "ncu --upgrade"
+    "test": "mocha -R dot --recursive src/test --invert --grep \"\\(browser only\\)\"",
+    "test:cover": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive src/test --invert --grep \"\\(browser only\\)\""
   },
   "repository": {
     "type": "git",

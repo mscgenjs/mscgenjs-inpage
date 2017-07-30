@@ -36,7 +36,7 @@ define(["../../utl/exporter", "../../../node_modules/chai/chai"], function(xport
                 assert.equal(
                     xport.toLocationString(lLocation, lBig, 'mscgen'),
                     'mscgen_js/index.html?lang=mscgen&msc=%23%20source%20too%20long%20for%20an%20URL'
-                    );
+                );
 
             });
         });

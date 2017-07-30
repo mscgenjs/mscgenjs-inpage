@@ -113,8 +113,11 @@ prerequisites:
 lint:
 	$(NPM) run lint
 
+lint-fix:
+	$(NPM) run lint:fix
+
 node-cover:
-	$(NPM) run cover
+	$(NPM) run test:cover
 
 web-cover: src/lib/require.js
 	rm -rf $(INSTRUMENTATION_DIR)
@@ -155,7 +158,7 @@ check: lint test
 
 fullcheck: check outdated nsp
 
-update-dependencies: run-update-dependencies clean-generated-sources  test nsp
+update-dependencies: run-update-dependencies clean-generated-sources test nsp lint-fix
 	$(GIT) diff package.json
 
 run-update-dependencies:
