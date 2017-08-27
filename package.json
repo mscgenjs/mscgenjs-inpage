@@ -24,6 +24,8 @@
     "npm-check-updates": "ncu --upgrade",
     "nsp": "nsp check",
     "plato": "plato -r -d platoreports -x \"parser|test|lib\" src/",
+    "postversion": "git push && git push --tags && npm publish",
+    "preversion": "test `git branch | grep \"^* [a-zA-Z]\" | cut -c 3-` = 'master'",
     "test": "mocha -R dot --recursive src/test --invert --grep \"\\(browser only\\)\"",
     "test:cover": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive src/test --invert --grep \"\\(browser only\\)\""
   },

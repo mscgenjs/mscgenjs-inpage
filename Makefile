@@ -119,6 +119,15 @@ lint-fix:
 node-cover:
 	$(NPM) run test:cover
 
+publish-patch:
+	$(NPM) version patch
+
+publish-minor:
+	$(NPM) version minor
+
+publish-major:
+	$(NPM) version major
+
 web-cover: src/lib/require.js
 	rm -rf $(INSTRUMENTATION_DIR)
 	$(ISTANBUL) instrument src/utl -o $(INSTRUMENTATION_DIR)/utl
