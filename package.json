@@ -7,16 +7,16 @@
   "devDependencies": {
     "almond": "0.3.3",
     "amdefine": "1.0.1",
-    "chai": "4.1.0",
-    "eslint": "4.3.0",
+    "chai": "4.1.1",
+    "eslint": "4.5.0",
     "istanbul": "0.4.5",
-    "js-makedepend": "2.2.5",
-    "mocha": "3.4.2",
-    "mscgenjs": "1.12.2",
+    "js-makedepend": "2.2.6",
+    "mocha": "3.5.0",
+    "mscgenjs": "1.12.3",
     "npm-check-updates": "2.12.1",
     "nsp": "2.7.0",
     "plato": "1.7.0",
-    "requirejs": "2.3.4"
+    "requirejs": "2.3.5"
   },
   "scripts": {
     "lint": "eslint src",
