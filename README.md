@@ -13,6 +13,9 @@ _embed & render MscGen in HTML_
 ```html
 <script src="dist/mscgen-inpage.js" defer></script>
 ```
+>The script is also available for inclusion on your page on [unpkg](https://unpkg.com/mscgenjs-inpage),
+[mscgen.js.org](https://mscgen.js.org/mscgen-inpage.js) and [github](https://raw.githubusercontent.com/sverweij/mscgenjs-inpage/master/dist/mscgen-inpage.js) if you just want to use it for quick testing.
+
 (2) Put your mscgen script in the page, surrounded by a tag with **`mscgen_js`**
 as one of its **`class`** attributes.
 ```html
@@ -44,7 +47,7 @@ mscgen_js by a rendered sequence chart. Result for the above msc:
 
 > We've used `pre` in the sample above, but mscgen_js will work with any
   element type. You can even use `<script>` and wikimedia-style `<mscgen>`
-  tags - see the [mscgen_js embedding guide](https://sverweij.github.io/mscgen_js/embed.html)
+  tags - see the [mscgen_js embedding guide](https://sverweij.github.io/mscgen_js/embed.html#script-tag)
   if you want to do this.
 
 ## More
