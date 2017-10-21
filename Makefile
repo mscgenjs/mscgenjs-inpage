@@ -165,7 +165,7 @@ outdated:
 
 check: lint test
 
-fullcheck: check outdated nsp
+fullcheck: check nsp # outdated
 
 update-dependencies: run-update-dependencies clean-generated-sources test nsp lint-fix
 	$(GIT) diff package.json
