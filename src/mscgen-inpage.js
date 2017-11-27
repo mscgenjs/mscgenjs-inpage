@@ -26,11 +26,11 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
 "Loading charts from separate files</a> in the mscgen_js embedding " +
 "guide how to enable it."
 ;
-    var MIME2LANG = {
+    var MIME2LANG = Object.freeze({
         "text/x-mscgen"  : "mscgen",
         "text/x-msgenny" : "msgenny",
         "text/x-xu"      : "xu"
-    };
+    });
 
     start();
 
@@ -233,6 +233,9 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
     }
 
 });
+/* eslint security/detect-non-literal-require: 0, import/no-dynamic-require: 0 */
+/* the require warnings are false positives */
+/* eslint security/detect-object-injection: 0 */
 /*
  This file is part of mscgen_js.
 

@@ -23,6 +23,7 @@ define([], function() {
         }
     };
 });
+/* eslint security/detect-non-literal-regexp: 0, security/detect-object-injection: 0 */
 /*
  This file is part of mscgen_js.
 

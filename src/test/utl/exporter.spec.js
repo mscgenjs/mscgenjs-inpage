@@ -42,3 +42,6 @@ define(["../../utl/exporter", "../../../node_modules/chai/chai"], function(xport
         });
     });
 });
+
+/* eslint max-len: 0 */
+/* we can't really make these two long strings shorter without compromising readability */
