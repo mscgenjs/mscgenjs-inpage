@@ -150,9 +150,6 @@ tag:
 	$(GIT) tag -a `utl/getver` -m "tag release `utl/getver`"
 	$(GIT) push --tags
 
-static-analysis:
-	$(NPM) run plato
-
 test: src/lib/require.js
 	$(NPM) run test
 	phantomjs src/test/index.phantomjs

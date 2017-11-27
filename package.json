@@ -15,7 +15,6 @@
     "mscgenjs": "1.12.6",
     "npm-check-updates": "2.13.0",
     "nsp": "3.1.0",
-    "plato": "1.7.0",
     "requirejs": "2.3.5"
   },
   "scripts": {
@@ -23,7 +22,6 @@
     "lint:fix": "eslint --fix src",
     "npm-check-updates": "ncu -x mocha --upgrade",
     "nsp": "nsp check",
-    "plato": "plato -r -d platoreports -x \"parser|test|lib\" src/",
     "postversion": "git push && git push --tags && npm publish",
     "preversion": "test `git branch | grep \"^* [a-zA-Z]\" | cut -c 3-` = 'master'",
     "test": "mocha -R dot --recursive src/test --invert --grep \"\\(browser only\\)\"",
