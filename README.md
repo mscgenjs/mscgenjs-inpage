@@ -1,5 +1,5 @@
 # mscgenjs-inpage
-_embed & render MscGen in HTML_
+_Embed & render sequence charts in HTML_
 
 [![bitHound Overall Score](https://www.bithound.io/github/mscgenjs/mscgenjs-inpage/badges/score.svg)](https://www.bithound.io/github/mscgenjs/mscgenjs-inpage)
 [![Test Coverage](https://gitlab.com/sverweij/mscgenjs-inpage/badges/master/coverage.svg)](https://gitlab.com/sverweij/mscgenjs-inpage/builds)
