@@ -24,7 +24,7 @@
     "lint:fix": "eslint --fix src",
     "npm-check-updates": "ncu -x mocha --upgrade",
     "nsp": "nsp check",
-    "postversion": "git push && git push --tags && npm publish",
+    "postversion": "git push && git push --tags",
     "preversion": "test `git branch | grep \"^* [a-zA-Z]\" | cut -c 3-` = 'master'",
     "test": "mocha -R dot --recursive src/test --invert --grep \"\\(browser only\\)\"",
     "test:cover": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive src/test --invert --grep \"\\(browser only\\)\""
