@@ -1,6 +1,6 @@
 {
   "name": "mscgenjs-inpage",
-  "version": "1.13.0",
+  "version": "1.13.1",
   "description": "Embed and render sequence charts in HTML",
   "main": "dist/mscgen-inpage.js",
   "dependencies": {},
@@ -14,7 +14,7 @@
     "istanbul": "0.4.5",
     "js-makedepend": "2.4.9",
     "mocha": "3.5.3",
-    "mscgenjs": "1.15.1",
+    "mscgenjs": "1.15.2",
     "npm-check-updates": "2.14.1",
     "nsp": "3.2.1",
     "requirejs": "2.3.5"

@@ -5,6 +5,17 @@
 src/embedding/error-rendering.js: \
 	src/utl/tpl.js
 
+src/lib/mscgenjs-core/parse/msgennyparser.js: \
+	src/lib/mscgenjs-core/parse/parserHelpers.js \
+	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js
+
+src/lib/mscgenjs-core/lib/lodash/lodash.custom.js: \
+	src/lib/mscgenjs-core/parse/parserHelpers.js \
+
+src/lib/mscgenjs-core/parse/xuparser.js: \
+	src/lib/mscgenjs-core/parse/parserHelpers.js \
+	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js
+
 src/lib/mscgenjs-core/render/astmassage/flatten.js: \
 	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js \
 	src/lib/mscgenjs-core/render/astmassage/aggregatekind.js \
@@ -106,6 +117,14 @@ src/test/utl/tpl.spec.js: \
 	src/utl/tpl.js
 
 # cjs dependencies
+src/lib/mscgenjs-core/parse/msgennyparser.js: \
+	src/lib/mscgenjs-core/parse/parserHelpers.js \
+	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js
+
+src/lib/mscgenjs-core/parse/xuparser.js: \
+	src/lib/mscgenjs-core/parse/parserHelpers.js \
+	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js
+
 src/lib/mscgenjs-core/render/astmassage/flatten.js: \
 	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js \
 	src/lib/mscgenjs-core/render/astmassage/aggregatekind.js \
@@ -187,6 +206,7 @@ EMBED_JS_SOURCES=src/mscgen-inpage.js \
 	src/embedding/error-rendering.js \
 	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js \
 	src/lib/mscgenjs-core/parse/msgennyparser.js \
+	src/lib/mscgenjs-core/parse/parserHelpers.js \
 	src/lib/mscgenjs-core/parse/xuparser.js \
 	src/lib/mscgenjs-core/render/astmassage/aggregatekind.js \
 	src/lib/mscgenjs-core/render/astmassage/asttransform.js \
