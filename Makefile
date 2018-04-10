@@ -1,6 +1,5 @@
-
 .SUFFIXES: .js .pegjs .css .html .msc .mscin .msgenny .svg .png .jpg
-RJS=node_modules/requirejs/bin/r.js
+RJS=node_modules/.bin/r.js
 GIT=git
 GIT_DEPLOY_FROM_BRANCH=master
 SEDVERSION=utl/sedversion.sh
@@ -10,7 +9,7 @@ ISTANBUL=node_modules/.bin/istanbul
 
 BUILDDIR=dist
 PRODDIRS=$(BUILDDIR)
-MSCGENJS_CORE_ROOT=node_modules/mscgenjs
+MSCGENJS_CORE_ROOT=$(shell node_modules/.bin/get-module-root mscgenjs)
 MSCGENJS_LIBDIRS=src/lib/mscgenjs-core/parse \
 	src/lib/mscgenjs-core/render/astmassage \
 	src/lib/mscgenjs-core/render/graphics \
@@ -59,7 +58,8 @@ $(PRODDIRS):
 $(LIBDIRS):
 	mkdir -p $@
 
-src/lib/require.js: node_modules/requirejs/require.js
+REQUIRE_ROOT=$(shell node_modules/.bin/get-module-root requirejs)
+src/lib/require.js: $(REQUIRE_ROOT)/require.js
 	cp $< $@
 
 src/lib/mscgenjs-core/%.js: $(MSCGENJS_CORE_ROOT)/%.js $(MSCGENJS_LIBDIRS)
@@ -94,10 +94,10 @@ LIVE_DOC_DEPS= $(BUILDDIR)/mscgen-inpage.js \
 
 # $(BUILDDIR)/mscgen-inpage.js: $(EMBED_JS_SOURCES)
 # 	$(WEBPACK) --optimize-minimize --optimize-max-chunks 1 src/mscgen-inpage.js $@
-
-$(BUILDDIR)/mscgen-inpage.js: $(EMBED_JS_SOURCES) node_modules/almond/almond.js
+ALMOND_ROOT=$(shell node_modules/.bin/get-module-root almond)
+$(BUILDDIR)/mscgen-inpage.js: $(EMBED_JS_SOURCES) $(ALMOND_ROOT)/almond.js
 	$(RJS) -o baseUrl=./src \
-			name=../node_modules/almond/almond \
+			name=$(ALMOND_ROOT)/almond.js \
 			include=mscgen-inpage \
 			out=$@ \
 			wrap=true \
