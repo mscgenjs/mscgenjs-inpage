@@ -9,7 +9,7 @@ ISTANBUL=node_modules/.bin/istanbul
 
 BUILDDIR=dist
 PRODDIRS=$(BUILDDIR)
-MSCGENJS_CORE_ROOT=$(shell node_modules/.bin/get-module-root mscgenjs)
+MSCGENJS_CORE_ROOT=$(shell node_modules/.bin/get-module-root mscgenjs)/src
 MSCGENJS_LIBDIRS=src/lib/mscgenjs-core/parse \
 	src/lib/mscgenjs-core/render/astmassage \
 	src/lib/mscgenjs-core/render/graphics \

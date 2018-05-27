@@ -6,15 +6,12 @@ src/embedding/error-rendering.js: \
 	src/utl/tpl.js
 
 src/lib/mscgenjs-core/parse/msgennyparser.js: \
-	src/lib/mscgenjs-core/parse/parserHelpers.js \
-	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js
-
-src/lib/mscgenjs-core/lib/lodash/lodash.custom.js: \
-	src/lib/mscgenjs-core/parse/parserHelpers.js \
+	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js \
+	src/lib/mscgenjs-core/parse/parserHelpers.js
 
 src/lib/mscgenjs-core/parse/xuparser.js: \
-	src/lib/mscgenjs-core/parse/parserHelpers.js \
-	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js
+	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js \
+	src/lib/mscgenjs-core/parse/parserHelpers.js
 
 src/lib/mscgenjs-core/render/astmassage/flatten.js: \
 	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js \
@@ -28,7 +25,11 @@ src/lib/mscgenjs-core/render/astmassage/normalizeoptions.js: \
 	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js
 
 src/lib/mscgenjs-core/render/graphics/entities.js: \
-	src/lib/mscgenjs-core/render/graphics/renderlabels.js
+	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js \
+	src/lib/mscgenjs-core/render/graphics/constants.js \
+	src/lib/mscgenjs-core/render/graphics/renderlabels.js \
+	src/lib/mscgenjs-core/render/graphics/svgelementfactory/index.js \
+	src/lib/mscgenjs-core/render/graphics/svgutensils.js
 
 src/lib/mscgenjs-core/render/graphics/renderlabels.js: \
 	src/lib/mscgenjs-core/render/astmassage/aggregatekind.js \
@@ -51,7 +52,7 @@ src/lib/mscgenjs-core/render/graphics/svgelementfactory/straight.js: \
 src/lib/mscgenjs-core/render/graphics/svgelementfactory/svgprimitives.js: \
 	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js \
 	src/lib/mscgenjs-core/render/graphics/svgelementfactory/domprimitives.js \
-	src/lib/mscgenjs-core/render/graphics/svgelementfactory/geometry.js \
+	src/lib/mscgenjs-core/render/graphics/svgelementfactory/getdiagonalangle.js \
 	src/lib/mscgenjs-core/render/graphics/svgelementfactory/round.js
 
 src/lib/mscgenjs-core/render/graphics/svgelementfactory/wobbly.js: \
@@ -118,12 +119,12 @@ src/test/utl/tpl.spec.js: \
 
 # cjs dependencies
 src/lib/mscgenjs-core/parse/msgennyparser.js: \
-	src/lib/mscgenjs-core/parse/parserHelpers.js \
-	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js
+	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js \
+	src/lib/mscgenjs-core/parse/parserHelpers.js
 
 src/lib/mscgenjs-core/parse/xuparser.js: \
-	src/lib/mscgenjs-core/parse/parserHelpers.js \
-	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js
+	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js \
+	src/lib/mscgenjs-core/parse/parserHelpers.js
 
 src/lib/mscgenjs-core/render/astmassage/flatten.js: \
 	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js \
@@ -137,7 +138,11 @@ src/lib/mscgenjs-core/render/astmassage/normalizeoptions.js: \
 	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js
 
 src/lib/mscgenjs-core/render/graphics/entities.js: \
-	src/lib/mscgenjs-core/render/graphics/renderlabels.js
+	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js \
+	src/lib/mscgenjs-core/render/graphics/constants.js \
+	src/lib/mscgenjs-core/render/graphics/renderlabels.js \
+	src/lib/mscgenjs-core/render/graphics/svgelementfactory/index.js \
+	src/lib/mscgenjs-core/render/graphics/svgutensils.js
 
 src/lib/mscgenjs-core/render/graphics/renderlabels.js: \
 	src/lib/mscgenjs-core/render/astmassage/aggregatekind.js \
@@ -160,7 +165,7 @@ src/lib/mscgenjs-core/render/graphics/svgelementfactory/straight.js: \
 src/lib/mscgenjs-core/render/graphics/svgelementfactory/svgprimitives.js: \
 	src/lib/mscgenjs-core/lib/lodash/lodash.custom.js \
 	src/lib/mscgenjs-core/render/graphics/svgelementfactory/domprimitives.js \
-	src/lib/mscgenjs-core/render/graphics/svgelementfactory/geometry.js \
+	src/lib/mscgenjs-core/render/graphics/svgelementfactory/getdiagonalangle.js \
 	src/lib/mscgenjs-core/render/graphics/svgelementfactory/round.js
 
 src/lib/mscgenjs-core/render/graphics/svgelementfactory/wobbly.js: \
@@ -225,7 +230,7 @@ EMBED_JS_SOURCES=src/mscgen-inpage.js \
 	src/lib/mscgenjs-core/render/graphics/renderutensils.js \
 	src/lib/mscgenjs-core/render/graphics/rowmemory.js \
 	src/lib/mscgenjs-core/render/graphics/svgelementfactory/domprimitives.js \
-	src/lib/mscgenjs-core/render/graphics/svgelementfactory/geometry.js \
+	src/lib/mscgenjs-core/render/graphics/svgelementfactory/getdiagonalangle.js \
 	src/lib/mscgenjs-core/render/graphics/svgelementfactory/index.js \
 	src/lib/mscgenjs-core/render/graphics/svgelementfactory/round.js \
 	src/lib/mscgenjs-core/render/graphics/svgelementfactory/straight.js \

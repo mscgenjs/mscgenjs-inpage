@@ -87,21 +87,17 @@ define(function(require) {
         return pWindow.document;
     }
 
-    function _bootstrap(pWindow, pParentElementId, pSvgElementId, pMarkerDefs, pOptions) {
+    function _bootstrap(pWindow, pParentElement, pSvgElementId, pMarkerDefs, pOptions) {
 
         gDocument = _init(pWindow);
 
-        var lParent = gDocument.getElementById(pParentElementId);
-        if (lParent === null) {
-            lParent = gDocument.body;
-        }
         var lSkeletonSvg = svgelementfactory.createSVG(pSvgElementId, pSvgElementId, distillRenderMagic(pOptions));
         if (Boolean(pOptions.source)) {
             lSkeletonSvg.appendChild(setupDesc(pWindow, pOptions.source));
         }
         lSkeletonSvg.appendChild(setupDefs(pSvgElementId, pMarkerDefs, pOptions));
         lSkeletonSvg.appendChild(setupBody(pSvgElementId));
-        lParent.appendChild(lSkeletonSvg);
+        pParentElement.appendChild(lSkeletonSvg);
 
         return gDocument;
     }
@@ -115,72 +111,34 @@ define(function(require) {
     }
 
     function findNamedStyle(pAdditionalTemplate) {
-        var lRetval = null;
-        var lNamedStyles = csstemplates.namedStyles.filter(
+        return csstemplates.namedStyles.find(
             function(tpl) {
                 return tpl.name === pAdditionalTemplate;
             }
         );
-        if (lNamedStyles.length > 0) {
-            lRetval = lNamedStyles[0];
-        }
-        return lRetval;
     }
 
     function distillRenderMagic(pOptions) {
         var lRetval = "";
-        var lNamedStyle  = {};
+        var lNamedStyle = findNamedStyle(pOptions.additionalTemplate);
 
-        /* istanbul ignore if */
-        if (!Boolean(pOptions)) {
-            return "";
-        }
-
-        if (Boolean(pOptions.additionalTemplate)) {
-            lNamedStyle = findNamedStyle(pOptions.additionalTemplate);
-            if (Boolean(lNamedStyle)){
-                lRetval = lNamedStyle.renderMagic;
-            }
+        if (Boolean(lNamedStyle)){
+            lRetval = lNamedStyle.renderMagic;
         }
 
         return lRetval;
     }
 
-    function distillCSS(pOptions, pPosition) {
-        var lStyleString = "";
-        var lNamedStyle  = {};
-
-        /* istanbul ignore if */
-        if (!Boolean(pOptions)) {
-            return "";
-        }
-
-        if (Boolean(pOptions.additionalTemplate)) {
-            lNamedStyle = findNamedStyle(pOptions.additionalTemplate);
-            if (Boolean(lNamedStyle)){
-                lStyleString = lNamedStyle[pPosition];
-            }
-        }
-
-        return lStyleString;
-    }
-
-    function distillAfterCSS(pOptions) {
-        var lStyleString = distillCSS(pOptions, "cssAfter");
-
-        if (Boolean(pOptions.styleAdditions)) {
-            lStyleString += pOptions.styleAdditions;
-        }
-
-        return lStyleString;
-    }
-
-    function distillBeforeCSS(pOptions) {
-        return distillCSS(pOptions, "cssBefore");
+    function composeStyleSheetTemplate(pNamedStyle, pStyleAdditions){
+        return (pNamedStyle.cssBefore || "") +
+            csstemplates.baseTemplate +
+            (pNamedStyle.cssAfter || "") +
+            (pStyleAdditions || "");
     }
 
     function setupStyleElement(pOptions, pSvgElementId) {
-        return (distillBeforeCSS(pOptions) + csstemplates.baseTemplate + distillAfterCSS(pOptions))
+        var lNamedStyle = findNamedStyle(pOptions.additionalTemplate) || {};
+        return (composeStyleSheetTemplate(lNamedStyle, pOptions.styleAdditions))
             .replace(/<%=fontSize%>/g, constants.FONT_SIZE)
             .replace(/<%=lineWidth%>/g, constants.LINE_WIDTH)
             .replace(/<%=id%>/g, pSvgElementId);
@@ -189,10 +147,10 @@ define(function(require) {
     return {
         /**
          * Sets up a skeleton svg document with id pSvgElementId in the dom element
-         * with id pParentElementId, both in window pWindow. See the module
+         * pParentElement, both in window pWindow. See the module
          * documentation for details on the structure of the skeleton.
          *
-         * @param {string} pParentElementId
+         * @param {string} pParentElement
          * @param {string} pSvgElementId
          * @param {object} pMarkerDefs
          * @param {string} pStyleAdditions
@@ -215,11 +173,6 @@ define(function(require) {
 
     };
 });
-/* eslint security/detect-object-injection: 0*/
-/* The 'generic object injection sink' is to a frozen object,
-   attempts to modify it will be moot => we can safely use the []
-   notation
-*/
 /*
  This file is part of mscgen_js.
 

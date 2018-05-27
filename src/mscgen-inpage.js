@@ -219,7 +219,7 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
             pElementId += "link";
         }
         mscrender.clean(pElementId, window);
-        mscrender.renderASTNew(
+        mscrender.render(
             pAST,
             window,
             pElementId,
