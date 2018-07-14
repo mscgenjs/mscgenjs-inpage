@@ -71,7 +71,6 @@ include jsdependencies.mk
 	echo "src/test/**" >> $@
 	echo "utl/**" >> $@
 	echo "wikum/**" >> $@
-	echo ".bithoundrc" >> $@
 	echo ".codeclimate.yml" >> $@
 	echo ".eslintignore" >> $@
 	echo ".eslintrc" >> $@
@@ -105,23 +104,8 @@ $(BUILDDIR)/script/mscgen-inpage.js: $(BUILDDIR)/mscgen-inpage.js
 prerequisites:
 	$(NPM) install
 
-lint:
-	$(NPM) run lint
-
-lint-fix:
-	$(NPM) run lint:fix
-
 node-cover:
 	$(NPM) run test:cover
-
-publish-patch:
-	$(NPM) version patch
-
-publish-minor:
-	$(NPM) version minor
-
-publish-major:
-	$(NPM) version major
 
 web-cover: src/lib/require.js
 	rm -rf $(INSTRUMENTATION_DIR)
@@ -149,22 +133,9 @@ test: src/lib/require.js
 	$(NPM) run test
 	phantomjs src/test/index.phantomjs
 
-nsp:
-	$(NPM) run nsp
+check: $(NPM) run check
 
-outdated:
-	$(NPM) outdated
-
-check: lint test
-
-fullcheck: check nsp # outdated
-
-update-dependencies: run-update-dependencies clean-generated-sources test nsp lint-fix
-	$(GIT) diff package.json
-
-run-update-dependencies:
-	$(NPM) run npm-check-updates
-	$(NPM) install
+fullcheck: check
 
 depend:
 	$(MAKEDEPEND) --system amd,cjs src
