@@ -9,5 +9,4 @@ test_async:
   script:
    - npm install
    - npm run lint
-   - npm run nsp
    - npm run test:cover

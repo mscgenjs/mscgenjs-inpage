@@ -10,7 +10,6 @@ install:
 
 script:
   - npm run lint
-  - npm run nsp
   - npm run test:cover
   - make install
 
