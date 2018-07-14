@@ -13,22 +13,32 @@
     "eslint-plugin-security": "1.4.0",
     "get-module-root": "1.0.0-beta-1",
     "istanbul": "0.4.5",
-    "js-makedepend": "3.0.0",
+    "js-makedepend": "3.0.1",
     "mocha": "3.5.3",
     "mscgenjs": "2.0.0",
-    "npm-check-updates": "2.14.2",
+    "npm-run-all": "4.1.3",
     "nsp": "3.2.1",
-    "requirejs": "2.3.5"
+    "requirejs": "2.3.5",
+    "upem": "1.0.0"
   },
   "scripts": {
+    "check": "npm-run-all --parallel lint test:cover",
+    "clean-install": "make clean install",
     "lint": "eslint src",
     "lint:fix": "eslint --fix src",
-    "npm-check-updates": "ncu -x mocha --upgrade",
     "nsp": "nsp check",
     "postversion": "git push && git push --tags",
     "preversion": "test `git branch | grep \"^* [a-zA-Z]\" | cut -c 3-` = 'master'",
     "test": "mocha -R dot --recursive src/test --invert --grep \"\\(browser only\\)\"",
-    "test:cover": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive src/test --invert --grep \"\\(browser only\\)\""
+    "test:cover": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive src/test --invert --grep \"\\(browser only\\)\"",
+    "update-dependencies": "npm-run-all upem:update upem:install clean-install lint:fix check",
+    "upem:update": "npm outdated --json | upem",
+    "upem:install": "npm install"
+  },
+  "upem": {
+    "donotup": [
+      "mocha"
+    ]
   },
   "repository": {
     "type": "git",

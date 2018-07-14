@@ -45,11 +45,6 @@ help:
 	@echo "clean"
 	@echo " removes everything created by install"
 	@echo
-	@echo "update-dependencies"
-	@echo " updates all (node) module dependencies in package.json"
-	@echo " installs them, rebuilds all generated sources and runs"
-	@echo " all tests."
-	@echo
 
 # production rules
 $(PRODDIRS):
