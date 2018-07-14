@@ -19,7 +19,6 @@ istanbul-instrumented
 src/test/**
 utl/**
 wikum/**
-.bithoundrc
 .codeclimate.yml
 .eslintignore
 .eslintrc
