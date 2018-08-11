@@ -27,9 +27,9 @@
   },
   "scripts": {
     "build": "webpack",
-    "check": "npm-run-all --parallel lint test:cover",
+    "check": "npm-run-all --parallel depcruise lint test:cover",
     "depcruise": "depcruise -v -- src test",
-    "depcruise:graph": "depcruise -T dot -v -- src test | dot -T svg > tmp_deps.svg",
+    "depcruise:graph": "depcruise -T dot -v -- src | dot -T svg > tmp_deps.svg",
     "lint": "eslint src test",
     "lint:fix": "eslint --fix src test",
     "preversion": "test `git branch | grep \"^* [a-zA-Z]\" | cut -c 3-` = 'master'",
