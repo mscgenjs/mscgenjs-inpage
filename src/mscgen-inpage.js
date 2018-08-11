@@ -8,7 +8,7 @@ require([
     "./embedding/error-rendering",
     "./utl/domutl",
     "./utl/tpl"],
-function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
+function(mscparser, msgennyparser, renderast, exporter, config, errorRendering, $, tpl) {
     "use strict";
 
     var TPL_SPAN = "<span class='mscgen_js' {src} data-language='{lang}' " +
@@ -52,7 +52,7 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
                     tpl.applyTemplate(
                         TPL_SPAN, {
                             src: lScripts[i].src ? tpl.applyTemplate(TPL_SPAN_SRC, {src: lScripts[i].src}) : "",
-                            lang: MIME2LANG[lScripts[i].type] || conf.getConfig().defaultLanguage,
+                            lang: MIME2LANG[lScripts[i].type] || config.getConfig().defaultLanguage,
                             msc: lScripts[i].textContent.replace(/</g, "&lt;"),
                             mirrorEntities: getMirrorEntities(lScripts[i]) ? "data-mirror-entities='true'" : "",
                             namedStyle: getNamedStyle(lScripts[i]),
@@ -88,7 +88,7 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
     function renderElement (pElement, pIndex){
         setElementId(pElement, pIndex);
         pElement.setAttribute("data-renderedby", "mscgen_js");
-        if (conf.getConfig().loadFromSrcAttribute && !!pElement.getAttribute("data-src")){
+        if (config.getConfig().loadFromSrcAttribute && !!pElement.getAttribute("data-src")){
             $.ajax(
                 pElement.getAttribute("data-src"),
                 function onSuccess(pEvent) {
@@ -104,7 +104,7 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
                     );
                 }
             );
-        } else if (!conf.getConfig().loadFromSrcAttribute && !!pElement.getAttribute("data-src")){
+        } else if (!config.getConfig().loadFromSrcAttribute && !!pElement.getAttribute("data-src")){
             renderElementError(
                 pElement,
                 tpl.applyTemplate(
@@ -132,7 +132,7 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
                 getVerticalAlignment(pElement)
             );
         } else {
-            pElement.innerHTML = err.renderError(pSource, lAST.location, lAST.message);
+            pElement.innerHTML = errorRendering.renderError(pSource, lAST.location, lAST.message);
         }
     }
 
@@ -144,7 +144,7 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
         var lLink = document.createElement("a");
         lLink.setAttribute(
             "href",
-            conf.getConfig().clickURL + exp.toLocationString(lLocation, pSource, pLanguage)
+            config.getConfig().clickURL + exporter.toLocationString(lLocation, pSource, pLanguage)
         );
         lLink.setAttribute("id", pId + "link");
         lLink.setAttribute("style", "text-decoration: none;");
@@ -154,7 +154,7 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
 
     function setElementId(pElement, pIndex) {
         if (!pElement.id) {
-            pElement.id = conf.getConfig().parentElementPrefix + pIndex.toString();
+            pElement.id = config.getConfig().parentElementPrefix + pIndex.toString();
         }
     }
 
@@ -164,7 +164,7 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
          */
         var lLanguage = pElement.getAttribute('data-language');
         if (!lLanguage) {
-            lLanguage = conf.getConfig().defaultLanguage;
+            lLanguage = config.getConfig().defaultLanguage;
         }
         return lLanguage;
     }
@@ -214,12 +214,12 @@ function(mscparser, msgennyparser, mscrender, exp, conf, err, $, tpl) {
         var lElement = document.getElementById(pElementId);
         lElement.innerHTML = "";
 
-        if (true === conf.getConfig().clickable){
+        if (true === config.getConfig().clickable){
             lElement.appendChild(renderLink(pSource, pLanguage, pElementId));
             pElementId += "link";
         }
-        mscrender.clean(pElementId, window);
-        mscrender.render(
+        renderast.clean(pElementId, window);
+        renderast.render(
             pAST,
             window,
             pElementId,
