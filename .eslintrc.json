@@ -1,10 +1,4 @@
 {
-    // replaced the clear strings with the old-skool numbers soo the
-    // version codeclimate is using can handle this config too:
-    // "error" => "error"
-    // "off" => "off"
-    // "warn" => 1
-
     "root": true,
     "plugins": [
         "security",
@@ -290,13 +284,20 @@
         "import/max-dependencies": ["error", {"max": 20}],
         "import/no-unassigned-import": "error",
         "import/no-named-default": "error",
-        "import/no-anonymous-default-export": "error"
-        // "import/group-exports": "error"
+        "import/no-anonymous-default-export": "error",
+        "import/group-exports": "error"
         
     },
     "env": {
-        "amd": true,
-        "node": true, // for the amdefine thing
+        "node": true,
         "browser": true
-    }
+    },
+    "overrides": [
+        {
+            "files": ["test/**/*.js"],
+            "env": {
+                "mocha": true
+            }
+        }
+    ]
 }

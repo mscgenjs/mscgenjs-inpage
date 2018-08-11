@@ -6,9 +6,6 @@
 node_modules
 jsdoc
 coverage
-src/favicon.ico
-src/*favicon-*.png
-src/*tmp*.*
 *tmp*.*
 *tmp*
 tracking.*
