@@ -3,9 +3,10 @@ if (typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
 
-define(["../utl/tpl"], function(tpl) {
+define(function(require) {
     "use strict";
 
+    var tpl = require("../utl/tpl")
     var TPL_ERR_LINENO = "<pre><div style='color: #d00'># ERROR on line {line}, column {col} - {message}</div>";
     var TPL_ERR = "<pre><div style='color: #d00'># ERROR {message}</div>";
     var TPL_MARKED_LINE = "<mark>{line}\n</mark>";
