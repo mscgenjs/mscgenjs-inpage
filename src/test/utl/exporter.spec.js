@@ -2,8 +2,9 @@ if (typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
 
-define(["../../utl/exporter", "../../../node_modules/chai/chai"], function(xport, chai) {
-
+define(function(require) {
+    var exporter = require("../../utl/exporter");
+    var chai = require("../../../node_modules/chai/chai");
     var assert = chai.assert;
     var gMsc = 'msc{a[label="💩"],b[label="序"],c [label="💩"]; a => b[label="things"], c => b;}';
 
@@ -16,7 +17,7 @@ define(["../../utl/exporter", "../../../node_modules/chai/chai"], function(xport
                     pathname: "mscgen_js/index.html"
                 };
                 assert.equal(
-                    xport.toLocationString(lLocation, gMsc, 'mscgen'),
+                    exporter.toLocationString(lLocation, gMsc, 'mscgen'),
                     'mscgen_js/index.html?lang=mscgen&msc=msc%7Ba%5Blabel%3D%22%F0%9F%92%A9%22%5D%2Cb%5Blabel%3D%22%E5%BA%8F%22%5D%2Cc%20%5Blabel%3D%22%F0%9F%92%A9%22%5D%3B%20a%20%3D%3E%20b%5Blabel%3D%22things%22%5D%2C%20c%20%3D%3E%20b%3B%7D'
                 );
 
@@ -34,7 +35,7 @@ define(["../../utl/exporter", "../../../node_modules/chai/chai"], function(xport
                     lBig += l100wString;
                 }
                 assert.equal(
-                    xport.toLocationString(lLocation, lBig, 'mscgen'),
+                    exporter.toLocationString(lLocation, lBig, 'mscgen'),
                     'mscgen_js/index.html?lang=mscgen&msc=%23%20source%20too%20long%20for%20an%20URL'
                 );
 

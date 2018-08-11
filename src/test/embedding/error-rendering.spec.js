@@ -3,7 +3,9 @@ if (typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
 
-define(["../../embedding/error-rendering", "../../../node_modules/chai/chai"], function(err, chai) {
+define(function(require) {
+    var errorRendering = require("../../embedding/error-rendering");
+    var chai = require("../../../node_modules/chai/chai");
     var expect = chai.expect;
     var assert = chai.assert;
 
@@ -11,7 +13,7 @@ define(["../../embedding/error-rendering", "../../../node_modules/chai/chai"], f
         describe('#renderError', function() {
             it('should render error and source without underline when error location not provided', function() {
                 expect(
-                    err.renderError("Just a source\nwith two lines", undefined, "just a message")
+                    errorRendering.renderError("Just a source\nwith two lines", undefined, "just a message")
                 ).to.equal(
                     "<pre><div style='color: #d00'># ERROR just a message</div>  1 Just a source\n  2 with two lines\n</pre>"
                 );
@@ -24,7 +26,7 @@ define(["../../embedding/error-rendering", "../../../node_modules/chai/chai"], f
                         column: 6
                     }
                 };
-                expect(err.renderError("Just a source\nwith two lines", lErrorLocation, "just a message")).to.equal(
+                expect(errorRendering.renderError("Just a source\nwith two lines", lErrorLocation, "just a message")).to.equal(
                     "<pre><div style='color: #d00'># ERROR on line 2, column 6 - just a message</div>  1 Just a source\n<mark>  2 with <span style='text-decoration:underline'>t</span>wo lines\n</mark></pre>"
                 );
             });
@@ -32,14 +34,14 @@ define(["../../embedding/error-rendering", "../../../node_modules/chai/chai"], f
 
         describe('#deHTMLize() - ', function(){
             it("replaces < with &lt;", function(){
-                expect(err.deHTMLize("<")).to.equal("&lt;");
+                expect(errorRendering.deHTMLize("<")).to.equal("&lt;");
             });
             it("replaces all < with &lt;", function() {
-                expect(err.deHTMLize("<bla>hello</bla>")).to.equal("&lt;bla>hello&lt;/bla>");
+                expect(errorRendering.deHTMLize("<bla>hello</bla>")).to.equal("&lt;bla>hello&lt;/bla>");
             });
             it("leaves strings without < alone", function() {
                 expect(
-                    err.deHTMLize(
+                    errorRendering.deHTMLize(
                         "In Dutch, Huey, Louis and Dewy translate => Kwik, Kwek en Kwak"
                     )
                 ).to.equal(
@@ -50,19 +52,19 @@ define(["../../embedding/error-rendering", "../../../node_modules/chai/chai"], f
 
         describe('#formatNumber() - ', function() {
             it('puts two spaces in front of a single digit on max width 3', function() {
-                assert.equal(err.formatNumber(7, 3), "  7");
+                assert.equal(errorRendering.formatNumber(7, 3), "  7");
             });
             it('puts no spaces in front of a single digit on max width 1', function() {
-                assert.equal(err.formatNumber(7, 1), "7");
+                assert.equal(errorRendering.formatNumber(7, 1), "7");
             });
             it('puts no spaces in front of a single digit on max width 0', function() {
-                assert.equal(err.formatNumber(7, 0), "7");
+                assert.equal(errorRendering.formatNumber(7, 0), "7");
             });
             it('puts no spaces in front of a single digit on max width < 0', function() {
-                assert.equal(err.formatNumber(7, -8), "7");
+                assert.equal(errorRendering.formatNumber(7, -8), "7");
             });
             it('puts no spaces in front of a three digit number on max width 3', function() {
-                assert.equal(err.formatNumber(481, 3), "481");
+                assert.equal(errorRendering.formatNumber(481, 3), "481");
             });
         });
 

@@ -2,8 +2,10 @@ if (typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
 
-define(["../../embedding/config", "../../../node_modules/chai/chai"], function(conf, chai) {
+define(function(require) {
     "use strict";
+    var config = require("../../embedding/config");
+    var chai = require("../../../node_modules/chai/chai");
     var expect = chai.expect;
 
     function getGlobal(){
@@ -18,7 +20,7 @@ define(["../../embedding/config", "../../../node_modules/chai/chai"], function(c
         describe('#getConfig - merges with the global mscgen_js_config', function() {
 
             it('should return the default configuration when no global mscgen_js_config is present', function() {
-                expect(conf.getConfig()).to.deep.equal(
+                expect(config.getConfig()).to.deep.equal(
                     {
                         defaultLanguage : "mscgen",
                         parentElementPrefix : "mscgen_js-parent_",
@@ -35,7 +37,7 @@ define(["../../embedding/config", "../../../node_modules/chai/chai"], function(c
                     clickable: true,
                     clickURL: "http://localhost/"
                 };
-                expect(conf.getConfig()).to.deep.equal(
+                expect(config.getConfig()).to.deep.equal(
                     {
                         defaultLanguage : "mscgen",
                         parentElementPrefix : "mscgen_js-parent_",

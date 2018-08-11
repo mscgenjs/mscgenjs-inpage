@@ -3,7 +3,9 @@ if (typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
 
-define(["../../utl/tpl", "../../../node_modules/chai/chai"], function(tpl, chai) {
+define(function(require) {
+    var tpl = require("../../utl/tpl");
+    var chai = require("../../../node_modules/chai/chai");
     var expect = chai.expect;
     var CASES = [
         {

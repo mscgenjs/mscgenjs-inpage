@@ -3,8 +3,10 @@ if (typeof define !== 'function') {
     var define = require('amdefine')(module);
 }
 
-define(["../../utl/domutl", "../../../node_modules/chai/chai"], function($, chai) {
+define(function(require) {
     "use strict";
+    var $ = require("../../utl/domutl");
+    var chai = require("../../../node_modules/chai/chai");
     var expect = chai.expect;
 
     describe('utl/domutl (browser only)', function() {
