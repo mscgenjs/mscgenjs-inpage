@@ -1,33 +1,24 @@
-/* istanbul ignore next */
-if (typeof define !== 'function') {
-    var define = require('amdefine')(module);
-}
-
-define([], function(){
-    "use strict";
-
-    return {
-        ajax : function (pURL, pSuccessFunction, pErrorFunction) {
-            var lHttpRequest = new XMLHttpRequest();
-            lHttpRequest.onreadystatechange = function onReadyStateChange(pEvent) {
-                if (pEvent.target.readyState === XMLHttpRequest.DONE) {
-                    if (200 === lHttpRequest.status) {
-                        pSuccessFunction(pEvent);
-                    } else {
-                        pErrorFunction(pEvent);
-                    }
+module.exports = {
+    ajax : function (pURL, pSuccessFunction, pErrorFunction) {
+        var lHttpRequest = new XMLHttpRequest();
+        lHttpRequest.onreadystatechange = function onReadyStateChange(pEvent) {
+            if (pEvent.target.readyState === XMLHttpRequest.DONE) {
+                if (200 === lHttpRequest.status) {
+                    pSuccessFunction(pEvent);
+                } else {
+                    pErrorFunction(pEvent);
                 }
-            };
-            lHttpRequest.open('GET', pURL);
-            lHttpRequest.responseType = "text";
-            try {
-                lHttpRequest.send();
-            } catch (e) {
-                pErrorFunction(e);
             }
+        };
+        lHttpRequest.open('GET', pURL);
+        lHttpRequest.responseType = "text";
+        try {
+            lHttpRequest.send();
+        } catch (e) {
+            pErrorFunction(e);
         }
-    };
-});
+    }
+};
 /*
  This file is part of mscgen_js.
 

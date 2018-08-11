@@ -1,35 +1,27 @@
-/* istanbul ignore next */
-if (typeof define !== 'function') {
-    var define = require('amdefine')(module);
+/* max length of an URL on github (4122)
+ * "https://sverweij.github.io/".length (27) - 1
+ */
+var MAX_LOCATION_LENGTH = 4094;
+
+function source2LocationString(pLocation, pSource, pLanguage){
+    return pLocation.pathname +
+            '?lang=' + pLanguage +
+            '&msc=' + encodeURIComponent(pSource);
 }
 
-define([], function() {
-    "use strict";
-    /* max length of an URL on github (4122)
-     * "https://sverweij.github.io/".length (27) - 1
-     */
-    var MAX_LOCATION_LENGTH = 4094;
+function sourceIsURLable(pLocation, pSource, pLanguage){
+    return source2LocationString(pLocation, pSource, pLanguage).length < MAX_LOCATION_LENGTH;
+}
 
-    function source2LocationString(pLocation, pSource, pLanguage){
-        return pLocation.pathname +
-                '?lang=' + pLanguage +
-                '&msc=' + encodeURIComponent(pSource);
-    }
-
-    function sourceIsURLable(pLocation, pSource, pLanguage){
-        return source2LocationString(pLocation, pSource, pLanguage).length < MAX_LOCATION_LENGTH;
-    }
-
-    return {
-        toLocationString: function (pLocation, pSource, pLanguage) {
-            var lSource = '# source too long for an URL';
-            if (sourceIsURLable(pLocation, pSource, pLanguage)) {
-                lSource = pSource;
-            }
-            return source2LocationString(pLocation, lSource, pLanguage);
+module.exports = {
+    toLocationString: function (pLocation, pSource, pLanguage) {
+        var lSource = '# source too long for an URL';
+        if (sourceIsURLable(pLocation, pSource, pLanguage)) {
+            lSource = pSource;
         }
-    };
-});
+        return source2LocationString(pLocation, lSource, pLanguage);
+    }
+};
 /*
  This file is part of mscgen_js.
 

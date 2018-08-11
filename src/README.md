@@ -26,13 +26,3 @@ wait with loading and executing the script until the complete DOM tree is loaded
 ```html
 <script src='https://sverweij.github.io/mscgen_js/mscgen-inpage.js' defer></script>
 ```
-
-## One javascript file: r.js and almond
-As you can see mscgen_js keeps its functionality in separate amd modules. It
-uses r.js and almond [almond](https://github.com/jrburke/almond) to smash
-em together in one ball of javascript.
-
-(Between version 1.5.1 and 1.9.11 we were using webpack with the same goal.
-That solution generated slightly smaller packages, but we found webpack
-- with exactly the same input - generated javascript that could not be
-parsed by internet explorer 11.)

@@ -17,10 +17,8 @@ plugins:
         enabled: false
 exclude_patterns:
   - ".github/"
-  - "src/test/"
-  - "src/lib"
+  - "test/"
   - "dist"
   - "wikum"
   - "**/node_modules/"
-  - "Makefile"
   - "COPYING"

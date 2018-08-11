@@ -1,90 +1,82 @@
-/* istanbul ignore next */
-if (typeof define !== 'function') {
-    var define = require('amdefine')(module);
+var tpl = require("../utl/tpl");
+
+var TPL_ERR_LINENO = "<pre><div style='color: #d00'># ERROR on line {line}, column {col} - {message}</div>";
+var TPL_ERR = "<pre><div style='color: #d00'># ERROR {message}</div>";
+var TPL_MARKED_LINE = "<mark>{line}\n</mark>";
+var TPL_UNDERLINED_CHAR = "<span style='text-decoration:underline'>{char}</span>";
+/**
+ * Given a Number, emits a String with that number in, left padded so the
+ * string is pMaxWidth long. If the number doesn't fit within pMaxWidth
+ * characters, just returns a String with that number in it
+ *
+ * @param {number} pNumber
+ * @param {number} pMaxWidth
+ * @return {string} - the formatted number
+ */
+function formatNumber(pNumber, pMaxWidth) {
+    var lRetval = pNumber.toString();
+    var lPosLeft = pMaxWidth - lRetval.length;
+    for (var i = 0; i < lPosLeft; i++) {
+        lRetval = " " + lRetval;
+    }
+    return lRetval;
 }
 
-define(function(require) {
-    "use strict";
+function formatLine(pLine, pLineNo){
+    return formatNumber(pLineNo, 3) + " " + pLine;
+}
 
-    var tpl = require("../utl/tpl")
-    var TPL_ERR_LINENO = "<pre><div style='color: #d00'># ERROR on line {line}, column {col} - {message}</div>";
-    var TPL_ERR = "<pre><div style='color: #d00'># ERROR {message}</div>";
-    var TPL_MARKED_LINE = "<mark>{line}\n</mark>";
-    var TPL_UNDERLINED_CHAR = "<span style='text-decoration:underline'>{char}</span>";
-    /**
-     * Given a Number, emits a String with that number in, left padded so the
-     * string is pMaxWidth long. If the number doesn't fit within pMaxWidth
-     * characters, just returns a String with that number in it
-     *
-     * @param {number} pNumber
-     * @param {number} pMaxWidth
-     * @return {string} - the formatted number
-     */
-    function formatNumber(pNumber, pMaxWidth) {
-        var lRetval = pNumber.toString();
-        var lPosLeft = pMaxWidth - lRetval.length;
-        for (var i = 0; i < lPosLeft; i++) {
-            lRetval = " " + lRetval;
+function underlineCol(pLine, pCol){
+    return pLine.split("").reduce(function(pPrev, pChar, pIndex){
+        if (pIndex === pCol) {
+            return pPrev + tpl.applyTemplate(
+                TPL_UNDERLINED_CHAR, {char: deHTMLize(pChar)}
+            );
         }
-        return lRetval;
-    }
+        return pPrev + deHTMLize(pChar);
+    }, "");
+}
 
-    function formatLine(pLine, pLineNo){
-        return formatNumber(pLineNo, 3) + " " + pLine;
-    }
+/**
+ * returns a 'sanitized' version of the passed
+ * string. Sanitization is <em>very barebones</em> at the moment
+ * - it replaces < by &lt; so the browser won't start interpreting it
+ * as html. I'd rather use something standard for this, but haven't
+ * found it yet...
+ */
+function deHTMLize(pString){
+    return pString.replace(/</g, "&lt;");
+}
 
-    function underlineCol(pLine, pCol){
-        return pLine.split("").reduce(function(pPrev, pChar, pIndex){
-            if (pIndex === pCol) {
+module.exports = {
+    formatNumber: formatNumber,
+    deHTMLize: deHTMLize,
+    renderError: function renderError(pSource, pErrorLocation, pMessage){
+        var lErrorIntro = Boolean(pErrorLocation)
+            ? tpl.applyTemplate(
+                TPL_ERR_LINENO, {
+                    message: pMessage,
+                    line: pErrorLocation.start.line,
+                    col: pErrorLocation.start.column
+                })
+            : tpl.applyTemplate(
+                TPL_ERR, {
+                    message: pMessage
+                }
+            );
+
+        return pSource.split('\n').reduce(function(pPrev, pLine, pIndex) {
+            if (!!pErrorLocation && pIndex === (pErrorLocation.start.line - 1)) {
                 return pPrev + tpl.applyTemplate(
-                    TPL_UNDERLINED_CHAR, {char: deHTMLize(pChar)}
-                );
-            }
-            return pPrev + deHTMLize(pChar);
-        }, "");
-    }
-
-    /**
-     * returns a 'sanitized' version of the passed
-     * string. Sanitization is <em>very barebones</em> at the moment
-     * - it replaces < by &lt; so the browser won't start interpreting it
-     * as html. I'd rather use something standard for this, but haven't
-     * found it yet...
-     */
-    function deHTMLize(pString){
-        return pString.replace(/</g, "&lt;");
-    }
-
-    return {
-        formatNumber: formatNumber,
-        deHTMLize: deHTMLize,
-        renderError: function renderError(pSource, pErrorLocation, pMessage){
-            var lErrorIntro = Boolean(pErrorLocation)
-                ? tpl.applyTemplate(
-                    TPL_ERR_LINENO, {
-                        message: pMessage,
-                        line: pErrorLocation.start.line,
-                        col: pErrorLocation.start.column
-                    })
-                : tpl.applyTemplate(
-                    TPL_ERR, {
-                        message: pMessage
+                    TPL_MARKED_LINE, {
+                        line:formatLine(underlineCol(pLine, pErrorLocation.start.column - 1), pIndex + 1)
                     }
                 );
-
-            return pSource.split('\n').reduce(function(pPrev, pLine, pIndex) {
-                if (!!pErrorLocation && pIndex === (pErrorLocation.start.line - 1)) {
-                    return pPrev + tpl.applyTemplate(
-                        TPL_MARKED_LINE, {
-                            line:formatLine(underlineCol(pLine, pErrorLocation.start.column - 1), pIndex + 1)
-                        }
-                    );
-                }
-                return pPrev + deHTMLize(formatLine(pLine, pIndex + 1)) + '\n';
-            }, lErrorIntro) + "</pre>";
-        }
-    };
-});
+            }
+            return pPrev + deHTMLize(formatLine(pLine, pIndex + 1)) + '\n';
+        }, lErrorIntro) + "</pre>";
+    }
+};
 /*
  This file is part of mscgen_js.
 
