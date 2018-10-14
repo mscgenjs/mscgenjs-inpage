@@ -1,11 +1,12 @@
-var mscparser = require("mscgenjs/dist/cjs/parse/xuparser");
-var msgennyparser = require("mscgenjs/dist/cjs/parse/msgennyparser");
-var renderast = require("mscgenjs/dist/cjs/render/graphics/renderast").default;
-var exporter = require("./utl/exporter");
-var config = require("./embedding/config");
+var mscparser      = require("mscgenjs/dist/cjs/parse/xuparser");
+var msgennyparser  = require("mscgenjs/dist/cjs/parse/msgennyparser");
+var renderast      = require("mscgenjs/dist/cjs/render/graphics/renderast").default;
+
+var config         = require("./embedding/config");
 var errorRendering = require("./embedding/error-rendering");
-var $ = require("./utl/domutl");
-var tpl = require("./utl/tpl");
+var $              = require("./utl/domutl");
+var exporter       = require("./utl/exporter");
+var tpl            = require("./utl/tpl");
 
 var TPL_SPAN = "<span class='mscgen_js' {src} data-language='{lang}' " +
                 "data-named-style='{namedStyle}' " +
