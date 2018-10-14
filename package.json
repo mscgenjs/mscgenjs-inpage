@@ -32,7 +32,7 @@
     "depcruise:graph": "depcruise -T dot -v -- src | dot -T svg > tmp_deps.svg",
     "lint": "eslint src test",
     "lint:fix": "eslint --fix src test",
-    "preversion": "test `git branch | grep \"^* [a-zA-Z]\" | cut -c 3-` = 'master'",
+    "preversion": "test `git branch | grep \"^* [a-zA-Z]\" | cut -c 3-` = 'master' && npm run build",
     "test": "mocha --recursive test --invert --grep \"\\(browser only\\)\"",
     "test:cover": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive test --invert --grep \"\\(browser only\\)\"",
     "update-dependencies": "npm-run-all upem:update upem:install lint:fix check",
