@@ -3,6 +3,24 @@
   "version": "2.0.2",
   "description": "Embed and render sequence charts in HTML",
   "main": "dist/mscgen-inpage.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mscgenjs/mscgenjs-inpage"
+  },
+  "author": "Sander Verweij",
+  "license": "GPL-3.0",
+  "keywords": [
+    "mscgen",
+    "embed",
+    "sequence chart",
+    "sequence diagram",
+    "xu",
+    "msgenny"
+  ],
+  "bugs": {
+    "url": "https://github.com/mscgenjs/mscgenjs-inpage/issues"
+  },
+  "homepage": "https://github.com/mscgenjs/mscgenjs-inpage",
   "files": [
     "dist/mscgen-inpage.js",
     "package.json",
@@ -27,39 +45,22 @@
   },
   "scripts": {
     "build": "webpack",
-    "check": "npm-run-all --parallel depcruise lint test:cover",
+    "check": "run-p depcruise lint test:cover",
     "depcruise": "depcruise -v -- src test",
-    "depcruise:graph": "depcruise -T dot -v -- src | dot -T svg > tmp_deps.svg",
+    "depcruise:graph": "depcruise -T rcdot -v -- src | dot -T svg > tmp_deps.svg",
     "lint": "eslint src test",
     "lint:fix": "eslint --fix src test",
-    "preversion": "test `git branch | grep \"^* [a-zA-Z]\" | cut -c 3-` = 'master' && npm run build",
+    "scm:stage": "git add .",
     "test": "mocha --recursive test --invert --grep \"\\(browser only\\)\"",
     "test:cover": "istanbul cover node_modules/mocha/bin/_mocha -- --recursive test --invert --grep \"\\(browser only\\)\"",
-    "update-dependencies": "npm-run-all upem:update upem:install lint:fix check",
+    "update-dependencies": "run-s upem:update upem:install lint:fix check",
     "upem:update": "npm outdated --json | upem",
-    "upem:install": "npm install"
+    "upem:install": "npm install",
+    "version": "run-s build scm:stage"
   },
   "upem": {
     "donotup": [
       "mscgenjs"
     ]
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/mscgenjs/mscgenjs-inpage"
-  },
-  "author": "Sander Verweij",
-  "license": "GPL-3.0",
-  "keywords": [
-    "mscgen",
-    "embed",
-    "sequence chart",
-    "sequence diagram",
-    "xu",
-    "msgenny"
-  ],
-  "bugs": {
-    "url": "https://github.com/mscgenjs/mscgenjs-inpage/issues"
-  },
-  "homepage": "https://github.com/mscgenjs/mscgenjs-inpage"
+  }
 }
