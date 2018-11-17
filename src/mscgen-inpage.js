@@ -1,6 +1,6 @@
 var mscparser      = require("mscgenjs/dist/cjs/parse/xuparser");
 var msgennyparser  = require("mscgenjs/dist/cjs/parse/msgennyparser");
-var renderast      = require("mscgenjs/dist/cjs/render/graphics/renderast").default;
+var renderast      = require("mscgenjs/dist/cjs/render/graphics/renderast");
 
 var config         = require("./embedding/config");
 var errorRendering = require("./embedding/error-rendering");
