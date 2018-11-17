@@ -1,24 +1,24 @@
 module.exports = {
-    ajax : function (pURL, pSuccessFunction, pErrorFunction) {
-        var lHttpRequest = new XMLHttpRequest();
-        lHttpRequest.onreadystatechange = function onReadyStateChange(pEvent) {
-            if (pEvent.target.readyState === XMLHttpRequest.DONE) {
-                if (200 === lHttpRequest.status) {
-                    pSuccessFunction(pEvent);
-                } else {
-                    pErrorFunction(pEvent);
-                }
-            }
-        };
-        lHttpRequest.open('GET', pURL);
-        lHttpRequest.responseType = "text";
-        try {
-            lHttpRequest.send();
-        } catch (e) {
-            pErrorFunction(e);
+  ajax: function (pURL, pSuccessFunction, pErrorFunction) {
+    var lHttpRequest = new XMLHttpRequest()
+    lHttpRequest.onreadystatechange = function onReadyStateChange (pEvent) {
+      if (pEvent.target.readyState === XMLHttpRequest.DONE) {
+        if (lHttpRequest.status === 200) {
+          pSuccessFunction(pEvent)
+        } else {
+          pErrorFunction(pEvent)
         }
+      }
     }
-};
+    lHttpRequest.open('GET', pURL)
+    lHttpRequest.responseType = 'text'
+    try {
+      lHttpRequest.send()
+    } catch (e) {
+      pErrorFunction(e)
+    }
+  }
+}
 /*
  This file is part of mscgen_js.
 

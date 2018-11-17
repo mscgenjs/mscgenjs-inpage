@@ -1,30 +1,29 @@
 /* global mscgen_js_config */
 
 var gConfig = {
-    defaultLanguage : "mscgen",
-    parentElementPrefix : "mscgen_js-parent_",
-    clickable : false,
-    clickURL : "https://sverweij.github.io/mscgen_js/",
-    loadFromSrcAttribute: false
-};
+  defaultLanguage: 'mscgen',
+  parentElementPrefix: 'mscgen_js-parent_',
+  clickable: false,
+  clickURL: 'https://sverweij.github.io/mscgen_js/',
+  loadFromSrcAttribute: false
+}
 
-function mergeConfig (pConfigBase, pConfigToMerge){
-    Object.getOwnPropertyNames(pConfigToMerge).forEach(function(pAttribute){
-        pConfigBase[pAttribute] = pConfigToMerge[pAttribute];
-    });
+function mergeConfig (pConfigBase, pConfigToMerge) {
+  Object.getOwnPropertyNames(pConfigToMerge).forEach(function (pAttribute) {
+    pConfigBase[pAttribute] = pConfigToMerge[pAttribute]
+  })
 }
 
 module.exports = {
-    getConfig: function(){
-        if ('undefined' !== typeof (mscgen_js_config) && mscgen_js_config &&
-            'object' === typeof (mscgen_js_config)){
-            mergeConfig(gConfig, mscgen_js_config);
-        }
-        return gConfig;
+  getConfig: function () {
+    if (typeof (mscgen_js_config) !== 'undefined' && mscgen_js_config &&
+            typeof (mscgen_js_config) === 'object') {
+      mergeConfig(gConfig, mscgen_js_config)
     }
-};
-
-/* eslint security/detect-object-injection: 0 */
+    return gConfig
+  }
+}
+/* eslint security/detect-object-injection: 0, camelcase: 0 */
 /* We're good here with object injection stuff; the attributes are not passed from the outside */
 /*
  This file is part of mscgen_js.
