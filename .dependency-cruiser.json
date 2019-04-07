@@ -59,5 +59,6 @@
     }
   ],
   "options": {
+    "prefix": "https://github.com/mscgenjs/mscgenjs-inpage/blob/develop/"
   }
 }
