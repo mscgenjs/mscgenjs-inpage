@@ -56,6 +56,28 @@
           "npm-peer"
         ]
       }
+    },
+    {
+      "name": "no-unreachable",
+      "severity": "error",
+      "from": {
+        "path": "^src/mscgen-inpage\\.js$"
+      },
+      "to": {
+        "path": "^src/",
+        "reachable": false
+      }
+    },
+    {
+      "name": "no-uncovered",
+      "severity": "error",
+      "from": {
+        "path": "^src/[^\\.]+\\.spec\\.js$"
+      },
+      "to": {
+        "path": "^src/",
+        "reachable": false
+      }
     }
   ],
   "options": {
