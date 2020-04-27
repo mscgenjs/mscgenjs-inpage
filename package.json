@@ -28,24 +28,24 @@
     "COPYING"
   ],
   "dependencies": {
-    "mscgenjs": "4.0.4"
+    "mscgenjs": "5.0.0"
   },
   "devDependencies": {
     "chai": "4.2.0",
-    "dependency-cruiser": "6.1.0",
+    "dependency-cruiser": "9.0.0",
     "eslint": "6.8.0",
-    "eslint-config-standard": "14.1.0",
-    "eslint-plugin-import": "2.19.1",
-    "eslint-plugin-node": "11.0.0",
+    "eslint-config-standard": "14.1.1",
+    "eslint-plugin-import": "2.20.2",
+    "eslint-plugin-node": "11.1.0",
     "eslint-plugin-promise": "4.2.1",
     "eslint-plugin-security": "1.4.0",
     "eslint-plugin-standard": "4.0.1",
-    "mocha": "6.2.2",
+    "mocha": "7.1.2",
     "npm-run-all": "4.1.5",
-    "nyc": "15.0.0",
-    "upem": "3.1.2",
-    "webpack": "4.41.5",
-    "webpack-cli": "3.3.10"
+    "nyc": "15.0.1",
+    "upem": "4.0.0",
+    "webpack": "4.43.0",
+    "webpack-cli": "3.3.11"
   },
   "scripts": {
     "build": "webpack",
@@ -114,6 +114,6 @@
     "all": false
   },
   "engines": {
-    "node": "^8.10||^10||^12||>=13"
+    "node": "^10||^12||>=13"
   }
 }
