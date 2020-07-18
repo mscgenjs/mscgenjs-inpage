@@ -30,9 +30,7 @@
         "pathNot": "\\.spec\\.js$"
       },
       "to": {
-        "dependencyTypes": [
-          "npm-dev"
-        ]
+        "dependencyTypes": ["npm-dev"]
       }
     },
     {
@@ -41,9 +39,7 @@
       "comment": "optional dependencies don't make sense for this package",
       "from": {},
       "to": {
-        "dependencyTypes": [
-          "npm-optional"
-        ]
+        "dependencyTypes": ["npm-optional"]
       }
     },
     {
@@ -52,9 +48,7 @@
       "severity": "error",
       "from": {},
       "to": {
-        "dependencyTypes": [
-          "npm-peer"
-        ]
+        "dependencyTypes": ["npm-peer"]
       }
     },
     {
@@ -81,6 +75,15 @@
     }
   ],
   "options": {
-    "prefix": "https://github.com/mscgenjs/mscgenjs-inpage/blob/develop/"
+    "prefix": "https://github.com/mscgenjs/mscgenjs-inpage/blob/develop/",
+    "reporterOptions": {
+      "dot": {
+        "theme": {
+          "graph": {
+            "splines": "ortho"
+          }
+        }
+      }
+    }
   }
 }
