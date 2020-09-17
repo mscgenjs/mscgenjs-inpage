@@ -1,8 +1,8 @@
 'use strict'
-var chai = require('chai')
-var $ = require('../../src/utl/domutl')
+const chai = require('chai')
+const $ = require('../../src/utl/domutl')
 
-var expect = chai.expect
+const expect = chai.expect
 
 describe('utl/domutl (browser only)', function () {
   describe('ajax', function () {

@@ -1,8 +1,8 @@
-var chai = require('chai')
-var tpl = require('../../src/utl/tpl')
+const chai = require('chai')
+const tpl = require('../../src/utl/tpl')
 
-var expect = chai.expect
-var CASES = [
+const expect = chai.expect
+const CASES = [
   {
     title: 'leaves strings without variables alone',
     input: {

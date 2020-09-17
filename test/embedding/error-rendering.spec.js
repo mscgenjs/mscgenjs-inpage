@@ -1,8 +1,8 @@
-var chai = require('chai')
-var errorRendering = require('../../src/embedding/error-rendering')
+const chai = require('chai')
+const errorRendering = require('../../src/embedding/error-rendering')
 
-var expect = chai.expect
-var assert = chai.assert
+const expect = chai.expect
+const assert = chai.assert
 
 /* eslint no-undefined: 0 */
 describe('embedding/error-rendering', function () {
@@ -16,7 +16,7 @@ describe('embedding/error-rendering', function () {
     })
 
     it('should render error and source with underline when error location provided', function () {
-      var lErrorLocation = {
+      const lErrorLocation = {
         start: {
           line: 2,
           column: 6

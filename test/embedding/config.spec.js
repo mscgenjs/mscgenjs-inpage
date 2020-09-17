@@ -1,8 +1,8 @@
 'use strict'
-var chai = require('chai')
-var config = require('../../src/embedding/config')
+const chai = require('chai')
+const config = require('../../src/embedding/config')
 
-var expect = chai.expect
+const expect = chai.expect
 
 function getGlobal () {
   if (typeof global === 'undefined') {
@@ -26,7 +26,7 @@ describe('embedding/embed-config', function () {
     })
 
     it('should return a changed configuration when a mscgen_js_config is present', function () {
-      var lGlobal = getGlobal()
+      const lGlobal = getGlobal()
 
       lGlobal.mscgen_js_config = {
         clickable: true,

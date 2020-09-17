@@ -54,11 +54,11 @@ module.exports = {
   renderError: function renderError (pSource, pErrorLocation, pMessage) {
     var lErrorIntro = pErrorLocation
       ? tpl.applyTemplate(
-        TPL_ERR_LINENO, {
-          message: pMessage,
-          line: pErrorLocation.start.line,
-          col: pErrorLocation.start.column
-        })
+          TPL_ERR_LINENO, {
+            message: pMessage,
+            line: pErrorLocation.start.line,
+            col: pErrorLocation.start.column
+          })
       : tpl.applyTemplate(
         TPL_ERR, {
           message: pMessage

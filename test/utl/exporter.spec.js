@@ -1,13 +1,13 @@
-var chai = require('chai')
-var exporter = require('../../src/utl/exporter')
+const chai = require('chai')
+const exporter = require('../../src/utl/exporter')
 
-var assert = chai.assert
-var gMsc = 'msc{a[label="💩"],b[label="序"],c [label="💩"]; a => b[label="things"], c => b;}'
+const assert = chai.assert
+const gMsc = 'msc{a[label="💩"],b[label="序"],c [label="💩"]; a => b[label="things"], c => b;}'
 
 describe('utl/exporter', function () {
   describe('#toLocationString', function () {
     it('without extra parameters', function () {
-      var lLocation = {
+      const lLocation = {
         protocol: 'http',
         host: 'localhost',
         pathname: 'mscgen_js/index.html'
@@ -18,14 +18,14 @@ describe('utl/exporter', function () {
       )
     })
     it('with a source that is too big (> 4k)', function () {
-      var lLocation = {
+      const lLocation = {
         protocol: 'http',
         host: 'localhost',
         pathname: 'mscgen_js/index.html'
       }
-      var l100wString = '# 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890'
-      var lBig = l100wString
-      for (var i = 0; i < 40; i++) {
+      const l100wString = '# 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890'
+      let lBig = l100wString
+      for (let i = 0; i < 40; i++) {
         lBig += l100wString
       }
       assert.equal(
