@@ -1,27 +1,30 @@
 /* max length of an URL on github (4122)
  * "https://sverweij.github.io/".length (27) - 1
  */
-var MAX_LOCATION_LENGTH = 4094
+let gMaxLocationLength = 4094;
 
-function source2LocationString (pLocation, pSource, pLanguage) {
-  return pLocation.pathname +
-            '?lang=' + pLanguage +
-            '&msc=' + encodeURIComponent(pSource)
+function source2LocationString(pLocation, pSource, pLanguage) {
+  return `${pLocation.pathname}?lang=${pLanguage}&msc=${encodeURIComponent(
+    pSource
+  )}`;
 }
 
-function sourceIsURLable (pLocation, pSource, pLanguage) {
-  return source2LocationString(pLocation, pSource, pLanguage).length < MAX_LOCATION_LENGTH
+function sourceIsURLable(pLocation, pSource, pLanguage) {
+  return (
+    source2LocationString(pLocation, pSource, pLanguage).length <
+    gMaxLocationLength
+  );
 }
 
 module.exports = {
-  toLocationString: function (pLocation, pSource, pLanguage) {
-    var lSource = '# source too long for an URL'
+  toLocationString(pLocation, pSource, pLanguage) {
+    let lSource = "# source too long for an URL";
     if (sourceIsURLable(pLocation, pSource, pLanguage)) {
-      lSource = pSource
+      lSource = pSource;
     }
-    return source2LocationString(pLocation, lSource, pLanguage)
-  }
-}
+    return source2LocationString(pLocation, lSource, pLanguage);
+  },
+};
 /*
  This file is part of mscgen_js.
 

@@ -1,9 +1,13 @@
-var tpl = require('../utl/tpl')
+const tpl = require("../utl/tpl");
 
-var TPL_ERR_LINENO = "<pre><div style='color: #d00'># ERROR on line {line}, column {col} - {message}</div>"
-var TPL_ERR = "<pre><div style='color: #d00'># ERROR {message}</div>"
-var TPL_MARKED_LINE = '<mark>{line}\n</mark>'
-var TPL_UNDERLINED_CHAR = "<span style='text-decoration:underline'>{char}</span>"
+const TPL_ERROR_LINENO =
+  "<pre><div style='color: #d00'># ERROR on line {line}, column {col} - {message}</div>";
+const TPL_ERROR = "<pre><div style='color: #d00'># ERROR {message}</div>";
+const TPL_MARKED_LINE = "<mark>{line}\n</mark>";
+const TPL_UNDERLINED_CHAR =
+  "<span style='text-decoration:underline'>{char}</span>";
+const MAX_NUMBER_WIDTH = 3;
+
 /**
  * Given a Number, emits a String with that number in, left padded so the
  * string is pMaxWidth long. If the number doesn't fit within pMaxWidth
@@ -13,28 +17,18 @@ var TPL_UNDERLINED_CHAR = "<span style='text-decoration:underline'>{char}</span>
  * @param {number} pMaxWidth
  * @return {string} - the formatted number
  */
-function formatNumber (pNumber, pMaxWidth) {
-  var lRetval = pNumber.toString()
-  var lPosLeft = pMaxWidth - lRetval.length
-  for (var i = 0; i < lPosLeft; i++) {
-    lRetval = ' ' + lRetval
+function formatNumber(pNumber, pMaxWidth) {
+  let lReturnValue = pNumber.toString();
+  let lPosLeft = pMaxWidth - lReturnValue.length;
+  // eslint-disable-next-line no-plusplus
+  for (let lIndex = 0; lIndex < lPosLeft; lIndex++) {
+    lReturnValue = ` ${lReturnValue}`;
   }
-  return lRetval
+  return lReturnValue;
 }
 
-function formatLine (pLine, pLineNo) {
-  return formatNumber(pLineNo, 3) + ' ' + pLine
-}
-
-function underlineCol (pLine, pCol) {
-  return pLine.split('').reduce(function (pPrev, pChar, pIndex) {
-    if (pIndex === pCol) {
-      return pPrev + tpl.applyTemplate(
-        TPL_UNDERLINED_CHAR, { char: deHTMLize(pChar) }
-      )
-    }
-    return pPrev + deHTMLize(pChar)
-  }, '')
+function formatLine(pLine, pLineNo) {
+  return `${formatNumber(pLineNo, MAX_NUMBER_WIDTH)} ${pLine}`;
 }
 
 /**
@@ -44,39 +38,56 @@ function underlineCol (pLine, pCol) {
  * as html. I'd rather use something standard for this, but haven't
  * found it yet...
  */
-function deHTMLize (pString) {
-  return pString.replace(/</g, '&lt;')
+function deZALGΌtheBlackPonyLord(pString) {
+  return pString.replace(/</g, "&lt;");
+}
+
+function underlineCol(pLine, pCol) {
+  return pLine.split("").reduce((pPrevious, pChar, pIndex) => {
+    if (pIndex === pCol) {
+      return (
+        pPrevious +
+        tpl.applyTemplate(TPL_UNDERLINED_CHAR, {
+          char: deZALGΌtheBlackPonyLord(pChar),
+        })
+      );
+    }
+    return pPrevious + deZALGΌtheBlackPonyLord(pChar);
+  }, "");
 }
 
 module.exports = {
-  formatNumber: formatNumber,
-  deHTMLize: deHTMLize,
-  renderError: function renderError (pSource, pErrorLocation, pMessage) {
-    var lErrorIntro = pErrorLocation
-      ? tpl.applyTemplate(
-        TPL_ERR_LINENO, {
+  formatNumber,
+  deHTMLize: deZALGΌtheBlackPonyLord,
+  renderError: function renderError(pSource, pErrorLocation, pMessage) {
+    let lErrorIntro = pErrorLocation
+      ? tpl.applyTemplate(TPL_ERROR_LINENO, {
           message: pMessage,
           line: pErrorLocation.start.line,
-          col: pErrorLocation.start.column
+          col: pErrorLocation.start.column,
         })
-      : tpl.applyTemplate(
-        TPL_ERR, {
-          message: pMessage
-        }
-      )
+      : tpl.applyTemplate(TPL_ERROR, {
+          message: pMessage,
+        });
 
-    return pSource.split('\n').reduce(function (pPrev, pLine, pIndex) {
-      if (!!pErrorLocation && pIndex === (pErrorLocation.start.line - 1)) {
-        return pPrev + tpl.applyTemplate(
-          TPL_MARKED_LINE, {
-            line: formatLine(underlineCol(pLine, pErrorLocation.start.column - 1), pIndex + 1)
-          }
-        )
+    return `${pSource.split("\n").reduce((pPrevious, pLine, pIndex) => {
+      if (Boolean(pErrorLocation) && pIndex === pErrorLocation.start.line - 1) {
+        return (
+          pPrevious +
+          tpl.applyTemplate(TPL_MARKED_LINE, {
+            line: formatLine(
+              underlineCol(pLine, pErrorLocation.start.column - 1),
+              pIndex + 1
+            ),
+          })
+        );
       }
-      return pPrev + deHTMLize(formatLine(pLine, pIndex + 1)) + '\n'
-    }, lErrorIntro) + '</pre>'
-  }
-}
+      return `${
+        pPrevious + deZALGΌtheBlackPonyLord(formatLine(pLine, pIndex + 1))
+      }\n`;
+    }, lErrorIntro)}</pre>`;
+  },
+};
 /*
  This file is part of mscgen_js.
 

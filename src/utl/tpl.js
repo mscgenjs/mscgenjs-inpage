@@ -1,19 +1,18 @@
 module.exports = {
-  applyTemplate: function applyTemplate (pTemplate, pReplacementPairs) {
-    var lRetval = pTemplate
+  applyTemplate: function applyTemplate(pTemplate, pReplacementPairs) {
+    let lReturnValue = pTemplate;
 
     if (pReplacementPairs) {
-      Object.keys(pReplacementPairs).forEach(function (pKey) {
-        lRetval =
-                    lRetval.replace(
-                      new RegExp('{' + pKey + '}', 'g'),
-                      pReplacementPairs[pKey]
-                    )
-      })
+      Object.keys(pReplacementPairs).forEach((pKey) => {
+        lReturnValue = lReturnValue.replace(
+          new RegExp(`{${pKey}}`, "g"),
+          pReplacementPairs[pKey]
+        );
+      });
     }
-    return lRetval
-  }
-}
+    return lReturnValue;
+  },
+};
 /* eslint security/detect-non-literal-regexp: 0, security/detect-object-injection: 0 */
 /*
  This file is part of mscgen_js.

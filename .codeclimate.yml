@@ -7,7 +7,7 @@ plugins:
   eslint:
     enabled: true
     channel: "eslint-4"
-    config: 
+    config:
       config: .eslintrc.json
     checks:
       # indent rules on codeclimate seem to be different from

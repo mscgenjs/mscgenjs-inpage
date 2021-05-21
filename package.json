@@ -28,24 +28,27 @@
     "COPYING"
   ],
   "dependencies": {
-    "mscgenjs": "5.0.4"
+    "mscgenjs": "6.0.0"
   },
   "devDependencies": {
-    "chai": "4.3.0",
-    "dependency-cruiser": "9.23.2",
-    "eslint": "7.20.0",
-    "eslint-config-standard": "16.0.2",
-    "eslint-plugin-import": "2.22.1",
+    "chai": "4.3.4",
+    "dependency-cruiser": "10.0.1",
+    "eslint": "7.26.0",
+    "eslint-config-moving-meadow": "2.0.9",
+    "eslint-config-prettier": "8.3.0",
+    "eslint-plugin-budapestian": "2.3.0",
+    "eslint-plugin-import": "2.23.2",
+    "eslint-plugin-mocha": "8.1.0",
     "eslint-plugin-node": "11.1.0",
-    "eslint-plugin-promise": "4.3.1",
     "eslint-plugin-security": "1.4.0",
-    "eslint-plugin-standard": "5.0.0",
-    "mocha": "8.3.0",
+    "eslint-plugin-unicorn": "32.0.1",
+    "mocha": "8.4.0",
     "npm-run-all": "4.1.5",
     "nyc": "15.1.0",
-    "upem": "5.0.0",
-    "webpack": "5.24.2",
-    "webpack-cli": "4.5.0"
+    "prettier": "2.3.0",
+    "upem": "6.0.0",
+    "webpack": "5.37.1",
+    "webpack-cli": "4.7.0"
   },
   "scripts": {
     "build": "webpack",
@@ -54,8 +57,12 @@
     "depcruise:graph": "run-p depcruise:graph:*",
     "depcruise:graph:html": "depcruise -T dot -v -- src | dot -T svg | depcruise-wrap-stream-in-html > docs/dependencygraph.html",
     "depcruise:graph:png": "depcruise -T dot -v -- src | dot -Gdpi=192 -T png | pngquant - > docs/dependencygraph.png",
-    "lint": "eslint src test",
-    "lint:fix": "eslint --fix src test",
+    "lint": "npm-run-all lint:eslint lint:prettier",
+    "lint:eslint": "eslint src test",
+    "lint:prettier": "prettier --check {src,test}/**/*.js *.{json,yml,md} .github",
+    "lint:fix": "npm-run-all lint:fix:eslint lint:fix:prettier",
+    "lint:fix:eslint": "eslint --fix src test",
+    "lint:fix:prettier": "prettier --write {src,test}/**/*.js *.{json,yml,md} .github",
     "scm:push": "run-p --aggregate-output scm:push:*",
     "scm:push:github": "run-p --aggregate-output scm:push:github:*",
     "scm:push:github:commits": "git push",
@@ -69,15 +76,22 @@
     "version": "run-s build depcruise:graph scm:stage"
   },
   "eslintConfig": {
-    "extends": "standard",
-    "plugins": [
-      "security"
+    "extends": [
+      "moving-meadow"
     ],
-    "rules": {
-      "no-var": "off"
+    "parserOptions": {
+      "ecmaVersion": 2020
     },
     "env": {
       "browser": true
+    },
+    "rules": {
+      "complexity": [
+        "warn",
+        7
+      ],
+      "sort-imports": "off",
+      "import/no-relative-parent-imports": "off"
     },
     "overrides": [
       {
@@ -85,7 +99,13 @@
           "test/**/*.js"
         ],
         "env": {
-          "mocha": true
+          "jest": true
+        },
+        "rules": {
+          "node/global-require": "off",
+          "max-lines-per-function": "off",
+          "func-names": "off",
+          "no-magic-numbers": "off"
         }
       }
     ]
