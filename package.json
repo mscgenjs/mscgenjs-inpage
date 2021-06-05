@@ -23,6 +23,7 @@
   "homepage": "https://github.com/mscgenjs/mscgenjs-inpage",
   "files": [
     "dist/mscgen-inpage.js",
+    "dist/mscgen-inpage.js.map",
     "package.json",
     "README.md",
     "COPYING"
