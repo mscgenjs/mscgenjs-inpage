@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>script vs div</title>
+    <script src="mscgen-inpage.js" defer></script>
+  </head>
+  <body>
+    <h1>Visual test: no mscgen_js_config in sight</h1>
+    <h2>Regular embedded script</h2>
+    <script type="text/x-msgenny" data-named-style="lazy">
+      a => b: hello;
+      b >> a: hello yourself;
+    </script>
+
+    <h2>Script loaded from a source</h2>
+    <p>
+      That's not allowed when not configured in mscgen_js_confg => error
+      message:
+    </p>
+    <script src="doesnotexist.msgenny" type="text/x-msgenny" />
+  </body>
+</html>
