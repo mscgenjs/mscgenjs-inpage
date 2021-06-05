@@ -18,40 +18,39 @@ _Embed & render sequence charts in HTML_
 > The script is also available for inclusion on your page on [unpkg](https://unpkg.com/mscgenjs-inpage),
 > [mscgen.js.org](https://mscgen.js.org/mscgen-inpage.js) and [github](https://raw.githubusercontent.com/sverweij/mscgenjs-inpage/master/dist/mscgen-inpage.js) if you just want to use it for quick testing.
 
-(2) Put your mscgen script in the page, surrounded by a tag with **`mscgen_js`**
-as one of its **`class`** attributes.
+(2) Put your mscgen script in the page, surrounded by a script tag with the
+`text/x-mscgen` mime type
 
 ```html
-<pre class="mscgen_js">
-    # OpenId Connect protocol
-    # https://openid.net/specs/openid-connect-core-1_0.html#rfc.section.1.3
-    msc {
-      wordwraparcs="true";
+<script type="text/x-mscgen">
+  # OpenId Connect protocol
+  # https://openid.net/specs/openid-connect-core-1_0.html#rfc.section.1.3
+  msc {
+    wordwraparcs="true";
 
-      eu [label="end-user"],
-      rp [label="relying party"],
-      op [label="OpenID provider"];
+    eu [label="end-user"],
+    rp [label="relying party"],
+    op [label="OpenID provider"];
 
-      eu =>> rp [label="log me in"];
-      rp =>> op [label="authentication request"];
-      op =>> eu [label="authentication and authorization request"];
-      eu >> op [label="authenticate and authorize"];
-      op >> rp [label="authentication response"];
-      rp =>> op [label="UserInfo request"];
-      op >> rp [label="UserInfo response"];
-      rp >> eu [label="Hi. You're logged in with {UserInfo.name}"];
-    }
-    </pre
->
+    eu =>> rp [label="log me in"];
+    rp =>> op [label="authentication request"];
+    op =>> eu [label="authentication and authorization request"];
+    eu >> op [label="authenticate and authorize"];
+    op >> rp [label="authentication response"];
+    rp =>> op [label="UserInfo request"];
+    op >> rp [label="UserInfo response"];
+    rp >> eu [label="Hi. You're logged in with {UserInfo.name}"];
+  }
+</script>
 ```
 
 (3) **You're done**. The script replaces all elements in the page with the class
 mscgen_js by a rendered sequence chart. Result for the above msc:  
 ![readme.png](wikum/readme.png)
 
-> We've used `pre` in the sample above, but mscgen_js will work with any
-> element type. You can even use `<script>` and wikimedia-style `<mscgen>`
-> tags - see the [mscgen_js embedding guide](https://sverweij.github.io/mscgen_js/embed.html#script-tag)
+> We've used `script` in the sample above, but mscgen_js will work with any
+> element type - and there's even a wikimedia-style `<mscgen>`
+> tag - see the [mscgen_js embedding guide](https://sverweij.github.io/mscgen_js/embed.html#script-tag)
 > if you want to do this.
 
 ## More
@@ -60,15 +59,12 @@ mscgen_js by a rendered sequence chart. Result for the above msc:
   covers more options, e.g.:
   - How to read MscGen from external files.
   - How to embed MscGen in Atlassian Confluence.
-  - Using `<script>` or `<mscgen>` for rendering.
+  - Using aribtrary tags or `<mscgen>` for rendering.
   - Making the charts clickable, so they open in the on line interpreter.
   - Using other sequence chart languages (like Xù and MsGenny)
 - If you want to write MscGen: it's a doddle in the
   [on line interpreter](https://sverweij.github.io/mscgen_js) or the
   [atom package](https://atom.io/packages/mscgen-preview).
-- This (npm) package has completely replaced the provisional [bower
-  package](https://github.com/mscgenjs/mscgen_js-inpage-package) released
-  in 2015.
 
 ## Licensing: GPL-3.0 with a relaxation
 
