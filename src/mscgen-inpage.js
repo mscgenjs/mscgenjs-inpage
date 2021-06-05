@@ -4,25 +4,14 @@ const renderast = require("mscgenjs/dist/cjs/render/graphics/renderast");
 
 const config = require("./embedding/config");
 const errorRendering = require("./embedding/error-rendering");
-const $ = require("./utl/domutl");
 const exporter = require("./utl/exporter");
-const tpl = require("./utl/tpl");
 
-const TPL_SPAN =
-  "<span class='mscgen_js' {src} data-language='{lang}' " +
-  "data-named-style='{namedStyle}' " +
-  "data-regular-arc-text-vertical-alignment='{regularArcTextVerticalAlignment}' " +
-  "{mirrorEntities}>{msc}<span>";
-const TPL_SPAN_SOURCE = "data-src='{src}' ";
-const TPL_ERROR_FILE_NOT_FOUND =
-  "ERROR: Could not find or open the URL '{url}' specified in the <code>data-src</code> attribute.";
-const TPL_ERR_FILE_LOADING_DISABLED =
-  "ERROR: Won't load the chart specified in <code>data-src='{url}'</code>, " +
+const ERR_FILE_LOADING_DISABLED =
+  "ERROR: Won't load the chart specified,\n" +
   "because loading from separate files is switched off in the mscgen_js " +
-  "configuration. <br><br>See " +
-  "<a href='https://sverweij.github.io/mscgen_js/embed.html#loading-from-separate-files'>" +
-  "Loading charts from separate files</a> in the mscgen_js embedding " +
-  "guide how to enable it.";
+  "configuration. \n\nSee " +
+  "https://sverweij.github.io/mscgen_js/embed.html#loading-from-separate-files " +
+  "how to enable it.";
 
 const MIME2LANG = Object.freeze({
   "text/x-mscgen": "mscgen",
@@ -31,10 +20,8 @@ const MIME2LANG = Object.freeze({
 });
 
 function getLanguage(pElement) {
-  /* the way to do it, but doesn't work in IE:
-        lLanguage = pElement.dataset.language;
-        */
-  let lLanguage = pElement.getAttribute("data-language");
+  let lLanguage =
+    pElement.dataset.language || MIME2LANG[pElement.getAttribute("type")];
   if (!lLanguage) {
     lLanguage = config.getConfig().defaultLanguage;
   }
@@ -58,10 +45,11 @@ function getAST(pText, pLanguage) {
 }
 
 function renderElementError(pElement, pString) {
-  pElement.innerHTML = tpl.applyTemplate(
-    "<div style='color: #d00'>{string}</div>",
-    { string: pString }
-  );
+  const lElement = document.createElement("pre");
+
+  lElement.setAttribute("style", "color: #d00");
+  lElement.textContent = pString;
+  pElement.replaceChildren(lElement);
 }
 
 function setElementId(pElement, pIndex) {
@@ -108,10 +96,7 @@ function render(pAST, pElementId, pOptions) {
 function getMirrorEntities(pElement) {
   let lMirrorEntities = pElement.getAttribute("data-mirror-entities");
 
-  if (lMirrorEntities && lMirrorEntities === "true") {
-    return true;
-  }
-  return false;
+  return lMirrorEntities && lMirrorEntities === "true";
 }
 
 function getNamedStyle(pElement) {
@@ -125,20 +110,24 @@ function getVerticalAlignment(pElement) {
   );
 }
 
-function parseAndRender(pElement, pSource) {
-  let lLanguage = getLanguage(pElement);
+function parseAndRender(
+  pRenderElement,
+  pSource,
+  pSourceElement = pRenderElement
+) {
+  let lLanguage = getLanguage(pSourceElement);
   let lAST = getAST(pSource, lLanguage);
 
   if (lAST.entities) {
-    render(lAST, pElement.id, {
+    render(lAST, pRenderElement.id, {
       source: pSource,
       language: lLanguage,
-      mirrorEntities: getMirrorEntities(pElement),
-      namedStyle: getNamedStyle(pElement),
-      regularArcTextVerticalAlignment: getVerticalAlignment(pElement),
+      mirrorEntities: getMirrorEntities(pSourceElement),
+      namedStyle: getNamedStyle(pSourceElement),
+      regularArcTextVerticalAlignment: getVerticalAlignment(pSourceElement),
     });
   } else {
-    pElement.innerHTML = errorRendering.renderError(
+    pRenderElement.innerHTML = errorRendering.renderError(
       pSource,
       lAST.location,
       lAST.message
@@ -146,77 +135,76 @@ function parseAndRender(pElement, pSource) {
   }
 }
 
-function renderElement(pElement, pIndex) {
-  setElementId(pElement, pIndex);
-  pElement.dataset.renderedby = "mscgen_js";
-  if (
-    config.getConfig().loadFromSrcAttribute &&
-    Boolean(pElement.getAttribute("data-src"))
-  ) {
-    $.ajax(
-      pElement.getAttribute("data-src"),
-      (pEvent) => {
-        parseAndRender(pElement, pEvent.target.response);
-      },
-      () => {
-        renderElementError(
-          pElement,
-          tpl.applyTemplate(TPL_ERROR_FILE_NOT_FOUND, {
-            url: pElement.getAttribute("data-src"),
-          })
-        );
-      }
-    );
-  } else if (
-    !config.getConfig().loadFromSrcAttribute &&
-    Boolean(pElement.getAttribute("data-src"))
-  ) {
-    renderElementError(
-      pElement,
-      tpl.applyTemplate(TPL_ERR_FILE_LOADING_DISABLED, {
-        url: pElement.getAttribute("data-src"),
-      })
-    );
+function getResponseStatus(pResponse) {
+  if (pResponse.ok) {
+    return Promise.resolve(pResponse);
   } else {
-    parseAndRender(pElement, pElement.textContent);
+    return Promise.reject(new Error(`ERROR: ${pResponse.statusText}`));
+  }
+}
+
+function getResponseText(pResponse) {
+  return pResponse.text();
+}
+
+function getSourceAttribute(pElement) {
+  return pElement.getAttribute("data-src") || pElement.getAttribute("src");
+}
+
+function getElementSource(pScript) {
+  const lSourceURL = getSourceAttribute(pScript);
+
+  if (lSourceURL) {
+    //  deepcode ignore Ssrf: false positive. This is not server side. It's als not 'flowing in here from an exception on line 41'
+    return fetch(lSourceURL).then(getResponseStatus).then(getResponseText);
+  } else {
+    return new Promise((pResolve, pReject) => {
+      if (pScript.textContent) {
+        pResolve(pScript.textContent);
+      } else {
+        pReject(new Error("ERROR: this element doesn't contain any text"));
+      }
+    });
+  }
+}
+
+function renderElement(
+  pSourceElement,
+  pIndex,
+  pRenderElement = pSourceElement
+) {
+  pSourceElement.dataset.renderedby = "mscgen_js";
+  if (
+    !config.getConfig().loadFromSrcAttribute &&
+    Boolean(getSourceAttribute(pSourceElement))
+  ) {
+    renderElementError(pRenderElement, ERR_FILE_LOADING_DISABLED);
+  } else {
+    setElementId(pRenderElement, pIndex);
+    getElementSource(pSourceElement)
+      .then((pSource) => {
+        parseAndRender(pRenderElement, pSource, pSourceElement);
+      })
+      .catch((pError) => {
+        renderElementError(pRenderElement, pError.message);
+      });
   }
 }
 
 function processElement(pElement, pIndex) {
   if (!pElement.hasAttribute("data-renderedby")) {
-    renderElement(pElement, pIndex);
-  }
-}
+    if (pElement.tagName === "SCRIPT") {
+      let lRenderElement = document.createElement("span");
 
-function processScriptElements() {
-  let lScripts = document.scripts;
-
-  for (const lScript of lScripts) {
-    if (
-      Boolean(MIME2LANG[lScript.type]) &&
-      !lScript.hasAttribute("data-renderedby")
-    ) {
-      lScript.insertAdjacentHTML(
-        "afterend",
-        tpl.applyTemplate(TPL_SPAN, {
-          src: lScript.src
-            ? tpl.applyTemplate(TPL_SPAN_SOURCE, { src: lScript.src })
-            : "",
-          lang: MIME2LANG[lScript.type] || config.getConfig().defaultLanguage,
-          msc: lScript.textContent.replace(/</g, "&lt;"),
-          mirrorEntities: getMirrorEntities(lScript)
-            ? "data-mirror-entities='true'"
-            : "",
-          namedStyle: getNamedStyle(lScript),
-          regularArcTextVerticalAlignment: getVerticalAlignment(lScript),
-        })
-      );
-      lScript.dataset.renderedby = "mscgen_js";
+      pElement.after(lRenderElement);
+      renderElement(pElement, pIndex, lRenderElement);
+    } else {
+      renderElement(pElement, pIndex);
     }
   }
 }
 
-function renderElementArray(pMscGenElements, pStartIdAt) {
+function renderElementArray(pMscGenElements, pStartIdAt = 0) {
   // eslint-disable-next-line budapestian/local-variable-pattern
   for (const [lIndex, pMscGenElement] of pMscGenElements.entries()) {
     processElement(pMscGenElement, pStartIdAt + lIndex);
@@ -224,14 +212,13 @@ function renderElementArray(pMscGenElements, pStartIdAt) {
 }
 
 function start() {
-  processScriptElements();
-
-  let lClassElements = document.querySelectorAll(".mscgen_js");
-  renderElementArray(lClassElements, 0);
-  renderElementArray(
-    document.querySelectorAll("mscgen"),
-    lClassElements.length
-  );
+  renderElementArray([
+    ...[...document.querySelectorAll(".mscgen_js")],
+    ...[...document.scripts].filter((pScript) =>
+      Boolean(MIME2LANG[pScript.type])
+    ),
+    ...[...document.querySelectorAll("mscgen")],
+  ]);
 }
 
 start();
