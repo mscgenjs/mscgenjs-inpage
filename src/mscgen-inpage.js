@@ -192,7 +192,10 @@ function renderElement(
 }
 
 function processElement(pElement, pIndex) {
-  if (!pElement.hasAttribute("data-renderedby")) {
+  if (!pElement.dataset.renderedby) {
+    // you can render inside a script element, but it won't become
+    // visible any time soon. Workaround: insert a span and render
+    // in there.
     if (pElement.tagName === "SCRIPT") {
       let lRenderElement = document.createElement("span");
 
@@ -204,26 +207,58 @@ function processElement(pElement, pIndex) {
   }
 }
 
-function renderElementArray(pMscGenElements, pStartIdAt = 0) {
-  // eslint-disable-next-line budapestian/local-variable-pattern
-  for (const [lIndex, pMscGenElement] of pMscGenElements.entries()) {
-    processElement(pMscGenElement, pStartIdAt + lIndex);
-  }
+function getId() {
+  const lSomeBigNumber = 1000000000;
+  return Math.round(lSomeBigNumber * Math.random());
 }
 
-function start() {
-  renderElementArray([
-    ...[...document.querySelectorAll(".mscgen_js")],
-    ...[...document.scripts].filter((pScript) =>
-      Boolean(MIME2LANG[pScript.type])
-    ),
-    ...[...document.querySelectorAll("mscgen")],
-  ]);
+function renderElementArray(pMscGenElements) {
+  pMscGenElements.forEach((pMscGenElement) => {
+    processElement(pMscGenElement, getId());
+  });
 }
 
-start();
+function observerCallback(pEntries) {
+  pEntries.forEach((pEntry) => {
+    if (pEntry.isIntersecting) {
+      const lElement = pEntry.target.nextElementSibling;
+      processElement(lElement, getId());
+    }
+  });
+}
 
-/* eslint security/detect-object-injection: 0 */
+// historically we used any element with a mscgen_js class,
+// later on we added the wikimedia style mscgen tag and
+// even later the script one, because they looked snazzy:
+const ELEMENTS_TO_RENDER = [
+  ...[...document.querySelectorAll(".mscgen_js")],
+  ...[...document.scripts].filter((pScript) =>
+    Boolean(MIME2LANG[pScript.type])
+  ),
+  ...[...document.querySelectorAll("mscgen")],
+];
+
+const OBSERVER = new IntersectionObserver(observerCallback, {
+  rootMargin: "100% 0% 100% 0%",
+});
+
+ELEMENTS_TO_RENDER.forEach((pElement) => {
+  // scripts are not visible, hence observing them for visibility
+  // is doing nothing. Workaround: insert a marker element right
+  // before it that _is_ visible, and observe that.
+  const lMarker = document.createElement("mscgenjs-marker");
+  pElement.before(lMarker);
+
+  OBSERVER.observe(lMarker);
+});
+
+// Observer trickery, of course, is nice, but when you print a page
+// you want all of the graphs to show up anyway. This ensures that
+// that indeed happens at the right time:
+window.addEventListener("beforeprint", () => {
+  renderElementArray(ELEMENTS_TO_RENDER);
+});
+
 /*
  This file is part of mscgen_js.
 
