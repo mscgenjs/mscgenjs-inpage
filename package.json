@@ -1,6 +1,6 @@
 {
   "name": "mscgenjs-inpage",
-  "version": "4.0.2",
+  "version": "4.0.3",
   "description": "Embed and render sequence charts in HTML",
   "main": "dist/mscgen-inpage.js",
   "repository": {
