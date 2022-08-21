@@ -43,7 +43,7 @@ function deZALGΌtheBlackPonyLord(pString) {
 }
 
 function underlineCol(pLine, pCol) {
-  return pLine.split("").reduce((pPrevious, pChar, pIndex) => {
+  return [...pLine].reduce((pPrevious, pChar, pIndex) => {
     if (pIndex === pCol) {
       return (
         pPrevious +

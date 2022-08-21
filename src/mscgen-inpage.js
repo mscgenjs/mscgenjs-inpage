@@ -94,20 +94,17 @@ function render(pAST, pElementId, pOptions) {
 }
 
 function getMirrorEntities(pElement) {
-  let lMirrorEntities = pElement.getAttribute("data-mirror-entities");
+  let lMirrorEntities = pElement.dataset.mirrorEntities;
 
   return lMirrorEntities && lMirrorEntities === "true";
 }
 
 function getNamedStyle(pElement) {
-  return pElement.getAttribute("data-named-style") || "basic";
+  return pElement.dataset.namedStyle || "basic";
 }
 
 function getVerticalAlignment(pElement) {
-  return (
-    pElement.getAttribute("data-regular-arc-text-vertical-alignment") ||
-    "middle"
-  );
+  return pElement.dataset.regularArcTextVerticalAlignment || "middle";
 }
 
 function parseAndRender(
@@ -148,7 +145,7 @@ function getResponseText(pResponse) {
 }
 
 function getSourceAttribute(pElement) {
-  return pElement.getAttribute("data-src") || pElement.getAttribute("src");
+  return pElement.dataset.src || pElement.getAttribute("src");
 }
 
 function getElementSource(pScript) {
