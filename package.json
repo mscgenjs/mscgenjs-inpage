@@ -5,7 +5,7 @@
   "main": "dist/mscgen-inpage.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/mscgenjs/mscgenjs-inpage"
+    "url": "git+https://github.com/mscgenjs/mscgenjs-inpage.git"
   },
   "author": "Sander Verweij",
   "license": "GPL-3.0",
