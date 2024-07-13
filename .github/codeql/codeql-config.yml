@@ -1,0 +1,9 @@
+name: "CodeQL config"
+
+paths:
+  - src/
+  - test/
+  - tools/
+  - types/
+queries:
+  - uses: security-and-quality
