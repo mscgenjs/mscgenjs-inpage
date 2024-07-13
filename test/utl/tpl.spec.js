@@ -1,7 +1,7 @@
-const chai = require("chai");
+const { describe, it } = require("node:test");
+const { equal } = require("node:assert/strict");
 const tpl = require("../../src/utl/tpl");
 
-const expect = chai.expect;
 const CASES = [
   {
     title: "leaves strings without variables alone",
@@ -75,9 +75,10 @@ describe("utl/tpl", function () {
   describe("#applyTemplate", function () {
     CASES.forEach((pCase) => {
       it(pCase.title, function () {
-        expect(
+        equal(
           tpl.applyTemplate(pCase.input.template, pCase.input.args),
-        ).to.equal(pCase.expected);
+          pCase.expected,
+        );
       });
     });
   });

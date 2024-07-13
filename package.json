@@ -33,7 +33,6 @@
   },
   "devDependencies": {
     "c8": "10.1.2",
-    "chai": "^4.4.1",
     "dependency-cruiser": "16.3.6",
     "eslint": "^8.57.0",
     "eslint-config-moving-meadow": "4.0.2",
@@ -45,7 +44,6 @@
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-security": "3.0.1",
     "eslint-plugin-unicorn": "54.0.0",
-    "mocha": "10.6.0",
     "npm-run-all": "4.1.5",
     "prettier": "3.3.3",
     "upem": "9.0.4",
@@ -84,7 +82,7 @@
     "scm:push:github:commits": "git push",
     "scm:push:github:tags": "git push --tags",
     "scm:stage": "git add .",
-    "test": "mocha --recursive test --invert --grep \"\\(browser only\\)\"",
+    "test": "node --test test/**/*.spec.js",
     "test:cover": "c8 npm test",
     "update-dependencies": "run-s upem:update upem:install lint:fix check",
     "upem-outdated": "npm outdated --json --long | upem --dry-run",
@@ -116,7 +114,7 @@
           "test/**/*.js"
         ],
         "env": {
-          "jest": true
+          "mocha": true
         },
         "rules": {
           "node/global-require": "off",
@@ -133,27 +131,7 @@
     "coverage",
     "wikum"
   ],
-  "nyc": {
-    "statements": 80,
-    "branches": 80,
-    "functions": 85,
-    "lines": 80,
-    "exclude": [
-      "coverage",
-      "dist",
-      "node_modules",
-      "webpack.config.js",
-      "test",
-      "wikum"
-    ],
-    "reporter": [
-      "text-summary",
-      "html",
-      "lcov"
-    ],
-    "all": false
-  },
   "engines": {
-    "node": "^12||^14||>=16"
+    "node": "^18.20||^20.15||>=22.4"
   }
 }

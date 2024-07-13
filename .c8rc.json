@@ -4,6 +4,14 @@
   "branches": 100,
   "functions": 100,
   "lines": 100,
-  "exclude": ["dist", "doc", "docs", "coverage", "test", "wikum"],
+  "exclude": [
+    "dist",
+    "doc",
+    "docs",
+    "coverage",
+    "test",
+    "wikum",
+    "webpack.config.js"
+  ],
   "reporter": ["text-summary", "html", "json-summary"]
 }

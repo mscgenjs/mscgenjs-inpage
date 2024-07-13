@@ -1,7 +1,6 @@
-const chai = require("chai");
+const { describe, it } = require("node:test");
+const { deepEqual } = require("assert/strict");
 const config = require("../../src/embedding/config");
-
-const expect = chai.expect;
 
 function getGlobal() {
   if (typeof global === "undefined") {
@@ -14,7 +13,7 @@ function getGlobal() {
 describe("embedding/embed-config", function () {
   describe("#getConfig - merges with the global mscgen_js_config", function () {
     it("should return the default configuration when no global mscgen_js_config is present", function () {
-      expect(config.getConfig()).to.deep.equal({
+      deepEqual(config.getConfig(), {
         defaultLanguage: "mscgen",
         parentElementPrefix: "mscgen_js-parent_",
         clickable: false,
@@ -30,7 +29,7 @@ describe("embedding/embed-config", function () {
         clickable: true,
         clickURL: "http://localhost/",
       };
-      expect(config.getConfig()).to.deep.equal({
+      deepEqual(config.getConfig(), {
         defaultLanguage: "mscgen",
         parentElementPrefix: "mscgen_js-parent_",
         clickable: true,
