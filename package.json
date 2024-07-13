@@ -70,7 +70,7 @@
     "check": "run-p depcruise lint test:cover",
     "depcruise": "depcruise -v -- src test",
     "depcruise:graph": "run-p depcruise:graph:*",
-    "depcruise:graph:html": "depcruise -T dot -v -- src | dot -T svg | depcruise-wrap-stream-in-html > docs/dependencygraph.html",
+    "depcruise:graph:html": "depcruise -T x-dot-webpage -v -- src > docs/dependencygraph.html",
     "depcruise:graph:png": "depcruise -T dot -v -- src | dot -Gdpi=192 -T png | pngquant - > docs/dependencygraph.png",
     "lint": "npm-run-all lint:eslint lint:prettier",
     "lint:eslint": "eslint src test",
