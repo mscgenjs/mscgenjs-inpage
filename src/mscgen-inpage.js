@@ -67,7 +67,7 @@ function renderLink(pSource, pLanguage, pId) {
   lLink.setAttribute(
     "href",
     config.getConfig().clickURL +
-      exporter.toLocationString(lLocation, pSource, pLanguage)
+      exporter.toLocationString(lLocation, pSource, pLanguage),
   );
   lLink.setAttribute("id", `${pId}link`);
   lLink.setAttribute("style", "text-decoration: none;");
@@ -110,7 +110,7 @@ function getVerticalAlignment(pElement) {
 function parseAndRender(
   pRenderElement,
   pSource,
-  pSourceElement = pRenderElement
+  pSourceElement = pRenderElement,
 ) {
   let lLanguage = getLanguage(pSourceElement);
   let lAST = getAST(pSource, lLanguage);
@@ -127,7 +127,7 @@ function parseAndRender(
     pRenderElement.innerHTML = errorRendering.renderError(
       pSource,
       lAST.location,
-      lAST.message
+      lAST.message,
     );
   }
 }
@@ -168,7 +168,7 @@ function getElementSource(pScript) {
 function renderElement(
   pSourceElement,
   pIndex,
-  pRenderElement = pSourceElement
+  pRenderElement = pSourceElement,
 ) {
   pSourceElement.dataset.renderedby = "mscgen_js";
   if (
@@ -230,7 +230,7 @@ function observerCallback(pEntries) {
 const ELEMENTS_TO_RENDER = [
   ...document.querySelectorAll(".mscgen_js"),
   ...[...document.scripts].filter((pScript) =>
-    Boolean(MIME2LANG[pScript.type])
+    Boolean(MIME2LANG[pScript.type]),
   ),
   ...document.querySelectorAll("mscgen"),
 ];
