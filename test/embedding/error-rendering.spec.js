@@ -12,10 +12,10 @@ describe("embedding/error-rendering", function () {
         errorRendering.renderError(
           "Just a source\nwith two lines",
           undefined,
-          "just a message"
-        )
+          "just a message",
+        ),
       ).to.equal(
-        "<pre><div style='color: #d00'># ERROR just a message</div>  1 Just a source\n  2 with two lines\n</pre>"
+        "<pre><div style='color: #d00'># ERROR just a message</div>  1 Just a source\n  2 with two lines\n</pre>",
       );
     });
 
@@ -30,10 +30,10 @@ describe("embedding/error-rendering", function () {
         errorRendering.renderError(
           "Just a source\nwith two lines",
           lErrorLocation,
-          "just a message"
-        )
+          "just a message",
+        ),
       ).to.equal(
-        "<pre><div style='color: #d00'># ERROR on line 2, column 6 - just a message</div>  1 Just a source\n<mark>  2 with <span style='text-decoration:underline'>t</span>wo lines\n</mark></pre>"
+        "<pre><div style='color: #d00'># ERROR on line 2, column 6 - just a message</div>  1 Just a source\n<mark>  2 with <span style='text-decoration:underline'>t</span>wo lines\n</mark></pre>",
       );
     });
   });
@@ -44,16 +44,16 @@ describe("embedding/error-rendering", function () {
     });
     it("replaces all < with &lt;", function () {
       expect(errorRendering.deHTMLize("<bla>hello</bla>")).to.equal(
-        "&lt;bla>hello&lt;/bla>"
+        "&lt;bla>hello&lt;/bla>",
       );
     });
     it("leaves strings without < alone", function () {
       expect(
         errorRendering.deHTMLize(
-          "In Dutch, Huey, Louis and Dewy translate => Kwik, Kwek en Kwak"
-        )
+          "In Dutch, Huey, Louis and Dewy translate => Kwik, Kwek en Kwak",
+        ),
       ).to.equal(
-        "In Dutch, Huey, Louis and Dewy translate => Kwik, Kwek en Kwak"
+        "In Dutch, Huey, Louis and Dewy translate => Kwik, Kwek en Kwak",
       );
     });
   });

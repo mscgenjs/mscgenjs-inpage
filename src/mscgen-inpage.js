@@ -228,11 +228,11 @@ function observerCallback(pEntries) {
 // later on we added the wikimedia style mscgen tag and
 // even later the script one, because they looked snazzy:
 const ELEMENTS_TO_RENDER = [
-  ...[...document.querySelectorAll(".mscgen_js")],
+  ...document.querySelectorAll(".mscgen_js"),
   ...[...document.scripts].filter((pScript) =>
     Boolean(MIME2LANG[pScript.type])
   ),
-  ...[...document.querySelectorAll("mscgen")],
+  ...document.querySelectorAll("mscgen"),
 ];
 
 const OBSERVER = new IntersectionObserver(observerCallback, {

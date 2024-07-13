@@ -77,7 +77,7 @@ module.exports = {
           tpl.applyTemplate(TPL_MARKED_LINE, {
             line: formatLine(
               underlineCol(pLine, pErrorLocation.start.column - 1),
-              pIndex + 1
+              pIndex + 1,
             ),
           })
         );

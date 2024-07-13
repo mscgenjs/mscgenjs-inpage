@@ -76,7 +76,7 @@ describe("utl/tpl", function () {
     CASES.forEach((pCase) => {
       it(pCase.title, function () {
         expect(
-          tpl.applyTemplate(pCase.input.template, pCase.input.args)
+          tpl.applyTemplate(pCase.input.template, pCase.input.args),
         ).to.equal(pCase.expected);
       });
     });

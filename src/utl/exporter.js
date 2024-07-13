@@ -5,7 +5,7 @@ let gMaxLocationLength = 4094;
 
 function source2LocationString(pLocation, pSource, pLanguage) {
   return `${pLocation.pathname}?lang=${pLanguage}&msc=${encodeURIComponent(
-    pSource
+    pSource,
   )}`;
 }
 

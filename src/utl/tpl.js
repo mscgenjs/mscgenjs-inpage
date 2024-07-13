@@ -6,7 +6,7 @@ module.exports = {
       Object.keys(pReplacementPairs).forEach((pKey) => {
         lReturnValue = lReturnValue.replace(
           new RegExp(`{${pKey}}`, "g"),
-          pReplacementPairs[pKey]
+          pReplacementPairs[pKey],
         );
       });
     }
