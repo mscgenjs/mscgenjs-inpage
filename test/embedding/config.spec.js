@@ -1,5 +1,5 @@
 const { describe, it } = require("node:test");
-const { deepEqual } = require("assert/strict");
+const { deepEqual } = require("node:assert/strict");
 const config = require("../../src/embedding/config");
 
 function getGlobal() {
