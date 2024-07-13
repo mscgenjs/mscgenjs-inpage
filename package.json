@@ -33,6 +33,7 @@
   },
   "devDependencies": {
     "c8": "10.1.2",
+    "clean-pkg-json": "1.2.0",
     "dependency-cruiser": "16.3.6",
     "eslint": "^8.57.0",
     "eslint-config-moving-meadow": "4.0.2",
@@ -77,6 +78,8 @@
     "lint:fix": "npm-run-all lint:fix:eslint lint:fix:prettier",
     "lint:fix:eslint": "eslint --fix src test",
     "lint:fix:prettier": "prettier --write {src,test}/**/*.js *.{json,yml,md} .github",
+    "prepack": "clean-pkg-json --dry --keep overrides --keep resolutions | jq '.scripts = {test: \"echo for test, build and static analysis scripts: see the github repository\"}' > smaller-package.json && mv smaller-package.json package.json",
+    "postpack": "git restore package.json",
     "scm:push": "run-p --aggregate-output scm:push:*",
     "scm:push:github": "run-p --aggregate-output scm:push:github:*",
     "scm:push:github:commits": "git push",
