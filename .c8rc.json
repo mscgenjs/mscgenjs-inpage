@@ -1,0 +1,9 @@
+{
+  "checkCoverage": true,
+  "statements": 100,
+  "branches": 100,
+  "functions": 100,
+  "lines": 100,
+  "exclude": ["dist", "doc", "docs", "coverage", "test", "wikum"],
+  "reporter": ["text-summary", "html", "json-summary"]
+}
