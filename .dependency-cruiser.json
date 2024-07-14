@@ -23,14 +23,15 @@
     },
     {
       "name": "not-to-dev-dep",
-      "severity": "error",
-      "comment": "Don't allow dependencies from src/app/lib to a development only package",
+      "severity": "info",
+      "comment": "Don't allow dependencies from src/app/lib to a development only package (as we're making a bundle that includes the devDepencencies we import - info only",
       "from": {
         "path": "^src",
         "pathNot": "\\.spec\\.js$"
       },
       "to": {
-        "dependencyTypes": ["npm-dev"]
+        "dependencyTypes": ["npm-dev"],
+        "pathNot": ""
       }
     },
     {

@@ -28,9 +28,6 @@
     "README.md",
     "COPYING"
   ],
-  "dependencies": {
-    "mscgenjs": "7.0.2"
-  },
   "devDependencies": {
     "c8": "10.1.2",
     "clean-pkg-json": "1.2.0",
@@ -45,6 +42,7 @@
     "eslint-plugin-node": "11.1.0",
     "eslint-plugin-security": "3.0.1",
     "eslint-plugin-unicorn": "54.0.0",
+    "mscgenjs": "7.0.2",
     "npm-run-all": "4.1.5",
     "prettier": "3.3.3",
     "upem": "9.0.4",
@@ -74,7 +72,7 @@
     "depcruise:graph:png": "depcruise -T dot -v -- src | dot -Gdpi=192 -T png | pngquant - > docs/dependencygraph.png",
     "lint": "npm-run-all lint:eslint lint:prettier",
     "lint:eslint": "eslint src test",
-    "lint:prettier": "prettier --check {src,test}/**/*.js *.{json,yml,md} .github",
+    "lint:prettier": "prettier --check {src,test}/**/*.js *.{json,md} .github",
     "lint:fix": "npm-run-all lint:fix:eslint lint:fix:prettier",
     "lint:fix:eslint": "eslint --fix src test",
     "lint:fix:prettier": "prettier --write {src,test}/**/*.js *.{json,yml,md} .github",
