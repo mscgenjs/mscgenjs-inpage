@@ -27,7 +27,7 @@ jobs:
     runs-on: ${{matrix.platform}}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: cache node modules for ${{matrix.node-version}}@${{matrix.platform}}
         uses: actions/cache@v4
         with:
