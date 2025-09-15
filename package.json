@@ -35,7 +35,7 @@
     "eslint": "^8.57.0",
     "eslint-config-moving-meadow": "4.0.2",
     "eslint-config-prettier": "9.1.0",
-    "eslint-plugin-budapestian": "6.0.0",
+    "eslint-plugin-budapestian": "7.0.1",
     "eslint-plugin-eslint-comments": "3.2.0",
     "eslint-plugin-import": "2.32.0",
     "eslint-plugin-mocha": "10.4.3",
