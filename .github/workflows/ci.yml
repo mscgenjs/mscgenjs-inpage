@@ -36,7 +36,7 @@ jobs:
           restore-keys: |
             ${{matrix.node-version}}@${{matrix.platform}}-build-
       - name: set up node ${{matrix.node-version}}@${{matrix.platform}}
-        uses: actions/setup-node@v5
+        uses: actions/setup-node@v6
         with:
           node-version: ${{matrix.node-version}}
       - name: install & build
