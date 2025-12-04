@@ -27,7 +27,6 @@ describe("utl/exporter", function () {
       const lL100WString =
         "# 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890 1234567890";
       let lBig = lL100WString;
-      // eslint-disable-next-line no-plusplus
       for (let lIndex = 0; lIndex < 40; lIndex++) {
         lBig += lL100WString;
       }
@@ -39,5 +38,4 @@ describe("utl/exporter", function () {
   });
 });
 
-/* eslint max-len: 0 */
 /* we can't really make these two long strings shorter without compromising readability */

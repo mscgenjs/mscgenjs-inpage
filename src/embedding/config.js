@@ -26,8 +26,6 @@ module.exports = {
     return gConfig;
   },
 };
-/* eslint security/detect-object-injection: 0, camelcase: 0 */
-/* We're good here with object injection stuff; the attributes are not passed from the outside */
 /*
  This file is part of mscgen_js.
 

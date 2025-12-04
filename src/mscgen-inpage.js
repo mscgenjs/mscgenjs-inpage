@@ -76,7 +76,6 @@ function renderLink(pSource, pLanguage, pId) {
 }
 
 function render(pAST, pElementId, pOptions) {
-  // eslint-disable-next-line unicorn/prefer-query-selector
   let lElement = document.getElementById(pElementId);
   lElement.innerHTML = "";
 

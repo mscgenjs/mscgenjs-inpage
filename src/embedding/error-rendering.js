@@ -20,7 +20,6 @@ const MAX_NUMBER_WIDTH = 3;
 function formatNumber(pNumber, pMaxWidth) {
   let lReturnValue = pNumber.toString();
   let lPosLeft = pMaxWidth - lReturnValue.length;
-  // eslint-disable-next-line no-plusplus
   for (let lIndex = 0; lIndex < lPosLeft; lIndex++) {
     lReturnValue = ` ${lReturnValue}`;
   }

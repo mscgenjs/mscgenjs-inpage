@@ -2,7 +2,6 @@ const { describe, it } = require("node:test");
 const { equal } = require("node:assert/strict");
 const errorRendering = require("../../src/embedding/error-rendering");
 
-/* eslint no-undefined: 0 */
 describe("embedding/error-rendering", function () {
   describe("#renderError", function () {
     it("should render error and source without underline when error location not provided", function () {
