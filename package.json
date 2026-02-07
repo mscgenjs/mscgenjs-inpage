@@ -36,7 +36,7 @@
     "npm-run-all2": "8.0.4",
     "prettier": "3.7.4",
     "upem": "10.0.3",
-    "webpack": "5.103.0",
+    "webpack": "5.105.0",
     "webpack-cli": "6.0.1"
   },
   "scripts": {
