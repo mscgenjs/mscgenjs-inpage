@@ -34,10 +34,10 @@
     "dependency-cruiser": "18.0.0",
     "mscgenjs": "8.0.0",
     "npm-run-all2": "9.0.2",
-    "prettier": "3.9.3",
+    "prettier": "3.9.4",
     "upem": "11.0.0",
-    "webpack": "5.108.2",
-    "webpack-cli": "7.1.0"
+    "webpack": "5.108.4",
+    "webpack-cli": "7.2.1"
   },
   "scripts": {
     "build": "webpack",
