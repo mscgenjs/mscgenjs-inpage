@@ -31,13 +31,13 @@
   "devDependencies": {
     "c8": "11.0.0",
     "clean-pkg-json": "2.0.0",
-    "dependency-cruiser": "18.0.0",
+    "dependency-cruiser": "18.1.0",
     "mscgenjs": "8.0.0",
     "npm-run-all2": "9.0.2",
-    "prettier": "3.9.3",
+    "prettier": "3.9.5",
     "upem": "11.0.0",
-    "webpack": "5.108.2",
-    "webpack-cli": "7.1.0"
+    "webpack": "5.108.4",
+    "webpack-cli": "7.2.1"
   },
   "scripts": {
     "build": "webpack",
